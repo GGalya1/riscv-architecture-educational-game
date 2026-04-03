@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 8283721c5530b704fac01202253c6a51
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterLevels/Level 0.unity
+    guid: d98ad82e6e2be5d4290ebba4a2fe1698
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterLevels/Level 0-1.unity
+    guid: 5890cc74d4f856b4b991acf924485220
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterLevels/Level 0-2.unity
+    guid: 1d803ed64f3315e4ab1db31fbbcd6cce
+  - enabled: 1
+    path: Assets/Scenes/Levels/MUXLevels/Level 1.unity
+    guid: 8d3726efc2a8ef041a6f0b1eec4c2c26
+  - enabled: 1
+    path: Assets/Scenes/Levels/MUXLevels/Level 1-1.unity
+    guid: e44adb9501b61af4a98c6ea373e17fb9
+  - enabled: 1
+    path: Assets/Scenes/Levels/MUXLevels/Level 1-2.unity
+    guid: f270712e3b97c6543987b495fb7663fd
+  - enabled: 1
+    path: Assets/Scenes/Levels/ALULevels/Level 2-1.unity
+    guid: 08319cf5d3e73604cb533436446289c5
+  - enabled: 1
+    path: Assets/Scenes/Levels/ALULevels/Level 2-2.unity
+    guid: a951bdf291459c743bc1f3d68c8fe48a
+  - enabled: 1
+    path: Assets/Scenes/Levels/ALULevels/Level 2.unity
+    guid: f855971fe3123674995cf824f4ce359f
+  - enabled: 1
+    path: Assets/Scenes/Levels/MemoryLevels/Level 3-0.unity
+    guid: fa0f9f54dfebb1949987d72053a6a260
+  - enabled: 1
+    path: Assets/Scenes/Levels/MemoryLevels/Level 3.unity
+    guid: f5a9456aa456d5f43862a363da3ea76c
+  - enabled: 1
+    path: Assets/Scenes/Levels/MemoryLevels/Level 4-0.unity
+    guid: 9dd0af669293b444a8fa2beba4e92bfb
+  - enabled: 1
+    path: Assets/Scenes/Levels/MemoryLevels/Level 4.unity
+    guid: d3688cc0e3f035f4e902f82d8226fc0a
+  - enabled: 1
+    path: Assets/Scenes/Levels/ExtenderLevels/Level 5-1.unity
+    guid: 0ade5baa126e7d64bba1445956a26f06
+  - enabled: 1
+    path: Assets/Scenes/Levels/ExtenderLevels/Level 5-2.unity
+    guid: 5f0d2106c41483c46991e037bbc00057
+  - enabled: 1
+    path: Assets/Scenes/Levels/ExtenderLevels/Level 5.unity
+    guid: bb6934cb91c1d894494145999901991a
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterFileLevels/Level 7.unity
+    guid: e61d5467e545e8546803773ef0a1d6b4
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterFileLevels/Level 7-1.unity
+    guid: 3908206d84854634eb1dbbdf9f2e2eff
+  - enabled: 1
+    path: Assets/Scenes/Levels/RegisterFileLevels/Level 7-2.unity
+    guid: 8e3e09e8f2c11e34d883a5214a386e39
+  - enabled: 1
+    path: Assets/Scenes/Levels/Full Mehrtaktprozessor/Level 10.unity
+    guid: 94ae3717184a6fb498674999c8b7d6df
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_UseUCBPForAssetBundles: 0

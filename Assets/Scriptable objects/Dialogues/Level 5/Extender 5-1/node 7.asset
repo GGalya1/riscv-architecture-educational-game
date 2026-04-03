@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 7
+  m_EditorClassIdentifier: 
+  DialogueText: "Der letzte Typ in unserem Abenteuer ist <color=orange>B - BRANCH</color>.
+    Wenn wir eine <color=yellow>Bedingung</color> pr\xFCfen m\xFCssen (ob zwei Zahlen
+    gleich sind, ob eine Zahl negativ ist usw.), dann nutzen wir diesen Typ. Beispiel:\r\n<color=#48DBFB>beq
+    r0, r1, r2</color>"
+  emotionIndex: 4
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

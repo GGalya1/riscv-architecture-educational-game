@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: hintNode 0
+  m_EditorClassIdentifier: 
+  DialogueText: "Zuerst musst du alles so einstellen, dass das <color=yellow>Register</color>
+    alle <color=yellow>Speicheradressen</color> von <color=#48DBFB>0</color> bis
+    <color=#48DBFB>12</color> durchl\xE4uft. (\xDCberleg mal, welche <color=yellow>ALU-Operation</color>
+    du daf\xFCr w\xE4hlen musst!)"
+  emotionIndex: 10
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

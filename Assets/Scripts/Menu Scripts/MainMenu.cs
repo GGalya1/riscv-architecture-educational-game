@@ -1,0 +1,124 @@
+using DG.Tweening;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
+/// <summary>
+/// Controls the main menu logic, including level unlocking based on player progress.
+/// </summary>
+public class MainMenu : MonoBehaviour
+{
+    [Header("UI References")]
+    [Tooltip("List of buttons for level selection. Order in array should match level progression.")]
+    public Button[] levelButtons;
+
+    [Header("Loading Screen")]
+    [SerializeField] private CanvasGroup loadingOverlay;
+    [SerializeField] private float transitionDuration = 1f;
+
+    private const string UNLOCKED_LEVEL_KEY = "UnlockedLevelIndex";
+
+    private void Awake()
+    {
+        SetFrameRate();
+
+        UpdateLevelButtons();
+
+        if (loadingOverlay != null)
+        {
+            loadingOverlay.alpha = 1f;
+            loadingOverlay.blocksRaycasts = true;
+        }
+    }
+
+    private void Start()
+    {
+        if (loadingOverlay != null)
+        {
+            loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true).OnComplete(() => {
+                loadingOverlay.blocksRaycasts = false;
+            });
+        }
+    }
+    private IEnumerator LoadLevelWithFade(int levelID)
+    {
+        if (loadingOverlay != null)
+        {
+            loadingOverlay.blocksRaycasts = true;
+            yield return loadingOverlay.DOFade(1f, transitionDuration).SetUpdate(true).WaitForCompletion();
+        }
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(levelID);
+        op.allowSceneActivation = false;
+
+        while (op.progress < 0.9f)
+        {
+            yield return null;
+        }
+
+        op.allowSceneActivation = true;
+    }
+
+    public void UpdateLevelButtons()
+    {
+        if (levelButtons == null || levelButtons.Length == 0) return;
+
+        // Default to 1 if the key doesn't exist
+        int unlockedLevels = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+
+        // One loop to rule them all: set interactable state based on index
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            // A button is interactable if its index is less than the number of unlocked levels
+            levelButtons[i].interactable = (i < unlockedLevels);
+        }
+    }
+    public void UnlockAllLevels()
+    {
+        // int totalScenes = SceneManager.sceneCountInBuildSettings - 1;
+        int totalScenes = 25;
+
+        PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, totalScenes);
+        PlayerPrefs.Save();
+
+        UpdateLevelButtons();
+
+        Debug.Log("[MainMenu] All levels unlocked!");
+    }
+
+    /// <summary>
+    /// Loads a specific scene by its build index.
+    /// </summary>
+    /// <param name="levelID">The index of the scene in Build Settings.</param>
+    public void OpenLevel(int levelID)
+    {
+        // Optional: Check if the index is valid for BuildSettings
+        if (levelID >= 0 && levelID < SceneManager.sceneCountInBuildSettings)
+        {
+            //SceneManager.LoadScene(levelID);
+            StartCoroutine(LoadLevelWithFade(levelID));
+        }
+        else
+        {
+            Debug.LogError($"[MainMenu] Attempted to load invalid level index: {levelID}");
+        }
+    }
+
+    /// <summary>
+    /// Closes the application.
+    /// </summary>
+    public void Quit() {
+        Debug.Log("[MainMenu] Quit requested.");
+        Application.Quit();
+    }
+
+    private void SetFrameRate()
+    {
+    #if UNITY_ANDROID || UNITY_IOS
+        Application.targetFrameRate = 60;
+    #else
+        Application.targetFrameRate = -1; 
+    #endif
+    }
+}

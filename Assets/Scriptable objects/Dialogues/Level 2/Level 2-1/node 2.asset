@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 2
+  m_EditorClassIdentifier: 
+  DialogueText: "<anim:wave>Sehr gut!</anim> Im Grunde ist er wie eine Durchgangsschleuse.
+    Er hat mehrere Eing\xE4nge, die Signale liefern, aber er l\xE4sst nur <color=yellow>eines</color>
+    davon durch! Und welches genau das ist, entscheidest <anim:shake><color=red>du!</color></anim>
+    Um das erste Signal durchzulassen - setze eine <color=#48DBFB>00</color>. F\xFCr
+    das zweite - eine <color=#48DBFB>01</color>. Und f\xFCr das dritte - eine <color=#48DBFB>10</color>
+    (das ist die Zwei im Dezimalsystem)."
+  emotionIndex: 2
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

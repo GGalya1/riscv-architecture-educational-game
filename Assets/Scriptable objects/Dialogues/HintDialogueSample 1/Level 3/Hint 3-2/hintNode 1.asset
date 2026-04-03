@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: hintNode 1
+  m_EditorClassIdentifier: 
+  DialogueText: "Falls du in der <color=#48DBFB>Bin\xE4rdarstellung</color> nichts
+    Gemeinsames findest, gibt es immer die Option, einfach nacheinander alle <color=yellow>ALU-Operationen</color>
+    auszuprobieren und das Ergebnis zu pr\xFCfen <anim:wave><color=yellow>:D</color></anim>\r\n\r\nDu
+    kannst ja jederzeit die <color=orange>Takte</color> zur\xFCcksetzen!"
+  emotionIndex: 7
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 1
+  m_EditorClassIdentifier: 
+  DialogueText: "Sie f\xFChrt einen <color=orange>Sprung</color> zu einer Adresse
+    aus (\xE4hnlich wie ein Branch), speichert aber gleichzeitig die <color=yellow>Adresse
+    der n\xE4chsten Zeile</color>, um nach der Ausf\xFChrung der Methode <color=green>zur\xFCckkehren</color>
+    und fortfahren zu k\xF6nnen."
+  emotionIndex: 4
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

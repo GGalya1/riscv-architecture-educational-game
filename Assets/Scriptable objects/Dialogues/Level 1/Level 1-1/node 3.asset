@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 3
+  m_EditorClassIdentifier: 
+  DialogueText: "In der <anim:wave><color=yellow>echten Welt</color></anim> laufen
+    Takte nur vorw\xE4rts, und es gibt <anim:shake><color=red>keine</color></anim>
+    M\xF6glichkeit, die Zeit zur\xFCckzudrehen oder Daten wiederherzustellen. Aber
+    da wir hier in einem Videospiel sind, ist alles m\xF6glich!\\n\\nHab keine Angst
+    vor Fehlern, du kannst jederzeit zur\xFCckspulen. <anim:wave><color=yellow>:D</color></anim>"
+  emotionIndex: 2
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

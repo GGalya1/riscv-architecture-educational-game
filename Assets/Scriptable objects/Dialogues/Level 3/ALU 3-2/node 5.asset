@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 5
+  m_EditorClassIdentifier: 
+  DialogueText: "Bei <color=orange>ODER</color> ist es genau umgekehrt:\r\nWenn <anim:shake><color=yellow>mindestens
+    eine</color></anim> Zahl in der Spalte eine <color=yellow>Eins</color> ist \u2014
+    dann ist das Ergebnis auch eine <color=yellow>Eins</color>!\r\n11001\r\n10101\r\n-----\r\n<color=green>111</color>0<color=green>1</color>"
+  emotionIndex: 7
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

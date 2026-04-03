@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 4
+  m_EditorClassIdentifier: 
+  DialogueText: "Das hei\xDFt, der <color=orange>Extender</color> wird <anim:shake><color=red>gar
+    nicht benutzt</color></anim>, wenn wir auf diesen Befehlstyp treffen. Und wie
+    erkennt man ihn? <color=yellow>Beide Operanden sind Register.</color>\r\nZum
+    Beispiel: <color=#48DBFB>add r0, r1, r2</color>"
+  emotionIndex: 2
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 0
+  m_EditorClassIdentifier: 
+  DialogueText: "Und da sind wir auch schon... <anim:shake><color=red>gef\xE4hrlicher
+    N\xE4he zum Assembler!</color></anim> Erinnerst du dich noch daran, dass <color=orange>Assembler-Befehle</color>
+    in verschiedene Typen unterteilt werden?"
+  emotionIndex: 10
+  firstAnswer: "Na klar! Ich kann sie dir sogar alle aufz\xE4hlen."
+  secondAnswer: Da waren irgendwelche Buchstaben... ich hab's ehrlich gesagt vergessen.
+  thirdAnswer: 
+  firstOption: 1
+  secondOption: 2
+  thirdOption: 0

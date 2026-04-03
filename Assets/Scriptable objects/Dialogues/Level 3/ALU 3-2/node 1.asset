@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 1
+  m_EditorClassIdentifier: 
+  DialogueText: "Na, dann pr\xFCfen wir mal, wie ernst du es meinst. Du hast doch
+    behauptet, dass du alles \xFCber <color=orange>logic AND</color> und <color=orange>logic
+    OR</color> wei\xDFt."
+  emotionIndex: 5
+  firstAnswer: Na los, spann mich nicht auf die Folter!
+  secondAnswer: Hmm, ich kann mich nicht erinnern, das gesagt zu haben...
+  thirdAnswer: 
+  firstOption: 7
+  secondOption: 3
+  thirdOption: 0

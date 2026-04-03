@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 8
+  m_EditorClassIdentifier: 
+  DialogueText: "Der <color=yellow>Eingang f\xFCr die Adresse</color> befindet sich
+    <color=orange>oben links</color>. Der <color=yellow>Eingang f\xFCr neue Werte</color>
+    <color=orange>unten links</color>. Und der <color=yellow>Ausgang</color> ist
+    <color=orange>oben rechts</color> - dort kommen die Daten heraus, die wir unter
+    der angegebenen Adresse gelesen haben."
+  emotionIndex: 7
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

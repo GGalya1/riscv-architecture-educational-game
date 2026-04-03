@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 3
+  m_EditorClassIdentifier: 
+  DialogueText: "Um <color=orange>AND</color> anzuwenden, schreiben wir einfach eine
+    Zahl \xFCber die andere und schauen genau hin:\r\nWenn <anim:shake><color=yellow>beide
+    Bits</color></anim> in einer Spalte eine <color=yellow>Eins</color> sind, ist
+    das Ergebnis auch <color=yellow>Eins</color>.\r\nIst aber auch nur eines davon
+    eine <color=red>Null</color> - dann ist das Ergebnis ebenfalls <color=red>Null</color>."
+  emotionIndex: 10
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

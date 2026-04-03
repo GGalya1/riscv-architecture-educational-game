@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: einz
+  m_EditorClassIdentifier: 
+  DialogueText: "Denk mal dar\xFCber nach, wie ein <color=yellow>Register</color>
+    funktioniert: Er speichert den Wert f\xFCr <color=#48DBFB>einen Takt</color>
+    zwischen. Falls <color=yellow>WE (Write Enable)</color> gleich <color=#48DBFB>1</color>
+    ist (also wenn kein <anim:shake><color=red>STOP</color></anim> sichtbar ist),
+    dann wird er im n\xE4chsten Takt den Wert vom <color=yellow>Eingang</color> \xFCbernehmen."
+  emotionIndex: 7
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0

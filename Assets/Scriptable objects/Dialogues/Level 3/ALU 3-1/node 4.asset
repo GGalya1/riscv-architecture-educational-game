@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 804392be32b55814c89220cd5a919aa4, type: 3}
+  m_Name: node 4
+  m_EditorClassIdentifier: 
+  DialogueText: "<anim:wave>Super, dass du fragst!</anim> Das sind die grundlegenden
+    logischen Operationen. Alle Zahlen in unserem Computer sind als eine Folge von
+    <color=#48DBFB>Nullen</color> und <color=#48DBFB>Einsen</color> gespeichert.
+    Dabei ist es v\xF6llig egal, ob es eine Ganzzahl oder eine Gleitkommazahl ist!"
+  emotionIndex: 7
+  firstAnswer: 
+  secondAnswer: 
+  thirdAnswer: 
+  firstOption: 0
+  secondOption: 0
+  thirdOption: 0
