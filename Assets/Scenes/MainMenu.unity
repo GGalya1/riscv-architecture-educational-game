@@ -2529,8 +2529,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
+--- !u!1 &182605582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 182605584}
+  - component: {fileID: 182605583}
+  m_Layer: 0
+  m_Name: LanguageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &182605583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182605582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b37cd387e24054fb54eff3ec24a0fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LanguageManager
+--- !u!4 &182605584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182605582}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 363.75586, y: -0.00001, z: 794.7328}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &188515399
 GameObject:
   m_ObjectHideFlags: 0
@@ -4119,8 +4163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &397335367
 GameObject:
   m_ObjectHideFlags: 0
@@ -4661,7 +4705,6 @@ GameObject:
   - component: {fileID: 439871399}
   - component: {fileID: 439871401}
   - component: {fileID: 439871402}
-  - component: {fileID: 439871403}
   m_Layer: 0
   m_Name: ScriptHolder
   m_TagString: Untagged
@@ -4740,7 +4783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollRect: {fileID: 837096398}
-  _contentContainer: {fileID: 1721695636}
+  contentContainer: {fileID: 1721695636}
   chapterTitleText: {fileID: 1267771258}
   chapterNames:
   - Registers
@@ -4767,8 +4810,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef6fc2a6f56c9514fb21908d146a7da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeTime: 0.3
-  _hiddenPosition: {x: 0, y: -1000}
+  fadeTime: 0.3
+  hiddenPosition: {x: 0, y: -1000}
   bgGroup: {fileID: 1856045334}
   levelPanelGroup: {fileID: 188515401}
   levelPanelRectTransform: {fileID: 188515400}
@@ -4776,18 +4819,6 @@ MonoBehaviour:
   optionsPanelRectTransform: {fileID: 880441339}
   showEase: 27
   hideEase: 14
---- !u!114 &439871403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439871398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2b37cd387e24054fb54eff3ec24a0fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LanguageManager
 --- !u!1 &443015068
 GameObject:
   m_ObjectHideFlags: 0
@@ -5035,8 +5066,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &501632334
 GameObject:
   m_ObjectHideFlags: 0
@@ -5498,8 +5529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &566042144
 GameObject:
   m_ObjectHideFlags: 0
@@ -5913,8 +5944,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &645274755
 GameObject:
   m_ObjectHideFlags: 0
@@ -10341,8 +10372,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &1229725798
 GameObject:
   m_ObjectHideFlags: 0
@@ -11183,8 +11214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &1277021700
 GameObject:
   m_ObjectHideFlags: 0
@@ -14489,8 +14520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd026c5197eb4ac4d9525215245bd5d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amount: 20
-  _smoothTime: 0.3
+  amount: 20
+  smoothTime: 0.3
 --- !u!1 &2071746323
 GameObject:
   m_ObjectHideFlags: 0
@@ -15769,3 +15800,4 @@ SceneRoots:
   - {fileID: 2071746327}
   - {fileID: 167463846}
   - {fileID: 439871400}
+  - {fileID: 182605584}
