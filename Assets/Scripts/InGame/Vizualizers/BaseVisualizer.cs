@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-// Абстрактный базовый класс для всей визуализации компонентов
+// An abstract base class for all component rendering
 public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
 {
     // --- FIELDS FOR CONFIGURATION (Visible in Inspector) ---
@@ -18,13 +18,13 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
 
     // --- FIELDS FOR CACHED REFERENCES ---
 
-    // Кэшированная основная камера, для позиционирования UI
+    // Cached main camera, for UI positioning
     protected Camera _staticCamera;
 
-    // Кэшированный рендерер, если нужно менять цвет модели (для простого изменения цвета)
+    // Cached renderer, if you need to change the model's color (for a simple color change)
     [SerializeField] protected Renderer _bigModelRenderer;
 
-    // Флаг, показывающий, активна ли визуализация в данный момент
+    // A flag indicating whether the visualization is currently active
     protected bool isVisualizationActive = false;
     private Vector3 _targetLocalPos;
 
@@ -48,24 +48,24 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
             _originalColor = _bigModelRenderer.sharedMaterial.color;
         }
 
-        // 2. Кэширование камерыa
+        // 2. Camera caching
         _staticCamera = Camera.main;
         if (_staticCamera == null)
         {
             Debug.LogError($"Main camera not found by {gameObject.name}!");
         }
 
-        // 3. Создание и инициализация панели UI
+        // 3. Creating and initializing the UI panel
         _targetLocalPos = _panelInstance.transform.localPosition;
         PrepareHiddenState();
 
-        // Абстрактный метод, который должен быть реализован наследником
+        // An abstract method that must be implemented by a subclass
         InitializePanelController();
     }
 
     // --- PUBLIC INTERFACE (IVizualizer) ---
 
-    // ShowData и HideData имеют общую логику, но ShowData имеет специфику
+    // ShowData and HideData share the same basic logic, but ShowData has some specific features
     public virtual void ShowData()
     {
         if (isVisualizationActive)
@@ -74,7 +74,7 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
             return;
         }
 
-        // Общая логика
+        // General logic
         isVisualizationActive = true;
         SetModelColor(_selectionColor);
 
@@ -112,7 +112,7 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
         _bigModelRenderer.SetPropertyBlock(_propBlock);
     }
 
-    // Абстрактные методы, которые должны быть реализованы в дочерних классах
+    // Abstract methods that must be implemented in subclasses
     public abstract void ResetVizualization();
     protected abstract void InitializePanelController();
 

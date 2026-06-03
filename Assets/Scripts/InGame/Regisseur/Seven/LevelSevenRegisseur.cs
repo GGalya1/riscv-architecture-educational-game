@@ -43,7 +43,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
 
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
+        // Initialization of logical components
         srcA = new Register(6); srcA.WriteEnable = true;
         srcB = new Register(7); srcB.WriteEnable = true;
         output = new Register(0); output.WriteEnable = true;
@@ -55,7 +55,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
                                                      60, 61, 0, 1, 54, 0, 28,
                                                      70, 30, 31, 0});
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = _registerOutputVisualizer.UIRegisterPanel;

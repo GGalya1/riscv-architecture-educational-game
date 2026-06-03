@@ -67,7 +67,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
                                                      60, 61, 0, 25, 54, 0, 28,
                                                      70, 30, 31, 0});
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoImmRegister = _registerImmediateVisualizer.UIRegisterPanel;
         _infoA3Register = _registerA3Visualizer.UIRegisterPanel;

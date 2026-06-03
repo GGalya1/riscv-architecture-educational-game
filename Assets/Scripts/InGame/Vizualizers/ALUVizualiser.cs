@@ -32,7 +32,7 @@ public class ALUVizualiser : BaseVizualizer
     }
     protected override void InitializePanelController()
     {
-        // Специфичная для этого класса инициализация контроллера
+        // Controller initialization specific to this class
         _uiController = _panelInstance.GetComponent<ALUControlPanel>();
         if (_uiController == null)
         {
@@ -59,10 +59,10 @@ public class ALUVizualiser : BaseVizualizer
                 symbol = "-"; // SUBTRACT
                 break;
             case 2:
-                symbol = "&"; // MULTIPLY (или логическое И / AND)
+                symbol = "&"; // MULTIPLY (logic AND)
                 break;
             case 3:
-                symbol = "|"; // DIVIDE (или логическое ИЛИ / OR)
+                symbol = "|"; // DIVIDE (logic OR)
                 break;
             default:
                 Debug.LogWarning($"ALU operation is not valid and is equal {operation}. Displaying '?'");

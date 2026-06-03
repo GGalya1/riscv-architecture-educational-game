@@ -5,7 +5,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
 {
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
+        // Initialization of logical components
         srcA = new Register(0); srcA.WriteEnable = true;
         srcB = new Register(8); srcB.WriteEnable = true;
         dataIntructionMemory = new DataInstMemory(); dataIntructionMemory.MemoryWrite = true;
@@ -14,7 +14,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
         dataIntructionMemory.LoadWord(8, -256);
         dataIntructionMemory.LoadWord(12, -1024);
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoDataMemory = _registerOutputVisualizer.UIRegisterPanel;
@@ -117,7 +117,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
             _busController.StartBusSignal(_busController.busSegments[6], srcA.Output);
 
-            // должна с коротким делеем
+            // should be after a short delay
             if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
             {
                 yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], dataIntructionMemory._memory[srcA.Output]));
@@ -128,7 +128,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             }
 
 
-            // должна после первого с коротким делеем
+            // should follow the first one with a short delay
             yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[2], _busController.busSegments[7], srcB.Output, srcB.Output));
 
             int propagationVal = 0;

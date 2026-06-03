@@ -16,7 +16,7 @@ public struct LevelThreeState
     public bool RegisterInstrWE;
     public bool IntrDataMemoryWE;
 
-    public int CurrentChoosenMuxPath; // т.к. можем вызвать ResetVisualization и, основываясь  на выбранном пути, вызвать один из методов Vizualizer
+    public int CurrentChoosenMuxPath; // since we can call ResetVisualization and, based on the selected path, call one of the Visualizer methods
     public int ALUOperation;
 }
 
@@ -52,7 +52,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
 
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
+        // Initialization of logical components
         srcA = new Register(srcAValue); srcA.WriteEnable = true;
         srcB = new Register(srcBValue); srcB.WriteEnable = true;
         dataIntructionMemory = new DataInstMemory(); dataIntructionMemory.MemoryWrite = true;
@@ -61,7 +61,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         dataIntructionMemory.LoadWord(8, -89);
         dataIntructionMemory.LoadWord(12, 66);
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoDataMemory = _registerOutputVisualizer.UIRegisterPanel;
@@ -276,7 +276,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
             _busController.StartBusSignal(_busController.busSegments[6], srcA.Output);
 
-            // должна с коротким делеем
+            // should be by a short divisor
             if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
             {
                 yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], dataIntructionMemory._memory[srcA.Output]));
@@ -286,7 +286,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             }
 
 
-            // должна после первого с коротким делеем
+            // should follow the first one with a short division
             yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[2], srcB.Output));
 
             int propagationVal = 0;
@@ -328,14 +328,14 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
     {
         yield return new WaitUntil(() => _busController.NoActiveSignals);
 
-        // Запускаем третий сигнал
+        // Sending the third signal
         _busController.StartBusSignal(busToStart, reverse);
     }
     protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
     {
         yield return new WaitUntil(() => _busController.NoActiveSignals);
 
-        // Запускаем третий сигнал
+        // Sending the third signal
         _busController.StartBusSignal(busToStart, value, reverse);
     }
 

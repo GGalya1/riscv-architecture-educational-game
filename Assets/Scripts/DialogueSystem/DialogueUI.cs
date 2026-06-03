@@ -64,7 +64,7 @@ public class DialogueUI : MonoBehaviour
         List<DialogueCommand> commands = DialogueUtility.ProcessInputString(node.DialogueText, out string cleanText);
 
         _textRoutine = StartCoroutine(_vertexAnimator.AnimateTextIn(commands, cleanText, null, () => {
-            Debug.Log("Печать завершена!");
+            Debug.Log("Printing complete!");
         }));
 
 

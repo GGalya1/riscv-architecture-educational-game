@@ -134,7 +134,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         dataIntructionMemory.LoadWord(8, _initial.thirdMemoWord);
         dataIntructionMemory.LoadWord(12, _initial.fourthMemoWord);
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoPCRegister = _registerPCVisualizer.UIRegisterPanel;
         _infoOldPCRegister = _registerOldPCVisualizer.UIRegisterPanel;
         _infoIntructionRegister = _registerIntructionVisualizer.UIRegisterPanel;

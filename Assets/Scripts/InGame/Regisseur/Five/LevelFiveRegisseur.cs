@@ -55,7 +55,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
 
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
+        // Initialization of logical components
         srcA = new Register(0); srcA.WriteEnable = true;
         srcB = new Register(0); srcB.WriteEnable = true;
         output = new Register(0); output.WriteEnable = true;
@@ -67,7 +67,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
         dataIntructionMemory.LoadWord(8, 7603235);                      // S-Typ (8)
         dataIntructionMemory.LoadWord(12, 4301059);                     // I-Typ (4)
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = _registerOutputVisualizer.UIRegisterPanel;
@@ -357,14 +357,14 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
     {
         yield return new WaitUntil(() => _busController.NoActiveSignals);
 
-        // Запускаем третий сигнал
+        // We're sending the third signal
         _busController.StartBusSignal(busToStart, reverse);
     }
     protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
     {
         yield return new WaitUntil(() => _busController.NoActiveSignals);
 
-        // Запускаем третий сигнал
+        // We're sending the third signal
         _busController.StartBusSignal(busToStart, value, reverse);
     }
 

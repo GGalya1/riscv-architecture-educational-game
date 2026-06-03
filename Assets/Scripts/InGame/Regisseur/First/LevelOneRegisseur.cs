@@ -15,7 +15,7 @@ public struct LevelOneState
     public bool RegisterBWE;
     public bool OutputRegisterWE;
 
-    public int CurrentChoosenMuxPath; // т.к. можем вызвать ResetVisualization и, основываясь  на выбранном пути, вызвать один из методов Vizualizer
+    public int CurrentChoosenMuxPath;
 }
 
 public class LevelOneRegisseur : BaseLevelRegisseur
@@ -43,12 +43,12 @@ public class LevelOneRegisseur : BaseLevelRegisseur
 
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
+        // Initialization of logical components
         srcA = new Register(4); srcA.WriteEnable = true;
         srcB = new Register(2); srcB.WriteEnable = true;
         output = new Register(0); output.WriteEnable = true;
 
-        // Кэширование UI-панелей визуализаторов
+        // РљСЌС€РёСЂРѕРІР°РЅРёРµ UI-РїР°РЅРµР»РµР№ РІРёР·СѓР°Р»РёР·Р°С‚РѕСЂРѕРІ
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = _registerOutputVisualizer.UIRegisterPanel;
@@ -225,7 +225,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
     {
         yield return new WaitUntil(() => _busController.NoActiveSignals);
 
-        // Запускаем третий сигнал
+        // Ssending the third signal
         int propagationVal = 0;
         if (_multiplexerVisualizer.CurrentChoosenMuxPath == 0)
         {

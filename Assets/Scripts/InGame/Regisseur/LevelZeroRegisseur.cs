@@ -44,7 +44,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur
         srcB = new Register(_srcBValue); srcB.WriteEnable = true;
         output = new Register(0); output.WriteEnable = true;
 
-        // Кэширование UI-панелей визуализаторов
+        // Caching of UI panels for visualizers
         _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = _registerOutputVisualizer.UIRegisterPanel;

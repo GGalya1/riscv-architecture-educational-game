@@ -5,7 +5,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-// Базовый класс для всех уровней, управляющий временем, историей и завершением.
+// A base class for all levels that manages time, history, and completion.
 public abstract class BaseLevelRegisseur : MonoBehaviour
 {
     [Header("Level Content Configuration")]
@@ -16,22 +16,22 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     [SerializeField] protected int _correctAnswer;
     protected virtual int RightAnswerValue => _correctAnswer;
 
-    // --- CLOCK AND HISTORY CONTROL (Конфигурация) ---
+    // --- CLOCK AND HISTORY CONTROL ---
     [Header("Clock Control")]
     [SerializeField] protected Button _nextClick;
     [SerializeField] protected Button _prevClick;
     [SerializeField] protected TMP_Text _currentTickText;
 
-    [Tooltip("Максимальное количество тиков, доступное на уровне.")]
+    [Tooltip("The maximum number of ticks available on level.")]
     [SerializeField] protected int _maxTickNumber = 3;
 
-    // --- SOLUTION AND LEVEL MANAGEMENT (Конфигурация) ---
+    // --- SOLUTION AND LEVEL MANAGEMENT ---
     [Header("Solution & Level Management")]
     [SerializeField] protected Button _checkSolutionButton;
     [SerializeField] protected LevelManager _levelManager;
     [SerializeField] protected TMP_Text _levelTargetText;
 
-    // Условия для получения звезд
+    // Requirements for earning stars
     [Header("Star Conditions (Number of failed tries)")]
     [SerializeField] protected int _threeStarCondition = 0;
     [SerializeField] protected int _twoStarCondition = 1;
@@ -45,7 +45,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     // --- STATE ---
     protected int _tickCounter = 0;
     protected object[] _tickStateValues;
-    public int falledTries = 0; // Public для отладки
+    public int falledTries = 0; // Public for debugging
 
     [Header("Bus Vizualization")]
     [SerializeField] protected BusController _busController;
@@ -54,63 +54,58 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
 
 
 
-    #region ABSTRACT METHODS (Уникальны для каждого уровня)
-    /// <summary> Основной метод, выполняющий логику одного такта (PreClock/Clock). </summary>
+    #region ABSTRACT METHODS (Unique to each level)
+    /// <summary> The main method that implements the logic of a single clock cycle (PreClock/Clock). </summary>
     protected abstract void HandleClockUpdate();
 
-    /// <summary> Должен вернуть текущее состояние в формате, уникальном для уровня (e.g., levelOneState). </summary>
+    /// <summary> Must return the current state in a format unique to the level (e.g., levelOneState). </summary>
     protected abstract object GetCurrentState();
 
-    /// <summary> Применяет сохраненное состояние к внутренним компонентам уровня. </summary>
+    /// <summary> Applies the saved state to the level's internal components. </summary>
     protected abstract void ApplyState(object state);
 
-    /// <summary> Сравнивает текущее состояние с сохраненным. </summary>
-    //protected abstract bool IsStateEqual(object state);
-
-    /// <summary> Визуально сигнализирует о срабатывании такта (например, мигание регистров). </summary>
+    /// <summary> Visually indicates when a tick is triggered (e.g., flashing registers). </summary>
     protected abstract void BlinkClockedComponents();
 
-    /// <summary> Блокирует все интерактивные элементы чтобы избежать путаницы во время визуализации сигналов (WE-buttons etc). </summary>
+    /// <summary> Blocks all interactive elements to avoid confusion during signal visualization (WE-buttons etc). </summary>
     protected abstract void BlockIngameInteractables();
 
     protected abstract void ReleaseIngameInteractables();
     #endregion
 
     /// <summary> 
-    /// Новый абстрактный метод: Запускает визуализацию шин, специфичную для текущего такта.
-    /// Должен быть реализован в дочернем классе.
+    /// New abstract method: Runs a bus visualization specific to the current cycle.
+    /// Must be implemented in a subclass.
     /// </summary>
     protected abstract IEnumerator RunBusVisualizations();
 
     /// <summary> 
-    /// Новый абстрактный метод: Останавливает и уничтожает все активные сигналы 
-    /// (или откатывает их) при переходе к предыдущему такту.
-    /// Должен быть реализован в дочернем классе.
+    /// New abstract method: Stops and destroys all active signals 
+    /// (or resets them) when transitioning to the previous bar.
+    /// Must be implemented in a subclass.
     /// </summary>
     protected abstract IEnumerator ReverseBusVisualizations();
 
-    // --- UNITY LIFECYCLE & CORE LOGIC (Общая реализация) ---
+    // --- UNITY LIFECYCLE & CORE LOGIC ---
 
     protected virtual void Start()
     {
         OnLevelStart();
 
-        // 1. Инициализация UI и подписки
+        // 1. Initializing the UI and subscriptions
         _nextClick.onClick.AddListener(HandleNextTick);
         _prevClick.onClick.AddListener(HandlePrevTick);
         _checkSolutionButton.onClick.AddListener(CheckSolution);
         _currentTickText.text = $"{_tickCounter}";
 
-        // 2. Инициализация истории
-        _tickStateValues = new object[_maxTickNumber]; // Может быть _maxTickNumber + 1
+        // 2. Initializing history
+        _tickStateValues = new object[_maxTickNumber]; // Can be _maxTickNumber + 1
         saveCurrentStateAt(0);
-
-        // 3. Дополнительные действия (визуализация, цели)
     }
 
     protected virtual void OnLevelStart()
     {
-        // Метод для переопределения в дочернем классе (например, установка начальных значений регистров, текстов)
+        // A method for overriding in a subclass (e.g., setting initial values for registers or strings)
     }
 
     public void HandleNextTick()
@@ -121,13 +116,13 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     private IEnumerator NextTickSequence()
     {
         _isProcessing = true;
-        _nextClick.interactable = false; // Блокируем кнопки визуально
+        _nextClick.interactable = false; // Visually disable the buttons
         _prevClick.interactable = false;
         BlockIngameInteractables();
 
         BlinkClockedComponents();
 
-        // Ждем завершения всей визуализации в дочернем классе
+        // We are waiting for the entire rendering to complete in the child class
         yield return StartCoroutine(RunBusVisualizations());
 
         HandleClockUpdate();
@@ -136,7 +131,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
         _currentTickText.text = $"{_tickCounter}";
         UpdateVizualizers();
 
-        // Логика истории
+        // The Logic of History
         int idx = _tickCounter;
         if (idx >= 0 && idx < _tickStateValues.Length)
         {
@@ -166,7 +161,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
         _tickCounter--;
         _currentTickText.text = $"{_tickCounter}";
 
-        // Ждем завершения обратной визуализации
+        // We are waiting for the reverse rendering to finish
         yield return StartCoroutine(ReverseBusVisualizations());
 
         ApplyState(_tickStateValues[_tickCounter]);
@@ -189,7 +184,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
             if (nextLevelToUnlockIndex > highestUnlockedIndex)
             {
                 PlayerPrefs.SetInt("UnlockedLevelIndex", nextLevelToUnlockIndex);
-                PlayerPrefs.Save(); // Сохраняем данные на диск
+                PlayerPrefs.Save(); // Saving data to disk
                 Debug.Log($"New level unlocked: Scene Index {nextLevelToUnlockIndex}");
             }
 
@@ -209,24 +204,24 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     {
         if (_crossIndicator == null) yield break;
 
-        // 1. Подготовка
+        // 1. Preparation
         _crossIndicator.SetActive(true);
-        _crossIndicator.transform.localScale = Vector3.zero; // Начинаем с нуля
+        _crossIndicator.transform.localScale = Vector3.zero; // Beginning with 0
 
-        // 2. Создаем Sequence (последовательность)
+        // 2. Creating a Sequence
         Sequence errorSequence = DOTween.Sequence();
 
-        // Появление с "отскоком" и одновременная тряска
+        // A sudden appearance followed by a jolt
         errorSequence.Append(_crossIndicator.transform.DOScale(1.2f, 0.15f).SetEase(Ease.OutBack));
         errorSequence.Join(_crossIndicator.transform.DOShakePosition(0.3f, strength: 15f, vibrato: 15));
 
-        // Небольшая пауза, чтобы игрок успел осознать ошибку
+        // A brief pause to give the player time to realize their mistake
         errorSequence.AppendInterval(_crossDisplayDuration);
 
-        // Исчезновение: быстро уменьшаем в ноль с эффектом "схлопывания"
+        // Fade: Quickly fade to zero with a вЂњcollapseвЂќ effect
         errorSequence.Append(_crossIndicator.transform.DOScale(0f, 0.15f).SetEase(Ease.InBack));
 
-        // Ждем, пока вся цепочка анимаций выполнится, прежде чем идти дальше по корутину
+        // We wait for the entire animation sequence to complete before proceeding further through the coroutine
         yield return errorSequence.WaitForCompletion();
 
         _crossIndicator.SetActive(false);
@@ -299,10 +294,10 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
 
     private string decodeITypeALU(uint f3, uint rd, uint rs1, int imm)
     {
-        // Для команд сдвига (SLLI, SRLI, SRAI) используются только младшие 5 или 6 бит imm
-        // и 30-й бит инструкции для различения SRLI и SRAI.
+        // For shift instructions (SLLI, SRLI, SRAI), only the lower 5 or 6 bits of the imm
+        // and the 30th bit of the instruction are used to distinguish between SRLI and SRAI.
         uint shamt = (uint)imm & 0x1F; // shift amount
-        bool bit30 = ((imm >> 10) & 0x1) == 1; // 30-й бит всей инструкции
+        bool bit30 = ((imm >> 10) & 0x1) == 1; // The 30th bit of the entire instruction
 
         return f3 switch
         {
@@ -312,8 +307,8 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
             0x3 => $"sltiu x{rd}, x{rs1}, {(uint)imm}", // Set Less Than Imm Unsigned
             0x4 => $"xori x{rd}, x{rs1}, {imm}",      // Xor Immediate
             0x5 => bit30                              // Shift Right
-                    ? $"srai x{rd}, x{rs1}, {shamt}"  // Arithmetic (сохранение знака)
-                    : $"srli x{rd}, x{rs1}, {shamt}", // Logical (заполнение нулями)
+                    ? $"srai x{rd}, x{rs1}, {shamt}"  // Arithmetic (saving sign)
+                    : $"srli x{rd}, x{rs1}, {shamt}", // Logical (filling with zeros)
             0x6 => $"ori x{rd}, x{rs1}, {imm}",       // Or Immediate
             0x7 => $"andi x{rd}, x{rs1}, {imm}",      // And Immediate
             _ => $"unknown_I x{rd}, x{rs1}, {imm}"
