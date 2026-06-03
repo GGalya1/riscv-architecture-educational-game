@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using Gyroscope = UnityEngine.InputSystem.Gyroscope;
 
 /// <summary>
 /// Creates a parallax effect for UI elements based on the mouse position.
@@ -29,7 +28,7 @@ public class MenuParallax : MonoBehaviour
     private Vector2 _velocity;
     private Mouse _mouse;
 
-    void Awake()
+    private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _startPos = _rectTransform.anchoredPosition;
@@ -45,7 +44,7 @@ public class MenuParallax : MonoBehaviour
 #endif
     }
 
-    void Update()
+    private void Update()
     {
 #if UNITY_ANDROID || UNITY_IOS
         if (GravitySensor.current != null)

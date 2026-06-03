@@ -25,16 +25,16 @@ public struct SubExtendedSevenLevelState
 
 public class SubExtendedRegisseur : BaseLevelRegisseur
 {
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerImmediateVisualizer")] [SerializeField] protected RegisterVizualizer registerImmediateVisualizer;
-    [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVizualizer registerA3Visualizer;
-    [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVizualizer registerWd3Visualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerImmediateVisualizer")] [SerializeField] protected RegisterVisualizer registerImmediateVisualizer;
+    [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVisualizer registerA3Visualizer;
+    [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVisualizer registerWd3Visualizer;
 
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVizualiser aluVizualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVizualizer;
 
-    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVizualizer registerFileVisualizer;
-    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExternderVizualizer extenderVizualizer;
-    [FormerlySerializedAs("_MUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer muxVisualizer;
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
+    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVizualizer;
+    [FormerlySerializedAs("_MUXVisualizer")] [SerializeField] private MultiplexerVisualizer muxVisualizer;
 
     #region CACHED UI REFERENCES
     protected InfoPanelUI InfoSrcARegister;
@@ -51,7 +51,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
 
     protected RegisterFile RegisterFile;
 
-    protected int CurrentBus = 0;
+    protected int CurrentBus;
 
     protected override void OnLevelStart()
     {
@@ -109,7 +109,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
         var currentPath = s.MuxPath;
         if (currentPath == -1)
         {
-            muxVisualizer.ResetVizualization();
+            muxVisualizer.ResetVisualisation();
         }
         else if (currentPath == 0)
         {
@@ -188,7 +188,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
 
             ExtenderOperation = extenderVizualizer.CurrentAluOperation,
 
-            MuxPath = muxVisualizer.CurrentChoosenMuxPath,
+            MuxPath = muxVisualizer.CurrentChosenMuxPath,
         };
     }
 
@@ -212,7 +212,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
         if (SrcA.Output > 0 && SrcA.Output < 16)
             a = RegisterFile.Registers[SrcA.Output];
         var ext = Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)ImmValue.Output);
-        var muxVal = CalculateMux(0, ext, -1, muxVisualizer.CurrentChoosenMuxPath);
+        var muxVal = CalculateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
 
         Wd3.Input = Alu.Calculate(a, muxVal, aluVizualizer.CurrentAluOperation);
 
@@ -276,7 +276,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
             var ext = Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)ImmValue.Output);
-            var mux = CalculateMux(0, ext, -1, muxVisualizer.CurrentChoosenMuxPath);
+            var mux = CalculateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
 
             busController.StartBusSignal(busController.busSegments[3], RegisterFile.Registers[SrcA.Output], true);
             busController.StartBusSignal(busController.busSegments[6], mux, true);
@@ -310,7 +310,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
                 a = RegisterFile.Registers[SrcA.Output];
 
             var ext = Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)ImmValue.Output);
-            var mux = CalculateMux(0, ext, -1, muxVisualizer.CurrentChoosenMuxPath);
+            var mux = CalculateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
 
             busController.StartBusSignal(busController.busSegments[4], 0);
             busController.StartBusSignal(busController.busSegments[5], ext);

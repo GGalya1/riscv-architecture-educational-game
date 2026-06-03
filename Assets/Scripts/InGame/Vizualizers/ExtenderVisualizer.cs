@@ -1,8 +1,6 @@
-using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.HDROutputUtils;
 
-public class ExternderVizualizer : AluVizualiser
+public class ExtenderVisualizer : AluVisualiser
 {
     protected override void Awake()
     {
@@ -18,7 +16,7 @@ public class ExternderVizualizer : AluVizualiser
         uiController.ThirdOperationButton.onClick.AddListener(() => ChooseExtenderType(2));
         uiController.FourthOperationButton.onClick.AddListener(() => ChooseExtenderType(3));
 
-        ResetVizualization();
+        ResetVisualisation();
     }
     protected override void InitializePanelController()
     {
@@ -29,7 +27,7 @@ public class ExternderVizualizer : AluVizualiser
         }
     }
 
-    public void ChooseExtenderType(int operationType)
+    private void ChooseExtenderType(int operationType)
     {
         string symbol;
         switch (operationType)

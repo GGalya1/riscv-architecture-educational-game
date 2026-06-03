@@ -3,7 +3,7 @@ using DG.Tweening;
 using UnityEngine.Serialization;
 
 // An abstract base class for all component rendering
-public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
+public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
 {
     // --- FIELDS FOR CONFIGURATION (Visible in Inspector) ---
 
@@ -22,13 +22,13 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
     // --- FIELDS FOR CACHED REFERENCES ---
 
     // Cached main camera, for UI positioning
-    protected Camera StaticCamera;
+    private Camera _staticCamera;
 
     // Cached renderer, if you need to change the model's color (for a simple color change)
     [FormerlySerializedAs("_bigModelRenderer")] [SerializeField] protected Renderer bigModelRenderer;
 
     // A flag indicating whether the visualization is currently active
-    protected bool IsVisualizationActive = false;
+    private bool _isVisualizationActive;
     private Vector3 _targetLocalPos;
 
     // --- PUBLIC PROPERTIES (Read-Only access to configuration) ---
@@ -38,9 +38,15 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
     // --- OPTIMIZATION FIELDS ---
     private Color _originalColor;
     private MaterialPropertyBlock _propBlock;
+    private bool _isBigModelRendererNull;
     private static readonly int ColorPropertyID = Shader.PropertyToID("_BaseColor");
 
     // --- UNITY LIFECYCLE ---
+
+    private void Start()
+    {
+        _isBigModelRendererNull = bigModelRenderer == null;
+    }
 
     protected virtual void Awake()
     {
@@ -52,8 +58,8 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
         }
 
         // 2. Camera caching
-        StaticCamera = Camera.main;
-        if (StaticCamera == null)
+        _staticCamera = Camera.main;
+        if (_staticCamera == null)
         {
             Debug.LogError($"Main camera not found by {gameObject.name}!");
         }
@@ -66,19 +72,19 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
         InitializePanelController();
     }
 
-    // --- PUBLIC INTERFACE (IVizualizer) ---
+    // --- PUBLIC INTERFACE (IVisualizer) ---
 
     // ShowData and HideData share the same basic logic, but ShowData has some specific features
     public virtual void ShowData()
     {
-        if (IsVisualizationActive)
+        if (_isVisualizationActive)
         {
             HideData();
             return;
         }
 
         // General logic
-        IsVisualizationActive = true;
+        _isVisualizationActive = true;
         SetModelColor(selectionColor);
 
         panelInstance.transform.DOKill();
@@ -93,7 +99,7 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
 
     public virtual void HideData()
     {
-        IsVisualizationActive = false;
+        _isVisualizationActive = false;
         SetModelColor(_originalColor);
 
         panelCanvasGroup.interactable = false;
@@ -108,7 +114,7 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
     }
     private void SetModelColor(Color color)
     {
-        if (bigModelRenderer == null) return;
+        if (_isBigModelRendererNull) return;
 
         bigModelRenderer.GetPropertyBlock(_propBlock);
         _propBlock.SetColor(ColorPropertyID, color);
@@ -116,7 +122,7 @@ public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
     }
 
     // Abstract methods that must be implemented in subclasses
-    public abstract void ResetVizualization();
+    public abstract void ResetVisualisation();
     protected abstract void InitializePanelController();
 
     // --- PRIVATE/PROTECTED METHODS ---

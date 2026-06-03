@@ -3,17 +3,17 @@ using UnityEngine.EventSystems;
 
 public class ClickableObject: MonoBehaviour, IPointerClickHandler
 {
-    // this method will calles when we click on a object
+    // this method will call when we click on a object
     public void OnPointerClick(PointerEventData eventData)
     {
 
-        // get the IVizualizer from an object
-        var vizualizer = GetComponent<IVizualizer>();
+        // get the IVisualizer from an object
+        var visualiser = GetComponent<IVisualizer>();
 
-        if (vizualizer != null)
+        if (visualiser != null)
         {
             // call the functionality of the object, if it have component vizualizer
-            vizualizer.ShowData();
+            visualiser.ShowData();
         }
     }
 }

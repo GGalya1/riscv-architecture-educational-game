@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.Serialization;
 
-public class AluVizualiser : BaseVizualizer
+public class AluVisualiser : BaseVisualizer
 {
     [FormerlySerializedAs("_operationBanner")]
     [Header("Operations Renderers (Optional 3D Text/Objects)")]
@@ -29,7 +29,7 @@ public class AluVizualiser : BaseVizualizer
         uiController.ThirdOperationButton.onClick.AddListener(() => ChooseAluOperation(2));
         uiController.FourthOperationButton.onClick.AddListener(() => ChooseAluOperation(3));
 
-        ResetVizualization();
+        ResetVisualisation();
     }
     protected override void InitializePanelController()
     {
@@ -41,7 +41,7 @@ public class AluVizualiser : BaseVizualizer
         }
     }
 
-    public override void ResetVizualization(){
+    public override void ResetVisualisation(){
         if (operationBanner.activeSelf) {
             operationBanner.SetActive(false);
         }
@@ -50,26 +50,18 @@ public class AluVizualiser : BaseVizualizer
     public void ChooseAluOperation(int operation)
     {
         HideData();
-        string symbol;
-        switch (operation)
+        var symbol = operation switch
         {
-            case 0:
-                symbol = "+"; // ADD
-                break;
-            case 1:
-                symbol = "-"; // SUBTRACT
-                break;
-            case 2:
-                symbol = "&"; // MULTIPLY (logic AND)
-                break;
-            case 3:
-                symbol = "|"; // DIVIDE (logic OR)
-                break;
-            default:
-                Debug.LogWarning($"ALU operation is not valid and is equal {operation}. Displaying '?'");
-                symbol = "?";
-                break;
-        }
+            0 => "+" // ADD
+            ,
+            1 => "-" // SUBTRACT
+            ,
+            2 => "&" // MULTIPLY (logic AND)
+            ,
+            3 => "|" // DIVIDE (logic OR)
+            ,
+            _ => "?"
+        };
 
         symbolForOperation.text = symbol;
         Operation = operation;

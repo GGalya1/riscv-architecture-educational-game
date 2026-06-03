@@ -1,9 +1,7 @@
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XR;
 using UnityEngine.Serialization;
 
-public class MuiltiplexerVizualizer: BaseVizualizer
+public class MultiplexerVisualizer: BaseVisualizer
 {
     [FormerlySerializedAs("_inputBuses")]
     [Header("Bus Line Renderers")]
@@ -21,11 +19,9 @@ public class MuiltiplexerVizualizer: BaseVizualizer
     [SerializeField] private Color disabledColor = Color.gray;
     [FormerlySerializedAs("_activeColor")] [SerializeField] private Color activeColor = Color.red;
 
-    private MultiplexerControlPanel _uiController;
-    public MultiplexerControlPanel UIController => _uiController;
+    public MultiplexerControlPanel UIController { get; private set; }
 
-    private int _currentChoosenPath = -1;
-    public int CurrentChoosenMuxPath => _currentChoosenPath;
+    public int CurrentChosenMuxPath { get; private set; } = -1;
 
     private MaterialPropertyBlock _propBlock;
     private static readonly int ColorPropertyID = Shader.PropertyToID("_BaseColor");
@@ -37,36 +33,36 @@ public class MuiltiplexerVizualizer: BaseVizualizer
         base.Awake();
 
  
-        if (_uiController != null)
+        if (UIController != null)
         {
             if (bitRenderers.Length > 2) 
             {
-                _uiController.Setup(true, true, true, "Multiplexer 3");
+                UIController.Setup(true, true, true, "Multiplexer 3");
             }
             else
             {
-                _uiController.Setup(true, true, false, "Multiplexer 2");
+                UIController.Setup(true, true, false, "Multiplexer 2");
             }
         }
 
-        _uiController.FirstWayButton.onClick.AddListener(() => SelectPath(0));
-        _uiController.SecondWayButton.onClick.AddListener(() => SelectPath(1));
-        _uiController.ThirdWayButton.onClick.AddListener(() => SelectPath(2));
+        UIController.FirstWayButton.onClick.AddListener(() => SelectPath(0));
+        UIController.SecondWayButton.onClick.AddListener(() => SelectPath(1));
+        UIController.ThirdWayButton.onClick.AddListener(() => SelectPath(2));
 
-        ResetVizualization();
+        ResetVisualisation();
     }
     protected override void InitializePanelController()
     {
         // Controller initialization specific to this class
-        _uiController = panelInstance.GetComponent<MultiplexerControlPanel>();
-        if (_uiController == null)
+        UIController = panelInstance.GetComponent<MultiplexerControlPanel>();
+        if (UIController == null)
         {
             Debug.LogError($"MultiplexerControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 
-    public override void ResetVizualization() {
-        _currentChoosenPath = -1;
+    public override void ResetVisualisation() {
+        CurrentChosenMuxPath = -1;
         UpdateVisuals(-1);
     }
     public void SelectPath(int index)
@@ -74,7 +70,7 @@ public class MuiltiplexerVizualizer: BaseVizualizer
         if (index < 0 || index >= inputBuses.Length) return;
 
         // Debug.Log($"Path {index + 1} chosen");
-        _currentChoosenPath = index;
+        CurrentChosenMuxPath = index;
         UpdateVisuals(index);
         HideData();
     }
@@ -94,13 +90,13 @@ public class MuiltiplexerVizualizer: BaseVizualizer
         SetColor(outputBus, activeIndex != -1 ? activeColor : disabledColor);
     }
 
-    private void SetColor(Renderer renderer, Color color)
+    private void SetColor(Renderer rnd, Color color)
     {
-        if (renderer == null) return;
+        if (rnd == null) return;
 
-        renderer.GetPropertyBlock(_propBlock);
+        rnd.GetPropertyBlock(_propBlock);
         _propBlock.SetColor(ColorPropertyID, color);
-        renderer.SetPropertyBlock(_propBlock);
+        rnd.SetPropertyBlock(_propBlock);
     }
     #endregion
 }

@@ -40,7 +40,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     // Requirements for earning stars
     [FormerlySerializedAs("_threeStarCondition")]
     [Header("Star Conditions (Number of failed tries)")]
-    [SerializeField] protected int threeStarCondition = 0;
+    [SerializeField] protected int threeStarCondition;
     [FormerlySerializedAs("_twoStarCondition")] [SerializeField] protected int twoStarCondition = 1;
     [FormerlySerializedAs("_oneStarCondition")] [SerializeField] protected int oneStarCondition = 2;
 
@@ -51,14 +51,14 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
 
     
     // --- STATE ---
-    protected int TickCounter = 0;
+    protected int TickCounter;
     protected object[] TickStateValues;
-    public int falledTries = 0; // Public for debugging
+    public int falledTries; // Public for debugging
 
     [FormerlySerializedAs("_busController")]
     [Header("Bus Vizualization")]
     [SerializeField] protected BusController busController;
-    [FormerlySerializedAs("_isProcessing")] public bool isProcessing = false;
+    [FormerlySerializedAs("_isProcessing")] public bool isProcessing;
 
 
     #region ABSTRACT METHODS (Unique to each level)

@@ -16,11 +16,11 @@ public class LevelOneExtended : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerOutputVisualizer")]
     [Header("MUXes specific components")]
-    [SerializeField] private RegisterVizualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_upperMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer upperMuxVisualizer;
-    [FormerlySerializedAs("_middleMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer middleMuxVisualizer;
-    [FormerlySerializedAs("_downMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer downMuxVisualizer;
-    [FormerlySerializedAs("_outputMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer outputMuxVisualizer;
+    [SerializeField] private RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_upperMUXVisualizer")] [SerializeField] private MultiplexerVisualizer upperMuxVisualizer;
+    [FormerlySerializedAs("_middleMUXVisualizer")] [SerializeField] private MultiplexerVisualizer middleMuxVisualizer;
+    [FormerlySerializedAs("_downMUXVisualizer")] [SerializeField] private MultiplexerVisualizer downMuxVisualizer;
+    [FormerlySerializedAs("_outputMUXVisualizer")] [SerializeField] private MultiplexerVisualizer outputMuxVisualizer;
 
     [FormerlySerializedAs("_numberBlinkers")] [SerializeField] private Blinker[] numberBlinkers;
 
@@ -29,7 +29,7 @@ public class LevelOneExtended : BaseLevelRegisseur
     private Register _output;
     private InfoPanelUI _infoOutputRegister;
 
-    protected int CurrentBus = 0; // [0, 2]
+    protected int CurrentBus; // [0, 2]
 
     protected override void OnLevelStart()
     {
@@ -79,20 +79,20 @@ public class LevelOneExtended : BaseLevelRegisseur
         {
             RegisterOutputValue = _output.Output,
 
-            MuXup = upperMuxVisualizer.CurrentChoosenMuxPath,
-            MuXmiddle = middleMuxVisualizer.CurrentChoosenMuxPath,
-            MuXdown = downMuxVisualizer.CurrentChoosenMuxPath,
-            MuXoutput = outputMuxVisualizer.CurrentChoosenMuxPath,
+            MuXup = upperMuxVisualizer.CurrentChosenMuxPath,
+            MuXmiddle = middleMuxVisualizer.CurrentChosenMuxPath,
+            MuXdown = downMuxVisualizer.CurrentChosenMuxPath,
+            MuXoutput = outputMuxVisualizer.CurrentChosenMuxPath,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        var up = CalculateMux(upperMuxVisualizer.CurrentChoosenMuxPath, -4, 0, -1);
-        var left = CalculateMux(middleMuxVisualizer.CurrentChoosenMuxPath, 8, 12, -1);
-        var down = CalculateMux(downMuxVisualizer.CurrentChoosenMuxPath, left, -8, -12);
+        var up = CalculateMux(upperMuxVisualizer.CurrentChosenMuxPath, -4, 0, -1);
+        var left = CalculateMux(middleMuxVisualizer.CurrentChosenMuxPath, 8, 12, -1);
+        var down = CalculateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
-        _output.Input = CalculateMux(outputMuxVisualizer.CurrentChoosenMuxPath, up, 4, down);
+        _output.Input = CalculateMux(outputMuxVisualizer.CurrentChosenMuxPath, up, 4, down);
 
         _output.PreClockUpdate();
         _output.Clock();
@@ -112,9 +112,9 @@ public class LevelOneExtended : BaseLevelRegisseur
     {
         if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            var up = upperMuxVisualizer.CurrentChoosenMuxPath == 0 ? -4 : 0;
-            var left = middleMuxVisualizer.CurrentChoosenMuxPath == 0 ? 8 : 12;
-            var down = CalculateMux(downMuxVisualizer.CurrentChoosenMuxPath, left, -8, -12);
+            var up = upperMuxVisualizer.CurrentChosenMuxPath == 0 ? -4 : 0;
+            var left = middleMuxVisualizer.CurrentChosenMuxPath == 0 ? 8 : 12;
+            var down = CalculateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
             busController.StartBusSignal(busController.busSegments[10], _output.Input, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
@@ -145,10 +145,10 @@ public class LevelOneExtended : BaseLevelRegisseur
     {
         if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            var up = CalculateMux(upperMuxVisualizer.CurrentChoosenMuxPath, -4, 0, -1);
-            var left = CalculateMux(middleMuxVisualizer.CurrentChoosenMuxPath, 8, 12, -1);
-            var down = CalculateMux(downMuxVisualizer.CurrentChoosenMuxPath, left, -8, -12);
-            var output = CalculateMux(outputMuxVisualizer.CurrentChoosenMuxPath, up, 4, down);
+            var up = CalculateMux(upperMuxVisualizer.CurrentChosenMuxPath, -4, 0, -1);
+            var left = CalculateMux(middleMuxVisualizer.CurrentChosenMuxPath, 8, 12, -1);
+            var down = CalculateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
+            var output = CalculateMux(outputMuxVisualizer.CurrentChosenMuxPath, up, 4, down);
 
             busController.StartBusSignal(busController.busSegments[0], 8);
             busController.StartBusSignal(busController.busSegments[1], 12);
@@ -184,11 +184,11 @@ public class LevelOneExtended : BaseLevelRegisseur
     }
 
     #region helpers
-    private void MuxVizualizerHelper(int currentPath, MuiltiplexerVizualizer mux)
+    private void MuxVizualizerHelper(int currentPath, MultiplexerVisualizer mux)
     {
         if (currentPath == -1)
         {
-            mux.ResetVizualization();
+            mux.ResetVisualisation();
         }
         else if (currentPath == 0)
         {
@@ -207,7 +207,7 @@ public class LevelOneExtended : BaseLevelRegisseur
             Debug.LogError($"Saved multiplexer value {currentPath} is not in [0, 3]");
         }
     }
-    private void SwitchMuxInteractables(bool trigger, MuiltiplexerVizualizer target)
+    private void SwitchMuxInteractables(bool trigger, MultiplexerVisualizer target)
     {
         target.UIController.FirstWayButton.interactable = trigger;
         target.UIController.SecondWayButton.interactable = trigger;

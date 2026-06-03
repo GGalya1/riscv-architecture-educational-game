@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -24,14 +23,14 @@ public class ExtendedLevelSeven : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level Seven Components")]
-    [SerializeField] protected RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVizualizer registerA3Visualizer;
-    [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVizualizer registerWd3Visualizer;
+    [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVisualizer registerA3Visualizer;
+    [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVisualizer registerWd3Visualizer;
 
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVizualiser aluVizualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVizualizer;
 
-    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVizualizer registerFileVisualizer;
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
 
     #region CACHED UI REFERENCES
     protected InfoPanelUI InfoSrcARegister;
@@ -49,7 +48,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur
     protected RegisterFile RegisterFile;
 
 
-    protected int CurrentBus = 0; // [0, 10]
+    protected int CurrentBus; // [0, 10]
 
     protected override void OnLevelStart()
     {

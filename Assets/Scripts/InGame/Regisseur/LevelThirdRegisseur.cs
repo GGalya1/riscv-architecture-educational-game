@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
 public struct LevelThreeState
@@ -25,11 +24,11 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_multiplexerVisualizer")]
     [Header("Level 3 Specific Components")]
-    [SerializeField] protected MuiltiplexerVizualizer multiplexerVisualizer;
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected IntructionDataMemoryVizualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVizualiser aluVizualizer;
+    [SerializeField] protected MultiplexerVisualizer multiplexerVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected InstructionDataMemoryVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVizualizer;
 
     [SerializeField] protected int srcAValue = 5;
     [SerializeField] protected int srcBValue = 7;
@@ -50,7 +49,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
     // protected override int RightAnswerValue => 66;
 
    
-    protected int CurrentBus = 0; // [0, 5]
+    protected int CurrentBus; // [0, 5]
 
     protected override void OnLevelStart()
     {
@@ -101,7 +100,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         var temp = s.CurrentChoosenMuxPath;
         if (temp == -1)
         {
-            multiplexerVisualizer.ResetVizualization();
+            multiplexerVisualizer.ResetVisualisation();
         }
         else if (temp == 0)
         {
@@ -150,14 +149,14 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             RegisterInstrWe = SrcB.WriteEnable,
             IntrDataMemoryWe = DataIntructionMemory.MemoryWrite,
 
-            CurrentChoosenMuxPath = multiplexerVisualizer.CurrentChoosenMuxPath,
+            CurrentChoosenMuxPath = multiplexerVisualizer.CurrentChosenMuxPath,
             AluOperation = aluVizualizer.CurrentAluOperation,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        var path = multiplexerVisualizer.CurrentChoosenMuxPath;
+        var path = multiplexerVisualizer.CurrentChosenMuxPath;
         int[] inputs = { SrcA.Output, SrcB.Output };
         var res = 0;
 
@@ -189,7 +188,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         }
         
 
-        var p = multiplexerVisualizer.CurrentChoosenMuxPath;
+        var p = multiplexerVisualizer.CurrentChosenMuxPath;
         if (p == -1) {
             Debug.LogError("MUX path is -1. No value will be propagated");
             SrcA.Input = 0;
@@ -230,7 +229,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
                 (s.thirdMemoryValue == dataIntructionMemory._memory[8]) &&
                 (s.fourthMemoryValue == dataIntructionMemory._memory[12]) &&
 
-                (s.CurrentChoosenMuxPath == _multiplexerVisualizer.CurrentChoosenMuxPath) &&
+                (s.CurrentChosenMuxPath == _multiplexerVisualizer.CurrentChosenMuxPath) &&
                 (s.RegisterPCWE == srcA.WriteEnable) &&
                 (s.RegisterInstrWE == srcB.WriteEnable) &&
                 (s.IntrDataMemoryWE == dataIntructionMemory.MemoryWrite) &&
@@ -246,10 +245,10 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             if (TickStateValues[TickCounter] is LevelThreeState s)
             {
                 var upperBusSignal = 0;
-                if (multiplexerVisualizer.CurrentChoosenMuxPath == 0) {
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0) {
                     upperBusSignal = s.RegisterPCValue;
                 }
-                else if (multiplexerVisualizer.CurrentChoosenMuxPath == 1) {
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1) {
                     upperBusSignal = s.RegisterInstrValue;
                 }
                 yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], upperBusSignal, 4, true, true));
@@ -292,23 +291,23 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2], SrcB.Output));
 
             var propagationVal = 0;
-            if (multiplexerVisualizer.CurrentChoosenMuxPath == -1)
+            if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
                 yield return StartCoroutine(DelayedBusSignal(busController.busSegments[4], 0));
             }
             else {
                 
-                if (multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
                     propagationVal = SrcA.Output;
                 }
-                else if (multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
                     propagationVal = SrcB.Output;
                 }
                 else
                 {
-                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChoosenMuxPath}");
+                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
                 yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], propagationVal, 4));

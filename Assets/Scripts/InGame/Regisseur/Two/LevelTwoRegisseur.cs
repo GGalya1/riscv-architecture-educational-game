@@ -13,8 +13,8 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_aluVizualizer")]
     [Header("Level 2 Specific Components")]
-    [SerializeField] private AluVizualiser aluVizualizer;
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
+    [SerializeField] private AluVisualiser aluVizualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
     [FormerlySerializedAs("_numberBlinker")] [SerializeField] private Blinker numberBlinker;
 
     #region CACHED UI REFERENCES
@@ -25,7 +25,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
 
     protected override int RightAnswerValue => 8;
 
-    private int _currentBus = 0; // [0, 1]
+    private int _currentBus; // [0, 1]
 
     protected override void OnLevelStart()
     {

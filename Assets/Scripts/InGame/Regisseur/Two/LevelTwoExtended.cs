@@ -17,10 +17,10 @@ public class LevelTwoExtended : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_aluVizualizer")]
     [Header("Level 2 (Extender) Specific Components")]
-    [SerializeField] private AluVizualiser aluVizualizer;
-    [FormerlySerializedAs("_registerSrcAVizualizer")] [SerializeField] private RegisterVizualizer registerSrcAVizualizer;
-    [FormerlySerializedAs("_registerSrcBVizualizer")] [SerializeField] private RegisterVizualizer registerSrcBVizualizer;
-    [FormerlySerializedAs("_registerOutputVizualizer")] [SerializeField] private RegisterVizualizer registerOutputVizualizer;
+    [SerializeField] private AluVisualiser aluVizualizer;
+    [FormerlySerializedAs("registerSrcAVizualizer")] [FormerlySerializedAs("_registerSrcAVizualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("registerSrcBVizualizer")] [FormerlySerializedAs("_registerSrcBVizualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("registerOutputVizualizer")] [FormerlySerializedAs("_registerOutputVizualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
 
     [SerializeField] private int srcAValue;
     [SerializeField] private int srcBValue;
@@ -35,7 +35,7 @@ public class LevelTwoExtended : BaseLevelRegisseur
     private Register _srcB;
     private Register _output;
 
-    private int _currentBus = 0; // [0, 1]
+    private int _currentBus; // [0, 1]
 
     protected override void OnLevelStart()
     {
@@ -43,9 +43,9 @@ public class LevelTwoExtended : BaseLevelRegisseur
         _srcB = new Register(srcBValue); _srcB.WriteEnable = true;
         _output = new Register(0); _output.WriteEnable = true;
 
-        _infoSrcARegister = registerSrcAVizualizer.UIRegisterPanel;
-        _infoSrcBRegister = registerSrcBVizualizer.UIRegisterPanel;
-        _infoOutputRegister = registerOutputVizualizer.UIRegisterPanel;
+        _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
+        _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
+        _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
 
         if (levelTargetDescription == null || levelTargetDescription.Length == 0)
@@ -78,16 +78,16 @@ public class LevelTwoExtended : BaseLevelRegisseur
 
     protected override void BlinkClockedComponents()
     {
-        registerSrcAVizualizer.TriggerBlink();
-        registerSrcBVizualizer.TriggerBlink();
-        registerOutputVizualizer.TriggerBlink();
+        registerSrcAVisualizer.TriggerBlink();
+        registerSrcBVisualizer.TriggerBlink();
+        registerOutputVisualizer.TriggerBlink();
     }
 
     protected override void BlockIngameInteractables()
     {
-        registerSrcAVizualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVizualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVizualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
         aluVizualizer.uiController.FirstOperationButton.interactable = false;
         aluVizualizer.uiController.SecondOperationButton.interactable = false;
@@ -117,9 +117,9 @@ public class LevelTwoExtended : BaseLevelRegisseur
     protected override void HandleClockUpdate()
     {
         // sinchronyse vizualisers and concrete objects
-        _srcA.WriteEnable = registerSrcAVizualizer.isWriteEnabled;
-        _srcB.WriteEnable = registerSrcBVizualizer.isWriteEnabled;
-        _output.WriteEnable = registerOutputVizualizer.isWriteEnabled;
+        _srcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
+        _srcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
+        _output.WriteEnable = registerOutputVisualizer.isWriteEnabled;
 
         _output.Input = Alu.Calculate(_srcA.Output, _srcB.Output, aluVizualizer.CurrentAluOperation);
         _srcA.PreClockUpdate();
@@ -146,9 +146,9 @@ public class LevelTwoExtended : BaseLevelRegisseur
 
     protected override void ReleaseIngameInteractables()
     {
-        registerSrcAVizualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVizualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVizualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
         aluVizualizer.uiController.FirstOperationButton.interactable = true;
         aluVizualizer.uiController.SecondOperationButton.interactable = true;
@@ -194,8 +194,8 @@ public class LevelTwoExtended : BaseLevelRegisseur
         _infoSrcBRegister.Display("Register 2", $"{_srcB.Output}");
         _infoOutputRegister.Display("Register 3", $"{_output.Output}");
 
-        registerSrcAVizualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
-        registerSrcBVizualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);
-        registerOutputVizualizer.ForceUpdateWriteEnableVisualization(_output.WriteEnable);
+        registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
+        registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);
+        registerOutputVisualizer.ForceUpdateWriteEnableVisualization(_output.WriteEnable);
     }
 }

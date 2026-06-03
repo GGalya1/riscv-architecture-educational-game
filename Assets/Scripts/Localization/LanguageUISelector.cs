@@ -18,14 +18,14 @@ public class LanguageUISelector : MonoBehaviour
         foreach (var locale in locales)
             dropdown.options.Add(new TMP_Dropdown.OptionData(locale.LocaleName));
 
-        // Set the current language as a choosen one
+        // Set the current language as a chosen one
         var current = LocalizationSettings.SelectedLocale;
         dropdown.SetValueWithoutNotify(locales.IndexOf(current));
         dropdown.RefreshShownValue();
 
         dropdown.onValueChanged.AddListener(LanguageManager.Instance.SetLocaleByIndex);
 
-        // Change the choise if it was changed somwhere else
+        // Change the choose if it was changed somewhere else
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
     }
 

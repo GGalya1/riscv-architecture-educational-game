@@ -2,7 +2,6 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -57,15 +56,13 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (loadingOverlay != null)
-        {
-            var fadeInSequence = DOTween.Sequence();
-            fadeInSequence.AppendInterval(0.2f);
-            fadeInSequence.Append(loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true));
-            fadeInSequence.OnComplete(() => {
-                loadingOverlay.blocksRaycasts = false;
-            });
-        }
+        if (loadingOverlay == null) return;
+        var fadeInSequence = DOTween.Sequence();
+        fadeInSequence.AppendInterval(0.2f);
+        fadeInSequence.Append(loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true));
+        fadeInSequence.OnComplete(() => {
+            loadingOverlay.blocksRaycasts = false;
+        });
     }
 
     public void SetLevelDialogue(DialogueGraph d) {
@@ -153,6 +150,7 @@ public class LevelManager : MonoBehaviour
 
         // Loading next level
         var op = SceneManager.LoadSceneAsync(targetIndex);
+        if (op == null) yield break;
         op.allowSceneActivation = false;
 
         while (op.progress < 0.9f)
@@ -170,23 +168,21 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void OpenEndOfLevelMenu()
     {
-        if (endLevelMenuUI != null)
-        {
-            bgGroup.DOKill();
-            bgGroup.interactable = true;
-            bgGroup.blocksRaycasts = true;
-            bgGroup.DOFade(1, fadeTime);
+        if (endLevelMenuUI == null) return;
+        bgGroup.DOKill();
+        bgGroup.interactable = true;
+        bgGroup.blocksRaycasts = true;
+        bgGroup.DOFade(1, fadeTime);
 
 
-            resultsPanelRectTransform.DOKill();
-            resultsPanelGroup.DOKill();
+        resultsPanelRectTransform.DOKill();
+        resultsPanelGroup.DOKill();
 
-            resultsPanelGroup.interactable = true;
-            resultsPanelGroup.blocksRaycasts = true;
+        resultsPanelGroup.interactable = true;
+        resultsPanelGroup.blocksRaycasts = true;
 
-            resultsPanelRectTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(Ease.OutBack);
-            resultsPanelGroup.DOFade(1, fadeTime);
-        }
+        resultsPanelRectTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(Ease.OutBack);
+        resultsPanelGroup.DOFade(1, fadeTime);
     }
     private void InitializeResultsPanel()
     {
@@ -205,14 +201,13 @@ public class LevelManager : MonoBehaviour
 
         for (var i = 0; i < count; i++)
         {
-            var index = i; // Closure safety
-            stars[index].sprite = gainedStar;
+            stars[i].sprite = gainedStar;
 
             // Star animation
-            stars[index].transform.localScale = Vector3.zero;
-            stars[index].transform.DOScale(Vector3.one, starPopDuration)
+            stars[i].transform.localScale = Vector3.zero;
+            stars[i].transform.DOScale(Vector3.one, starPopDuration)
                 .SetEase(Ease.OutBack)
-                .SetDelay(index * 0.15f); // Stars pop one by one
+                .SetDelay(i * 0.15f); // Stars pop one by one
         }
     }
     #endregion
@@ -220,11 +215,9 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         // Crucial: unsubscribe to prevent memory leaks and ghost calls
-        if (dialogueManager != null)
-        {
-            dialogueManager.OnDialogueBegin -= animManager.HideUIAndShowDialogue;
-            dialogueManager.OnDialogueEnd -= animManager.HideDialogue;
-            dialogueManager.OnHintEnabled -= animManager.HideUIAndShowDialogue;
-        }
+        if (dialogueManager == null) return;
+        dialogueManager.OnDialogueBegin -= animManager.HideUIAndShowDialogue;
+        dialogueManager.OnDialogueEnd -= animManager.HideDialogue;
+        dialogueManager.OnHintEnabled -= animManager.HideUIAndShowDialogue;
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 
 public class LanguageManager : MonoBehaviour
@@ -32,7 +31,7 @@ public class LanguageManager : MonoBehaviour
     /// Change language with ISO-code ("en", "ru", "de")
     /// and save it to PlayerPrefs for next sessions
     /// </summary>
-    public void SetLocale(string code)
+    private void SetLocale(string code)
     {
         StartCoroutine(SetLocaleCoroutine(code));
     }
@@ -48,7 +47,7 @@ public class LanguageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Change to the next aviable language (in the ring)
+    /// Change to the next available language (in the ring)
     /// </summary>
     public void CycleLocale()
     {

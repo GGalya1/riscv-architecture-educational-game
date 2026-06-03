@@ -71,24 +71,22 @@ public class DialogueManager : MonoBehaviour
     /// <param name="branchIndex">The ID of the chosen answer (1, 2, or 3).</param>
     private void HandleBranching(int branchIndex)
     {
-        var targetIndex = -1;
+        int targetIndex;
 
-        if (branchIndex == 1)
+        switch (branchIndex)
         {
-            targetIndex = _currentNode.firstOption;
-        }
-        else if (branchIndex == 2)
-        {
-            targetIndex = _currentNode.secondOption;
-        }
-        else if (branchIndex == 3)
-        {
-            targetIndex = _currentNode.thirdOption;
-        }
-        else
-        {
-            Debug.LogWarning($"[DialogueManager] Unkommon path selected! selectedPath: {branchIndex}");
-            return;
+            case 1:
+                targetIndex = _currentNode.firstOption;
+                break;
+            case 2:
+                targetIndex = _currentNode.secondOption;
+                break;
+            case 3:
+                targetIndex = _currentNode.thirdOption;
+                break;
+            default:
+                Debug.LogWarning($"[DialogueManager] Uncommon path selected! selectedPath: {branchIndex}");
+                return;
         }
 
         // Check if the target node exists in the graph
@@ -144,10 +142,8 @@ public class DialogueManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (ui != null) 
-        {
-            ui.OnNextRequested -= HandleNextQuote;
-            ui.OnSpecificPathRequested -= HandleBranching;
-        }
+        if (ui == null) return;
+        ui.OnNextRequested -= HandleNextQuote;
+        ui.OnSpecificPathRequested -= HandleBranching;
     }
 }

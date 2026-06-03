@@ -10,7 +10,7 @@ public class DataInstMemory
     public int WriteData { get; set; }
 
     // A
-    public int Adress { get; set; }
+    public int Address { get; set; }
     #endregion
 
     #region OUTPUTS
@@ -19,25 +19,21 @@ public class DataInstMemory
     #endregion
 
     // all information is stored as a pair (adress - object). For Objects stays instructions and data
-    public Dictionary<int, int> Memory = new Dictionary<int, int>();
+    public readonly Dictionary<int, int> Memory = new Dictionary<int, int>();
 
-    public void LoadWord(int adress, int data) { 
-        Memory[adress] = data;
+    public void LoadWord(int address, int data) { 
+        Memory[address] = data;
     }
 
     #region Sequential logic
-    public void PreClockUpdate() {
-        if (Memory.ContainsKey(Adress)) {
-            ReadData = Memory[Adress];
-        }
-        else {
-            ReadData = 0;
-        }
+    public void PreClockUpdate()
+    {
+        ReadData = Memory.GetValueOrDefault(Address, 0);
     }
 
     public void Clock() {
         if (MemoryWrite) {
-            Memory[Adress] = WriteData;
+            Memory[Address] = WriteData;
         }
     }
     #endregion

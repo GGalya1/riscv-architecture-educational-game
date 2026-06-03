@@ -1,12 +1,9 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class RegisterFileVizualizer : BaseVizualizer
+public class RegisterFileVisualizer : BaseVisualizer
 {
-
-    private RegisterFieldPanelUI _uiController;
-    public RegisterFieldPanelUI UIRegisterPanel => _uiController;
+    public RegisterFieldPanelUI UIRegisterPanel { get; private set; }
 
     [FormerlySerializedAs("_writeEnableIndicator")]
     [Header("Write Enable Visualization")]
@@ -23,51 +20,45 @@ public class RegisterFileVizualizer : BaseVizualizer
         base.Awake();
 
         // Set the initial/default data on the UI panel
-        if (_uiController != null)
+        if (UIRegisterPanel != null)
         {
-            _uiController.Display(new int[16]);
+            UIRegisterPanel.Display(new int[16]);
         }
 
         // Set the initial state for STOP indicator
-        if (writeEnableIndicator != null)
-        {
-            writeEnableIndicator.SetActive(false);
-            isWriteEnabled = true;
-            _uiController.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
-        }
+        if (writeEnableIndicator == null) return;
+        writeEnableIndicator.SetActive(false);
+        isWriteEnabled = true;
+        UIRegisterPanel.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
     }
 
 
-    public void SwitchWriteEnableVisualization()
+    private void SwitchWriteEnableVisualization()
     {
-        if (writeEnableIndicator != null)
-        {
-            // if WE is true -> indicator must be inactive
-            // if WE is false -> indicator must be active
-            isWriteEnabled = !isWriteEnabled;
-            writeEnableIndicator.SetActive(!isWriteEnabled);
-            HideData();
-        }
+        if (writeEnableIndicator == null) return;
+        // if WriteEnable is true -> indicator must be inactive
+        // if WriteEnable is false -> indicator must be active
+        isWriteEnabled = !isWriteEnabled;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
+        HideData();
     }
     public void ForceUpdateWriteEnableVisualization(bool flag)
     {
-        if (writeEnableIndicator != null)
-        {
-            isWriteEnabled = flag;
-            writeEnableIndicator.SetActive(!isWriteEnabled);
-        }
+        if (writeEnableIndicator == null) return;
+        isWriteEnabled = flag;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
     }
 
     protected override void InitializePanelController()
     {
-        _uiController = panelInstance.GetComponent<RegisterFieldPanelUI>();
-        if (_uiController == null)
+        UIRegisterPanel = panelInstance.GetComponent<RegisterFieldPanelUI>();
+        if (UIRegisterPanel == null)
         {
             Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }
     }
 
-    public override void ResetVizualization()
+    public override void ResetVisualisation()
     {
         throw new System.NotImplementedException();
     }

@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 
@@ -28,12 +27,12 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level 5 Specific Components")]
-    [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVizualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private IntructionDataMemoryVizualizer memoryVisualizer;
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVizualiser aluVizualizer;
-    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExternderVizualizer extenderVizualizer;
+    [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private InstructionDataMemoryVisualizer memoryVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVizualizer;
+    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVizualizer;
 
     [FormerlySerializedAs("_blinkerNumber")] [SerializeField] private Blinker blinkerNumber;
 
@@ -53,7 +52,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
     protected override int RightAnswerValue => 66;
 
 
-    protected int CurrentBus = 0; // [0, 6]
+    protected int CurrentBus; // [0, 6]
 
     protected override void OnLevelStart()
     {

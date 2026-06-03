@@ -1,9 +1,4 @@
-using DG.Tweening;
-using System;
 using System.Collections;
-using System.Data.Common;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -53,24 +48,24 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerPCVisualizer")]
     [Header("Precossor Specific Components")]
-    [SerializeField] private RegisterVizualizer registerPCVisualizer;
-    [FormerlySerializedAs("_registerOldPCVisualizer")] [SerializeField] private RegisterVizualizer registerOldPCVisualizer;
-    [FormerlySerializedAs("_registerIntructionVisualizer")] [SerializeField] private RegisterVizualizer registerIntructionVisualizer;
-    [FormerlySerializedAs("_registerDataVisualizer")] [SerializeField] private RegisterVizualizer registerDataVisualizer;
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerALUOutVisualizer")] [SerializeField] private RegisterVizualizer registerAluOutVisualizer;
+    [SerializeField] private RegisterVisualizer registerPCVisualizer;
+    [FormerlySerializedAs("_registerOldPCVisualizer")] [SerializeField] private RegisterVisualizer registerOldPCVisualizer;
+    [FormerlySerializedAs("_registerIntructionVisualizer")] [SerializeField] private RegisterVisualizer registerIntructionVisualizer;
+    [FormerlySerializedAs("_registerDataVisualizer")] [SerializeField] private RegisterVisualizer registerDataVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerALUOutVisualizer")] [SerializeField] private RegisterVisualizer registerAluOutVisualizer;
 
-    [FormerlySerializedAs("_adrMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer adrMuxVisualizer;
-    [FormerlySerializedAs("_srcAMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer srcAmuxVisualizer;
-    [FormerlySerializedAs("_srcBMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer srcBmuxVisualizer;
-    [FormerlySerializedAs("_resultMUXVisualizer")] [SerializeField] private MuiltiplexerVizualizer resultMuxVisualizer;
+    [FormerlySerializedAs("_adrMUXVisualizer")] [SerializeField] private MultiplexerVisualizer adrMuxVisualizer;
+    [FormerlySerializedAs("_srcAMUXVisualizer")] [SerializeField] private MultiplexerVisualizer srcAmuxVisualizer;
+    [FormerlySerializedAs("_srcBMUXVisualizer")] [SerializeField] private MultiplexerVisualizer srcBmuxVisualizer;
+    [FormerlySerializedAs("_resultMUXVisualizer")] [SerializeField] private MultiplexerVisualizer resultMuxVisualizer;
 
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVizualiser aluVizualizer;
-    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExternderVizualizer extenderVizualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVizualizer;
+    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVizualizer;
 
-    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private IntructionDataMemoryVizualizer memoryVisualizer;
-    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] private RegisterFileVizualizer registerFileVisualizer;
+    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private InstructionDataMemoryVisualizer memoryVisualizer;
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] private RegisterFileVisualizer registerFileVisualizer;
 
     [FormerlySerializedAs("_numberBlinker")] [SerializeField] private Blinker numberBlinker;
 
@@ -107,7 +102,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
     protected RegisterFile RegisterFile;
 
 
-    protected int CurrentBus = 0; // [0, 10]
+    protected int CurrentBus; // [0, 10]
 
     protected void Awake()
     {
@@ -197,10 +192,10 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         aluVizualizer.ChooseAluOperation(s.AluOperation);
         extenderVizualizer.ChooseAluOperation(s.ExtenderOperation);
     }
-    private void MuxVizualizerHelper(int currentPath, MuiltiplexerVizualizer mux) {
+    private void MuxVizualizerHelper(int currentPath, MultiplexerVisualizer mux) {
         if (currentPath == -1)
         {
-            mux.ResetVizualization();
+            mux.ResetVisualisation();
         }
         else if (currentPath == 0)
         {
@@ -267,7 +262,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerAluOutVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
     }
-    private void SwitchMuxInteractables(bool trigger, MuiltiplexerVizualizer target)
+    private void SwitchMuxInteractables(bool trigger, MultiplexerVisualizer target)
     {
         target.UIController.FirstWayButton.interactable = trigger;
         target.UIController.SecondWayButton.interactable = trigger;
@@ -278,18 +273,18 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
     {
         if (Initial.aufgabeTyp == ExerciseTyp.REGISTER_FIELD)
         {
-            return RegisterFile.Registers[Initial.registerFieldAdressAnswer] == Initial.registerFieldValueAnswer;
+            return RegisterFile.Registers[Initial.registerFieldAddressAnswer] == Initial.registerFieldValueAnswer;
         }
         else if (Initial.aufgabeTyp == ExerciseTyp.MEMORY)
         {
-            return _dataIntructionMemory.Memory[Initial.memoryAdressAnswer] == Initial.memoryValueAnswer;
+            return _dataIntructionMemory.Memory[Initial.memoryAddressAnswer] == Initial.memoryValueAnswer;
         }
         else if (Initial.aufgabeTyp == ExerciseTyp.BEQ)
         {
             return _pc.Output == Initial.pcValueAnswer;
         }
         else if (Initial.aufgabeTyp == ExerciseTyp.JAL) {
-            return _pc.Output == Initial.pcValueAnswer && RegisterFile.Registers[Initial.registerFieldAdressAnswer] == Initial.registerFieldValueAnswer;
+            return _pc.Output == Initial.pcValueAnswer && RegisterFile.Registers[Initial.registerFieldAddressAnswer] == Initial.registerFieldValueAnswer;
         }
         else {
             return false;
@@ -327,10 +322,10 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
             ExtenderOperation = extenderVizualizer.CurrentAluOperation,
 
-            MuXadrPath = adrMuxVisualizer.CurrentChoosenMuxPath,
-            MuXsrcAPath = srcAmuxVisualizer.CurrentChoosenMuxPath,
-            MuXsrcBPath = srcBmuxVisualizer.CurrentChoosenMuxPath,
-            MuXresultPath = resultMuxVisualizer.CurrentChoosenMuxPath,
+            MuXadrPath = adrMuxVisualizer.CurrentChosenMuxPath,
+            MuXsrcAPath = srcAmuxVisualizer.CurrentChosenMuxPath,
+            MuXsrcBPath = srcBmuxVisualizer.CurrentChosenMuxPath,
+            MuXresultPath = resultMuxVisualizer.CurrentChosenMuxPath,
         };
     }
 
@@ -366,7 +361,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         _oldPC.Input = _pc.Output;
 
-        _dataIntructionMemory.Adress = tmpAdress;
+        _dataIntructionMemory.Address = tmpAdress;
         #endregion
 
         #region second step (register file)
@@ -455,10 +450,10 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
                 (s.ExtenderOperation == _extenderVizualizer.CurrentALUOperation) &&
 
-                (s.MUXadrPath == _adrMUXVisualizer.CurrentChoosenMuxPath) &&
-                (s.MUXsrcAPath == _srcAMUXVisualizer.CurrentChoosenMuxPath) &&
-                (s.MUXsrcBPath == _srcBMUXVisualizer.CurrentChoosenMuxPath) &&
-                (s.MUXresultPath == _resultMUXVisualizer.CurrentChoosenMuxPath);
+                (s.MUXadrPath == _adrMUXVisualizer.CurrentChosenMuxPath) &&
+                (s.MUXsrcAPath == _srcAMUXVisualizer.CurrentChosenMuxPath) &&
+                (s.MUXsrcBPath == _srcBMUXVisualizer.CurrentChosenMuxPath) &&
+                (s.MUXresultPath == _resultMUXVisualizer.CurrentChosenMuxPath);
     }*/
 
     protected override void ReleaseIngameInteractables()
@@ -598,17 +593,17 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         busController.StartBusSignal(secondBusToStart, val2, secondReverse);
     }
     private int CalculateSrcAmux() { 
-        return CalculateMux(srcAmuxVisualizer.CurrentChoosenMuxPath, _pc.Output, _oldPC.Output, _srcA.Output);
+        return CalculateMux(srcAmuxVisualizer.CurrentChosenMuxPath, _pc.Output, _oldPC.Output, _srcA.Output);
     }
     private int CalculateSrBmux()
     {
-        return CalculateMux(srcBmuxVisualizer.CurrentChoosenMuxPath, _srcB.Output, Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output), 4);
+        return CalculateMux(srcBmuxVisualizer.CurrentChosenMuxPath, _srcB.Output, Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output), 4);
     }
     private int CalculateResultMux() { 
-        return CalculateMux(resultMuxVisualizer.CurrentChoosenMuxPath, _aluOutReg.Output, _dataReg.Output, CalculateAlu());
+        return CalculateMux(resultMuxVisualizer.CurrentChosenMuxPath, _aluOutReg.Output, _dataReg.Output, CalculateAlu());
     }
     private int CalculateAdressMux() { 
-        return CalculateMux(adrMuxVisualizer.CurrentChoosenMuxPath, _pc.Output, CalculateResultMux(), 0);
+        return CalculateMux(adrMuxVisualizer.CurrentChosenMuxPath, _pc.Output, CalculateResultMux(), 0);
     }
     private int CalculateMux(int muxCurrentPath, int first, int second, int third) {
         var result = 0;
@@ -631,14 +626,14 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         return result;
     }
     private int CalculateAlu() {
-        var muxSrcA = CalculateMux(srcAmuxVisualizer.CurrentChoosenMuxPath, _pc.Output, _oldPC.Output, _srcA.Output);
+        var muxSrcA = CalculateMux(srcAmuxVisualizer.CurrentChosenMuxPath, _pc.Output, _oldPC.Output, _srcA.Output);
 
         var extenderTmp = 0;
         if (TickCounter > 0) {
             var legcyState = (ProcessorLevelState)TickStateValues[TickCounter - 1];
             extenderTmp = legcyState.RegisterInstrValue;
         }
-        var muxSrcB = CalculateMux(srcBmuxVisualizer.CurrentChoosenMuxPath, 
+        var muxSrcB = CalculateMux(srcBmuxVisualizer.CurrentChosenMuxPath, 
             _srcB.Output, 
             Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)extenderTmp), 
             4);
@@ -656,7 +651,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         yield return StartCoroutine(DelayedBusSignal(busController.busSegments[9], 4, true));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[11], _dataIntructionMemory.Adress, true));
+        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[11], _dataIntructionMemory.Address, true));
 
         busController.StartBusSignal(busController.busSegments[10], _oldPC.Input, true);
         busController.StartBusSignal(busController.busSegments[19], _oldPC.Input, true);
@@ -831,7 +826,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
                         break;
                     case 0x03:
                     case 0x23:
-                        sidePanelInformer.SetStateInfo((int)StateName.MEM_ADRESS);
+                        sidePanelInformer.SetStateInfo((int)StateName.MEM_ADDRESS);
                         break;
                     case 0x63:
                         sidePanelInformer.SetStateInfo((int)StateName.BEQ);

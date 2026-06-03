@@ -1,4 +1,4 @@
-public class Extender
+public static class Extender
 {
     private const int IMM_SRC_TYPE_I = 0;
     private const int IMM_SRC_TYPE_S = 1;

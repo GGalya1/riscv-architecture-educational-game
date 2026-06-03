@@ -18,12 +18,9 @@ public class RegisterFieldPanelUI : MonoBehaviour
     }
 
     public void Display(int[] values) {
-        for (var i = 0; i < registerText.Length; i++) { 
-            if (i == 15) {
-                registerText[i].text = $"r{i} (pc):\n{values[i]}";
-            }
-            else
-                registerText[i].text = $"r{i}: {values[i]}";
+        for (var i = 0; i < registerText.Length; i++)
+        {
+            registerText[i].text = i == 15 ? $"r{i} (pc):\n{values[i]}" : $"r{i}: {values[i]}";
         }
     }
 }

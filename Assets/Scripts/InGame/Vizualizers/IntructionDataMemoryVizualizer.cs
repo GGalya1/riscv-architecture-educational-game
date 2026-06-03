@@ -1,11 +1,9 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.Serialization;
 
-public class IntructionDataMemoryVizualizer: BaseVizualizer
+public class InstructionDataMemoryVisualizer: BaseVisualizer
 {
-    private InstrMemoryControlPanel _uiController;
-    public InstrMemoryControlPanel UIRegisterPanel => _uiController;
+    public InstrMemoryControlPanel UIRegisterPanel { get; private set; }
 
     [FormerlySerializedAs("_writeEnableIndicator")]
     [Header("Write Enable Visualization")]
@@ -17,6 +15,13 @@ public class IntructionDataMemoryVizualizer: BaseVizualizer
     [Header("Blinker of sequential component")]
     [SerializeField] private Blinker blinker;
 
+    private bool _isWriteEnableIndicatorNull;
+
+    private void Start()
+    {
+        _isWriteEnableIndicatorNull = writeEnableIndicator == null;
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,7 +31,7 @@ public class IntructionDataMemoryVizualizer: BaseVizualizer
         {
             writeEnableIndicator.SetActive(false);
             isWriteEnabled = true;
-            _uiController.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
+            UIRegisterPanel.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
         }
     }
 
@@ -36,35 +41,31 @@ public class IntructionDataMemoryVizualizer: BaseVizualizer
     /// </summary>
     protected override void InitializePanelController()
     {
-        _uiController = panelInstance.GetComponent<InstrMemoryControlPanel>();
-        if (_uiController == null)
+        UIRegisterPanel = panelInstance.GetComponent<InstrMemoryControlPanel>();
+        if (UIRegisterPanel == null)
         {
             Debug.LogError($"InstrMemoryControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
-    public void SwitchWriteEnableVisualization()
+    private void SwitchWriteEnableVisualization()
     {
-        if (writeEnableIndicator != null)
-        {
-            // if WE is true -> indicator must be inactive
-            // if WE is false -> indicator must be active
-            isWriteEnabled = !isWriteEnabled;
-            writeEnableIndicator.SetActive(!isWriteEnabled);
-            HideData();
-        }
+        if (writeEnableIndicator == null) return;
+        // if WriteEnable is true -> indicator must be inactive
+        // if WriteEnable is false -> indicator must be active
+        isWriteEnabled = !isWriteEnabled;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
+        HideData();
     }
     public void ForceUpdateWriteEnableVisualization(bool flag)
     {
-        if (writeEnableIndicator != null)
-        {
-            isWriteEnabled = flag;
-            writeEnableIndicator.SetActive(!isWriteEnabled);
-        }
+        if (_isWriteEnableIndicatorNull) return;
+        isWriteEnabled = flag;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
     }
 
     public void TriggerBlink() {
         blinker.Trigger();
     }
 
-    public override void ResetVizualization() { }
+    public override void ResetVisualisation() { }
 }

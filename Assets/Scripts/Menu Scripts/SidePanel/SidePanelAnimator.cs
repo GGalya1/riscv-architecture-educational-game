@@ -14,9 +14,9 @@ public class SidePanelAnimator : MonoBehaviour
     public float bouncePower = 1.2f;
 
     [FormerlySerializedAs("_rectTransform")] [SerializeField] private RectTransform rectTransform;
-    private bool _isOpen = false;
+    private bool _isOpen;
 
-    void Awake()
+    private void Awake()
     {
         rectTransform.anchoredPosition = new Vector2(hiddenPosX, rectTransform.anchoredPosition.y);
     }

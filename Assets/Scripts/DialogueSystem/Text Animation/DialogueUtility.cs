@@ -96,13 +96,12 @@ public class DialogueUtility : MonoBehaviour
         foreach (Match match in pauseMatches)
         {
             var val = match.Groups["pause"].Value;
-            var pauseName = val;
-            Debug.Assert(PauseDictionary.ContainsKey(pauseName), "no pause registered for '" + pauseName + "'");
+            Debug.Assert(PauseDictionary.ContainsKey(val), "no pause registered for '" + val + "'");
             result.Add(new DialogueCommand
             {
                 Position = VisibleCharactersUpToIndex(processedMessage, match.Index),
                 Type = DialogueCommandType.Pause,
-                FloatValue = PauseDictionary[pauseName]
+                FloatValue = PauseDictionary[val]
             });
         }
         processedMessage = Regex.Replace(processedMessage, PAUSE_REGEX_STRING, "");

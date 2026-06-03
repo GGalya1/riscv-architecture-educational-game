@@ -25,7 +25,7 @@ public class LevelPanelScroller : MonoBehaviour
     public float duration = 0.5f;
     public Ease animEase = Ease.OutCubic;
 
-    private int _currentPage = 0;
+    private int _currentPage;
 
     // Minimum drag distance to trigger page swap
     public float dragThreshold;
@@ -53,12 +53,10 @@ public class LevelPanelScroller : MonoBehaviour
     /// </summary>
     public void NextPage()
     {
-        if (_currentPage < totalPages - 1)
-        {
-            _currentPage++;
-            ScrollToPage(_currentPage);
-            UpdateChapterTitle(_currentPage);
-        }
+        if (_currentPage >= totalPages - 1) return;
+        _currentPage++;
+        ScrollToPage(_currentPage);
+        UpdateChapterTitle(_currentPage);
     }
 
     /// <summary>
@@ -66,12 +64,10 @@ public class LevelPanelScroller : MonoBehaviour
     /// </summary>
     public void PreviousPage()
     {
-        if (_currentPage > 0)
-        {
-            _currentPage--;
-            ScrollToPage(_currentPage);
-            UpdateChapterTitle(_currentPage);
-        }
+        if (_currentPage <= 0) return;
+        _currentPage--;
+        ScrollToPage(_currentPage);
+        UpdateChapterTitle(_currentPage);
     }
 
     /// <summary>

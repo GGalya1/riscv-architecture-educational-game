@@ -38,7 +38,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
     }
 
     protected override void HandleClockUpdate() {
-        var path = multiplexerVisualizer.CurrentChoosenMuxPath;
+        var path = multiplexerVisualizer.CurrentChosenMuxPath;
         int[] inputs = { SrcA.Output, SrcB.Output };
         var res = 0;
 
@@ -72,13 +72,13 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             //  XXX
         }
 
-        DataIntructionMemory.Adress = SrcA.Output;
+        DataIntructionMemory.Address = SrcA.Output;
         DataIntructionMemory.WriteData = SrcB.Output;
 
 
         // Debug.Log($"[0]: {dataIntructionMemory._memory[0]} \n[4]: {dataIntructionMemory._memory[4]} \n[8]: {dataIntructionMemory._memory[8]}\n[12]: {dataIntructionMemory._memory[12]}");
 
-        var p = multiplexerVisualizer.CurrentChoosenMuxPath;
+        var p = multiplexerVisualizer.CurrentChosenMuxPath;
         if (p == -1)
         {
             Debug.LogError("MUX path is -1. No value will be propagated");
@@ -132,24 +132,24 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             yield return StartCoroutine(DelayedBusSignals(busController.busSegments[2], busController.busSegments[7], SrcB.Output, SrcB.Output));
 
             var propagationVal = 0;
-            if (multiplexerVisualizer.CurrentChoosenMuxPath == -1)
+            if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
                 yield return StartCoroutine(DelayedBusSignal(busController.busSegments[4], 0));
             }
             else
             {
 
-                if (multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
                     propagationVal = SrcA.Output;
                 }
-                else if (multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
                     propagationVal = SrcB.Output;
                 }
                 else
                 {
-                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChoosenMuxPath}");
+                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
                 yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], propagationVal, 4));
@@ -172,11 +172,11 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             if (TickStateValues[TickCounter] is LevelThreeState s)
             {
                 var upperBusSignal = 0;
-                if (multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
                     upperBusSignal = s.RegisterPCValue;
                 }
-                else if (multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
                     upperBusSignal = s.RegisterInstrValue;
                 }

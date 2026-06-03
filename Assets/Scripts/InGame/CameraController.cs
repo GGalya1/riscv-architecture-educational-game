@@ -32,13 +32,19 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Camera cam;
 
     private Vector2 _lastInputPosition;
-    private bool _isDraggingCamera = false;
+    private bool _isDraggingCamera;
     private Vector3 _targetPosition;
     private Vector3 _currentVelocity;
     private Transform _cachedTransform;
+    private bool _currentNull;
 
 
-    void Awake()
+    private void Start()
+    {
+        _currentNull = EventSystem.current == null;
+    }
+
+    private void Awake()
     {
         // Cache transform for performance and sync targetX with initial position
         _cachedTransform = transform;
@@ -46,7 +52,7 @@ public class CameraController : MonoBehaviour
         if (cam == null) cam = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
         HandleInput();
         ApplyMovement();
@@ -118,15 +124,15 @@ public class CameraController : MonoBehaviour
         return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
     }
 
-    private bool GetPointerDown() =>
+    private static bool GetPointerDown() =>
       (Mouse.current?.leftButton.wasPressedThisFrame ?? false) ||
       (Touchscreen.current?.primaryTouch.press.wasPressedThisFrame ?? false);
 
-    private bool GetPointerHeld() =>
+    private static bool GetPointerHeld() =>
       (Mouse.current?.leftButton.isPressed ?? false) ||
       (Touchscreen.current?.primaryTouch.press.isPressed ?? false);
 
-    private bool GetPointerUp() =>
+    private static bool GetPointerUp() =>
       (Mouse.current?.leftButton.wasReleasedThisFrame ?? false) ||
       (Touchscreen.current?.primaryTouch.press.wasReleasedThisFrame ?? false);
 
@@ -137,11 +143,7 @@ public class CameraController : MonoBehaviour
     private bool IsClickingInteractiveObject(Vector2 screenPos)
     {
         var ray = cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out var hit))
-        {
-            return hit.collider.TryGetComponent<ClickableObject>(out _);
-        }
-        return false;
+        return Physics.Raycast(ray, out var hit) && hit.collider.TryGetComponent<ClickableObject>(out _);
     }
 
     /// <summary>
@@ -149,17 +151,14 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private bool IsPointerOverUI()
     {
-        if (EventSystem.current == null) return false;
+        if (_currentNull) return false;
 
         if (EventSystem.current.IsPointerOverGameObject()) return true;
 
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            var id = Touchscreen.current.primaryTouch.touchId.ReadValue();
-            return EventSystem.current.IsPointerOverGameObject(id);
-        }
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed) return false;
+        var id = Touchscreen.current.primaryTouch.touchId.ReadValue();
+        return EventSystem.current.IsPointerOverGameObject(id);
 
-        return false;
     }
 
     private void HandleZoomInput()
@@ -207,16 +206,14 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        if (Mathf.Abs(zoomAmount) > 0.001f)
-        {
-            var moveDirection = cam.transform.forward;
-            var newTarget = _targetPosition + moveDirection * zoomAmount;
+        if (!(Mathf.Abs(zoomAmount) > 0.001f)) return;
+        var moveDirection = cam.transform.forward;
+        var newTarget = _targetPosition + moveDirection * zoomAmount;
 
-            // Height restriction
-            if (newTarget.y >= minHeight && newTarget.y <= maxHeight)
-            {
-                _targetPosition = newTarget;
-            }
+        // Height restriction
+        if (newTarget.y >= minHeight && newTarget.y <= maxHeight)
+        {
+            _targetPosition = newTarget;
         }
     }
 }

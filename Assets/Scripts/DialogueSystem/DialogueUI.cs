@@ -1,6 +1,5 @@
 using DG.Tweening;
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,7 +14,7 @@ public class DialogueUI : MonoBehaviour
     [FormerlySerializedAs("_textField")]
     [Header("Main Content")]
     [SerializeField] private TMP_Text textField;
-    [FormerlySerializedAs("_charackterImage")] [SerializeField] private Image charackterImage;
+    [FormerlySerializedAs("charackterImage")] [FormerlySerializedAs("_charackterImage")] [SerializeField] private Image characterImage;
     [FormerlySerializedAs("_goNextQuoteButton")] [SerializeField] private Button goNextQuoteButton;
 
     [Header("Answer Options")]
@@ -29,7 +28,7 @@ public class DialogueUI : MonoBehaviour
     [FormerlySerializedAs("_thirdAnswerText")] [SerializeField] private TMP_Text thirdAnswerText;
 
     [Header("Settings & Data")]
-    [SerializeField] private EmotionControler currentEmotion;
+    [SerializeField] private EmotionController currentEmotion;
     private Vector2 _basePortraitPos;
 
     public event Action OnNextRequested;
@@ -41,7 +40,7 @@ public class DialogueUI : MonoBehaviour
 
     private void Awake()
     {
-        _basePortraitPos = charackterImage.rectTransform.anchoredPosition;
+        _basePortraitPos = characterImage.rectTransform.anchoredPosition;
         _vertexAnimator = new DialogueVertexAnimator(textField);
     }
 
@@ -88,7 +87,7 @@ public class DialogueUI : MonoBehaviour
         var newSprite = currentEmotion.emotions[emotionIndex];
 
         // Play animation only if sprite changes
-        if (charackterImage.sprite != newSprite)
+        if (characterImage.sprite != newSprite)
         {
             PlayBounceAndChangeSprite(newSprite);
         }
@@ -103,7 +102,7 @@ public class DialogueUI : MonoBehaviour
     /// <summary>
     /// Configures the visibility and text of the response buttons.
     /// </summary>
-    public void DecorateSelection(DialogueNode node) 
+    private void DecorateSelection(DialogueNode node) 
     {
         if (!string.IsNullOrEmpty(node.firstAnswer)) {
             buttonContainer.gameObject.SetActive(true);
@@ -136,18 +135,18 @@ public class DialogueUI : MonoBehaviour
     /// </summary>
     private void PlayBounceAndChangeSprite(Sprite nextSprite)
     {
-        charackterImage.rectTransform.DOKill();
-        charackterImage.rectTransform.anchoredPosition = _basePortraitPos; // Reset position before animation
+        characterImage.rectTransform.DOKill();
+        characterImage.rectTransform.anchoredPosition = _basePortraitPos; // Reset position before animation
 
         var jumpTarget = _basePortraitPos + new Vector2(0, 45f);
 
         // Sequence: Jump up -> Swap Sprite -> Bounce down
-        charackterImage.rectTransform.DOAnchorPos(jumpTarget, 0.15f)
+        characterImage.rectTransform.DOAnchorPos(jumpTarget, 0.15f)
         .SetEase(Ease.OutQuad)
         .OnComplete(() =>
         {
-            charackterImage.sprite = nextSprite;
-            charackterImage.rectTransform.DOAnchorPos(_basePortraitPos, 0.35f)
+            characterImage.sprite = nextSprite;
+            characterImage.rectTransform.DOAnchorPos(_basePortraitPos, 0.35f)
                 .SetEase(Ease.OutBounce);
         });
     }

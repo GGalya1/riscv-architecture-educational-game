@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,9 +17,9 @@ public class LevelZeroRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level 0 Specific Components")]
-    [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVizualizer registerOutputVisualizer;
+    [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
 
     [FormerlySerializedAs("_srcAValue")] [SerializeField] private int srcAValue;
     [FormerlySerializedAs("_srcBValue")] [SerializeField] private int srcBValue;
@@ -38,7 +37,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur
 
     //protected override int RightAnswerValue => 4;
 
-    private int _currentBus = 0; // [0, 2]
+    private int _currentBus; // [0, 2]
 
     protected override void OnLevelStart()
     {

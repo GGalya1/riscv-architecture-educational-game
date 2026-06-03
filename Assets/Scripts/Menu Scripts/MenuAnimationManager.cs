@@ -44,28 +44,28 @@ public class MenuAnimationManager : MonoBehaviour
             InitPanel(optionsPanelRectTransform, optionsPanelGroup);
         }
     }
-    private void InitPanel(RectTransform transform, CanvasGroup group)
+    private void InitPanel(RectTransform panelTransform, CanvasGroup group)
     {
         group.alpha = 0f;
         group.interactable = false;
         group.blocksRaycasts = false;
-        transform.anchoredPosition = hiddenPosition;
+        panelTransform.anchoredPosition = hiddenPosition;
     }
 
     /// <summary>
     /// Animates the panel into view and enables interactions.
     /// </summary>
-    public void ShowPanel(RectTransform transform, CanvasGroup group) 
+    private void ShowPanel(RectTransform panelTransform, CanvasGroup group) 
     {
         // Cancel any ongoing animations to prevent flickering
-        transform.DOKill();
+        panelTransform.DOKill();
         group.DOKill();
 
         // Enable interactions immediately when showing starts
         group.interactable = true;
         group.blocksRaycasts = true;
 
-        transform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(showEase);
+        panelTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(showEase);
         group.DOFade(1, fadeTime);
     }
 
@@ -79,7 +79,7 @@ public class MenuAnimationManager : MonoBehaviour
         ShowPanel(optionsPanelRectTransform, optionsPanelGroup);
     }
 
-    public void ShowBg() {
+    private void ShowBg() {
         bgGroup.DOKill();
 
         bgGroup.interactable = true;
@@ -87,7 +87,7 @@ public class MenuAnimationManager : MonoBehaviour
 
         bgGroup.DOFade(1, fadeTime);
     }
-    public void HideBg()
+    private void HideBg()
     {
         bgGroup.DOKill();
 
@@ -103,13 +103,13 @@ public class MenuAnimationManager : MonoBehaviour
     /// <summary>
     /// Animates the panel out of view and disables interactions.
     /// </summary>
-    public void HidePanel(RectTransform transform, CanvasGroup group) {
-        transform.DOKill();
+    private void HidePanel(RectTransform panelTransform, CanvasGroup group) {
+        panelTransform.DOKill();
         group.DOKill();
 
         group.interactable = false;
 
-        transform.DOAnchorPos(hiddenPosition, fadeTime).SetEase(hideEase);
+        panelTransform.DOAnchorPos(hiddenPosition, fadeTime).SetEase(hideEase);
 
         // Fade out and disable blocksRaycasts only when finished
         group.DOFade(0f, fadeTime).OnComplete(() =>

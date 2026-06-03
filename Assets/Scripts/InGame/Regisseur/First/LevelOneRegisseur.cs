@@ -1,8 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 using System.Collections;
 using UnityEngine.Serialization;
 
@@ -23,10 +19,10 @@ public class LevelOneRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_multiplexerVisualizer")]
     [Header("Level 1 Specific Components")]
-    [SerializeField] private MuiltiplexerVizualizer multiplexerVisualizer;
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVizualizer registerOutputVisualizer;
+    [SerializeField] private MultiplexerVisualizer multiplexerVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
 
     #region CACHED UI REFERENCES
     private InfoPanelUI _infoSrcARegister;
@@ -41,7 +37,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
 
     // protected override int RightAnswerValue => 4;
 
-    private int _currentBus = 0; // [0, 1]
+    private int _currentBus; // [0, 1]
 
     protected override void OnLevelStart()
     {
@@ -81,7 +77,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
             RegisterAValue = _srcA.Output,
             RegisterBValue = _srcB.Output,
             OutputRegisterValue = _output.Output,
-            CurrentChoosenMuxPath = multiplexerVisualizer.CurrentChoosenMuxPath,
+            CurrentChoosenMuxPath = multiplexerVisualizer.CurrentChosenMuxPath,
             RegisterAwe = _srcA.WriteEnable,
             RegisterBwe = _srcB.WriteEnable,
             OutputRegisterWe = _output.WriteEnable
@@ -101,7 +97,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
         var temp = s.CurrentChoosenMuxPath;
         if (temp == -1)
         {
-            multiplexerVisualizer.ResetVizualization();
+            multiplexerVisualizer.ResetVisualisation();
         }
         else if (temp == 0)
         {
@@ -133,7 +129,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
 
     protected override void HandleClockUpdate() {
         
-        var path = multiplexerVisualizer.CurrentChoosenMuxPath;
+        var path = multiplexerVisualizer.CurrentChosenMuxPath;
         int[] inputs = { _srcA.Output, _srcB.Output };
         var res = 0;
         
@@ -173,7 +169,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
         return (s.RegisterAValue == srcA.Output) &&
                 (s.RegisterBValue == srcB.Output) &&
                 (s.OutputRegisterValue == output.Output) &&
-                (s.CurrentChoosenMuxPath == _multiplexerVisualizer.CurrentChoosenMuxPath) &&
+                (s.CurrentChosenMuxPath == _multiplexerVisualizer.CurrentChosenMuxPath) &&
                 (s.RegisterAWE == srcA.WriteEnable) &&
                 (s.RegisterBWE == srcB.WriteEnable) &&
                 (s.OutputRegisterWE == output.WriteEnable);
@@ -190,7 +186,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
             busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
             busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
 
-            if(multiplexerVisualizer.CurrentChoosenMuxPath != -1)
+            if(multiplexerVisualizer.CurrentChosenMuxPath != -1)
             {
                 yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2])); // ???
             }
@@ -207,7 +203,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
     {
         if (_currentBus == 1)
         {
-            if (multiplexerVisualizer.CurrentChoosenMuxPath == -1)
+            if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
                 yield return StartCoroutine(DelayedBusSignals(busController.busSegments[0], busController.busSegments[1]));
             }
@@ -229,16 +225,16 @@ public class LevelOneRegisseur : BaseLevelRegisseur
 
         // Ssending the third signal
         var propagationVal = 0;
-        if (multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+        if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
         {
             propagationVal = _srcA.Output;
         }
-        else if (multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+        else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
         {
             propagationVal = _srcB.Output;
         }
         else {
-            Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChoosenMuxPath}");
+            Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
         }
 
         busController.StartBusSignal(busToStart, propagationVal);

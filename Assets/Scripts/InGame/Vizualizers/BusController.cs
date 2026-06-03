@@ -18,13 +18,13 @@ public class BusController : MonoBehaviour
     public LineRenderer[] busSegments;
 
     // A dictionary to store the path for each bus so it doesn't have to be calculated every time
-    private Dictionary<LineRenderer, Vector3[]> _busPaths = new Dictionary<LineRenderer, Vector3[]>();
-    private Dictionary<LineRenderer, Vector3[]> _reverseBusPaths = new Dictionary<LineRenderer, Vector3[]>();
+    private readonly Dictionary<LineRenderer, Vector3[]> _busPaths = new Dictionary<LineRenderer, Vector3[]>();
+    private readonly Dictionary<LineRenderer, Vector3[]> _reverseBusPaths = new Dictionary<LineRenderer, Vector3[]>();
 
-    private List<BusSignal> _activeSignals = new List<BusSignal>();
+    private readonly List<BusSignal> _activeSignals = new List<BusSignal>();
     public bool NoActiveSignals => _activeSignals.Count == 0;
 
-    void Start()
+    private void Start()
     {
         InitializePaths();
 
@@ -47,6 +47,7 @@ public class BusController : MonoBehaviour
     /// You will call this method from other scripts (for example, when clicking on the CPU block).
     /// </summary>
     /// <param name="targetBus">LineRenderer, through which the signal should be sent.</param>
+    /// /// <param name="reversedPath">bool, says if the path must be animated in reverse direction</param>
     public void StartBusSignal(LineRenderer targetBus, bool reversedPath = false)
     {
         var pathPoints = GetPathPoints(targetBus, reversedPath);
@@ -95,13 +96,12 @@ public class BusController : MonoBehaviour
     }
 
     // A coroutine to move a ball along a given array of points
-    IEnumerator MoveSphereAlongPath(BusSignal signal, Vector3[] pathPoints)
+    private IEnumerator MoveSphereAlongPath(BusSignal signal, Vector3[] pathPoints)
     {
         if (signal == null) yield break;
 
         for (var i = 1; i < pathPoints.Length; i++)
         {
-            var startPoint = pathPoints[i - 1];
             var targetPoint = pathPoints[i];
 
             while (signal.transform.position != targetPoint)
@@ -189,6 +189,6 @@ public class BusController : MonoBehaviour
     {
         if (targetBus == null) return null;
         var dict = reversed ? _reverseBusPaths : _busPaths;
-        return dict.ContainsKey(targetBus) ? dict[targetBus] : null;
+        return dict.GetValueOrDefault(targetBus);
     }
 }

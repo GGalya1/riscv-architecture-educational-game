@@ -17,9 +17,9 @@ public class LevelFiveExtended : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level 5 (Extended) Specific Components")]
-    [SerializeField] private RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVizualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExternderVizualizer extenderVizualizer;
+    [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVizualizer;
 
     [FormerlySerializedAs("InputRegisterValue")] [SerializeField] private uint inputRegisterValue;
 

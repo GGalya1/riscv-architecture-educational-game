@@ -59,7 +59,7 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
         ShowInGameUI(dialoguePanelGroup, dialoguePanelRectTransform, _dialogueStartPos);
     }
 
-    private void HideUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos, float fadeTime) {
+    private void HideUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos, float uiFadeTime) {
         panelGroup.DOKill();
         reactTransform.DOKill();
 
@@ -68,8 +68,8 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
 
         var hidePos = new Vector2(startPos.x, startPos.y - yOffset);
 
-        reactTransform.DOAnchorPos(hidePos, fadeTime).SetEase(hideEase);
-        panelGroup.DOFade(0, fadeTime);
+        reactTransform.DOAnchorPos(hidePos, uiFadeTime).SetEase(hideEase);
+        panelGroup.DOFade(0, uiFadeTime);
     }
 
     private void ShowInGameUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos) {

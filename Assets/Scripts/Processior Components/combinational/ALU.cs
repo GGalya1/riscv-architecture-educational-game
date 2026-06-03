@@ -31,27 +31,14 @@ public static class Alu
 
     public static int Calculate(int a, int b, int operation)
     {
-        var result = 0;
-
-        switch (operation)
+        var result = operation switch
         {
-            case 0:
-                result = a + b;
-                break;
-            case 1:
-                result = a - b;
-                break;
-            case 2:
-                result = a & b;
-                break;
-            case 3:
-                result = a | b;
-                break;
-
-            default:
-                Debug.LogError($"ALU Error: Unknown operation code {operation}.");
-                break;
-        }
+            0 => a + b,
+            1 => a - b,
+            2 => a & b,
+            3 => a | b,
+            _ => 0
+        };
 
         return result;
     }

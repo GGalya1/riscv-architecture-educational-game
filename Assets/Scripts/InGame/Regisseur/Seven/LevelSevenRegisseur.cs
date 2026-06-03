@@ -20,11 +20,11 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level 7 Specific Components")]
-    [SerializeField] protected RegisterVizualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVizualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected RegisterVizualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVizualizer registerFileVisualizer;
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVizualiser aluVizualizer;
+    [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVizualizer;
 
     #region CACHED UI REFERENCES
     protected InfoPanelUI InfoSrcARegister;
@@ -41,7 +41,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
     protected override int RightAnswerValue => 42;
 
 
-    protected int CurrentBus = 0; // [0, 2]
+    protected int CurrentBus; // [0, 2]
 
     protected override void OnLevelStart()
     {

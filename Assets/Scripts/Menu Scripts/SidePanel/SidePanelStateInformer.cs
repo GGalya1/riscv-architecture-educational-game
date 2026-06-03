@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
-using System.Runtime.CompilerServices;
 using UnityEngine.Serialization;
 
 public enum StateName { 
     FETCH = 0,
     DECODE = 1,
-    MEM_ADRESS = 2,
+    MEM_ADDRESS = 2,
     MEM_READ = 3,
     MEM_WB = 4,
     MEM_WRITE = 5,
