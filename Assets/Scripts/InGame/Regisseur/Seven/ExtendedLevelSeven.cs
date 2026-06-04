@@ -131,7 +131,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur
             RegisterA3Value = A3.Output,
             RegisterWd3Value = Wd3.Output,
 
-            RegisterFieldValue = RegisterFile.Registers,
+            RegisterFieldValue = (int[])RegisterFile.Registers.Clone(),
 
             RegisterSrcAwe = SrcA.WriteEnable,
             RegisterSrcBwe = SrcB.WriteEnable,

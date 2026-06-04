@@ -270,7 +270,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
             RegisterSrcBValue = _srcB.Output,
             RegisterAluOutValue = _aluOutReg.Output,
 
-            RegisterFieldValue = RegisterFile.Registers,
+            RegisterFieldValue = (int[])RegisterFile.Registers.Clone(),
 
             FirstMemoryValue = _dataIntructionMemory.Memory[0],
             SecondMemoryValue = _dataIntructionMemory.Memory[4],
