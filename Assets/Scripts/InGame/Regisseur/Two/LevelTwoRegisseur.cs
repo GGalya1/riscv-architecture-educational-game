@@ -133,22 +133,6 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
         }
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    /*IEnumerator DelayedBusSignal(LineRenderer busToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(busToStart, Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation));
-    }
-    IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        if (TickStateValues[TickCounter] is LevelTwoState s) {
-            busController.StartBusSignal(firstBusToStart, s.RegisterAValue, true);
-        }
-        
-        busController.StartBusSignal(secondBusToStart, 4, true);
-    }*/
     #endregion
 
     #region

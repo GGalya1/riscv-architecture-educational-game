@@ -67,10 +67,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
 
         DataIntructionMemory.Address = SrcA.Output;
         DataIntructionMemory.WriteData = SrcB.Output;
-
-
-        // Debug.Log($"[0]: {dataIntructionMemory._memory[0]} \n[4]: {dataIntructionMemory._memory[4]} \n[8]: {dataIntructionMemory._memory[8]}\n[12]: {dataIntructionMemory._memory[12]}");
-
+        
         var p = multiplexerVisualizer.CurrentChosenMuxPath;
         if (p == -1)
         {
@@ -113,21 +110,21 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
             // should be after a short delay
             if (DataIntructionMemory.Memory.ContainsKey(SrcA.Output))
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[1], DataIntructionMemory.Memory[SrcA.Output]));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], DataIntructionMemory.Memory[SrcA.Output]));
             }
             else
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[1], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], 0));
             }
 
 
             // should follow the first one with a short delay
-            yield return StartCoroutine(DelayedBusSignals(busController.busSegments[2], busController.busSegments[7], SrcB.Output, SrcB.Output));
+            yield return StartCoroutine(DelayedSignals(busController.busSegments[2], SrcB.Output, busController.busSegments[7], SrcB.Output));
 
             var propagationVal = 0;
             if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[4], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[4], 0));
             }
             else
             {
@@ -145,12 +142,12 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
                     Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], propagationVal, 4));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], propagationVal, busController.busSegments[4], 4));
             }
 
 
             // from ALU to first register
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
 
             CurrentBus++;
         }
@@ -173,18 +170,16 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
                 {
                     upperBusSignal = s.RegisterInstrValue;
                 }
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], upperBusSignal, 4, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], upperBusSignal, busController.busSegments[4], 4, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[7], busController.busSegments[2], s.RegisterInstrValue, s.RegisterInstrValue, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[7], s.RegisterInstrValue, busController.busSegments[2], s.RegisterInstrValue, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[6], busController.busSegments[1], s.RegisterPCValue, SrcB.Input, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[6], s.RegisterPCValue, busController.busSegments[1], SrcB.Input, true, true));
             }
-
-            // yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], srcB.Input, true));
 
             if (TickStateValues[TickCounter] is LevelThreeState st)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[0], st.RegisterPCValue, true));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[0], st.RegisterPCValue, true));
             }
 
 

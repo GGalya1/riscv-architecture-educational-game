@@ -232,7 +232,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerAluOutVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
     }
-    private void SwitchMuxInteractables(bool trigger, MultiplexerVisualizer target)
+    private static void SwitchMuxInteractables(bool trigger, MultiplexerVisualizer target)
     {
         target.UIController.FirstWayButton.interactable = trigger;
         target.UIController.SecondWayButton.interactable = trigger;
@@ -390,42 +390,6 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         _dataIntructionMemory.Clock();
         RegisterFile.Clock();
     }
-
-    /*protected override bool IsStateEqual(object state)
-    {
-        if (!(state is ProcessorLevelState s)) return false;
-
-        return (s.RegisterPCValue == pc.Output) &&
-                (s.RegisterOldPCValue == oldPC.Output) &&
-                (s.RegisterInstrValue == instructionReg.Output) &&
-                (s.RegisterDataValue == dataReg.Output) &&
-                (s.RegisterScrAValue == srcA.Output) &&
-                (s.RegisterSrcBValue == srcB.Output) &&
-                (s.RegisterALUOutValue == aluOutReg.Output) &&
-
-                (s.firstMemoryValue == dataIntructionMemory._memory[0]) &&
-                (s.secondMemoryValue == dataIntructionMemory._memory[4]) &&
-                (s.thirdMemoryValue == dataIntructionMemory._memory[8]) &&
-                (s.fourthMemoryValue == dataIntructionMemory._memory[12]) &&
-
-                (s.RegisterPCWE == pc.WriteEnable) &&
-                (s.RegisterOldPCWE == oldPC.WriteEnable) &&
-                (s.RegisterInstrWE == instructionReg.WriteEnable) &&
-                (s.RegisterDataWE == dataReg.WriteEnable) &&
-                (s.RegisterScrAWE == srcA.WriteEnable) &&
-                (s.RegisterSrcBWE == srcB.WriteEnable) &&
-                (s.RegisterALUOutWE == aluOutReg.WriteEnable) &&
-
-                (s.ALUOperation == _aluVizualizer.CurrentALUOperation) &&
-
-                (s.ExtenderOperation == _extenderVizualizer.CurrentALUOperation) &&
-
-                (s.MUXadrPath == _adrMUXVisualizer.CurrentChosenMuxPath) &&
-                (s.MUXsrcAPath == _srcAMUXVisualizer.CurrentChosenMuxPath) &&
-                (s.MUXsrcBPath == _srcBMUXVisualizer.CurrentChosenMuxPath) &&
-                (s.MUXresultPath == _resultMUXVisualizer.CurrentChosenMuxPath);
-    }*/
-
     protected override void ReleaseIngameInteractables()
     {
         memoryVisualizer.UIRegisterPanel.WeButton.interactable = true;
@@ -455,8 +419,8 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         {
             switch (CurrentBus % 4)
             {
-                case 0: yield return RunFetchVizualization(); break;
-                case 1: yield return RunDecodeVizualization(); break;
+                case 0: yield return RunFetchVisualisation(); break;
+                case 1: yield return RunDecodeVisualisation(); break;
                 case 2: yield return RunExecutionVizualization(); break;
                 case 3: yield return RunWriteBackVizualization(); break;
             }
@@ -468,40 +432,40 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
     }
 
     #region vizualization helpers
-    private IEnumerator RunFetchVizualization() {
+    private IEnumerator RunFetchVisualisation() {
         busController.StartBusSignal(busController.busSegments[10], _pc.Output);
         busController.StartBusSignal(busController.busSegments[19], _pc.Output);
         busController.StartBusSignal(busController.busSegments[20], _pc.Output);
 
-        var muxSrcA = CalculateSrcAmux();
-        var muxSrcB = CalculateSrBmux();
+        var muxSrcA = CalculateSrcAMux();
+        var muxSrcB = CalculateSrcBMux();
         var output = CalculateResultMux();
         var adressValue = CalculateAdressMux();
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[11], adressValue));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], adressValue));
 
         // ob Value existiert
-        if (_dataIntructionMemory.Memory.ContainsKey(adressValue)) {
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[12], _dataIntructionMemory.Memory[adressValue]));
+        if (_dataIntructionMemory.Memory.TryGetValue(adressValue, out var value)) {
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[12], value));
         }
         else
         {
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[12], 0));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[12], 0));
         }
 
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[9], 4));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[9], 4));
         
-        yield return StartCoroutine(DelayedBusSignals(busController.busSegments[16], busController.busSegments[15], muxSrcA, muxSrcB));
+        yield return StartCoroutine(DelayedSignals(busController.busSegments[16], muxSrcA, busController.busSegments[15], muxSrcB));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[6], CalculateAlu()));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[6], CalculateAlu()));
 
         
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[23], output));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[23], output));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    private IEnumerator RunDecodeVizualization()
+    private IEnumerator RunDecodeVisualisation()
     {
         busController.StartBusSignal(busController.busSegments[0], _instructionReg.Output);
         busController.StartBusSignal(busController.busSegments[1], _instructionReg.Output);
@@ -510,14 +474,14 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         var srcAValue = 0;
         var srcBValue = 0;
-        if (_dataIntructionMemory.Memory.ContainsKey(_instructionReg.Output))
+        if (_dataIntructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value))
         {
-            srcAValue = _dataIntructionMemory.Memory[_instructionReg.Output];
+            srcAValue = value;
         }
-        if (_dataIntructionMemory.Memory.ContainsKey(_instructionReg.Output)) {
-            srcBValue = _dataIntructionMemory.Memory[_instructionReg.Output];
+        if (_dataIntructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value1)) {
+            srcBValue = value1;
         }
-        yield return StartCoroutine(DelayedBusSignals(busController.busSegments[13], busController.busSegments[14], srcAValue, srcBValue));
+        yield return StartCoroutine(DelayedSignals(busController.busSegments[13], srcAValue, busController.busSegments[14], srcBValue));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
@@ -527,8 +491,8 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAmux());
-        busController.StartBusSignal(busController.busSegments[7], CalculateSrBmux());
+        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAMux());
+        busController.StartBusSignal(busController.busSegments[7], CalculateSrcBMux());
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
         busController.StartBusSignal(busController.busSegments[17], CalculateAlu());
@@ -548,24 +512,11 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(busToStart, value, reverse);
-    }
-
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2, bool firstReverse = false, bool secondReverse = false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, val1, firstReverse);
-        busController.StartBusSignal(secondBusToStart, val2, secondReverse);
-    }
-    private int CalculateSrcAmux() { 
+    
+    private int CalculateSrcAMux() { 
         return EvaluateMux(srcAmuxVisualizer.CurrentChosenMuxPath, _pc.Output, _oldPC.Output, _srcA.Output);
     }
-    private int CalculateSrBmux()
+    private int CalculateSrcBMux()
     {
         return EvaluateMux(srcBmuxVisualizer.CurrentChosenMuxPath, _srcB.Output, Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output), 4);
     }
@@ -591,18 +542,18 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         return Alu.Calculate(muxSrcA, muxSrcB, aluVizualizer.CurrentAluOperation);
     }
 
-    private IEnumerator ReverseFetchVizualization() { // noch zu korrigieren
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[23], _pc.Input, true));
+    private IEnumerator ReverseFetchVisualisation() { // noch zu korrigieren
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[23], _pc.Input, true));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[6], CalculateAlu(), true));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[6], CalculateAlu(), true));
 
-        yield return StartCoroutine(DelayedBusSignals(busController.busSegments[16], busController.busSegments[15], _srcA.Output, _srcB.Output, true, true));
+        yield return StartCoroutine(DelayedSignals(busController.busSegments[16], _srcA.Output, busController.busSegments[15], _srcB.Output, true, true));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[12], _instructionReg.Input, true));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[12], _instructionReg.Input, true));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[9], 4, true));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[9], 4, true));
 
-        yield return StartCoroutine(DelayedBusSignal(busController.busSegments[11], _dataIntructionMemory.Address, true));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], _dataIntructionMemory.Address, true));
 
         busController.StartBusSignal(busController.busSegments[10], _oldPC.Input, true);
         busController.StartBusSignal(busController.busSegments[19], _oldPC.Input, true);
@@ -610,9 +561,9 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    private IEnumerator ReverseDecodeVizualization()
+    private IEnumerator ReverseDecodeVisualisation()
     {
-        yield return StartCoroutine(DelayedBusSignals(busController.busSegments[13], busController.busSegments[14], _srcA.Input, _srcB.Input, true, true));
+        yield return StartCoroutine(DelayedSignals(busController.busSegments[13], _srcA.Input, busController.busSegments[14], _srcB.Input, true, true));
 
         busController.StartBusSignal(busController.busSegments[0], _instructionReg.Output, true);
         busController.StartBusSignal(busController.busSegments[1], _instructionReg.Output, true);
@@ -621,7 +572,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         
         yield return new WaitUntil(() => busController.NoActiveSignals);
     } 
-    private IEnumerator ReverseExecutionVizualization() // das noch korrigieren
+    private IEnumerator ReverseExecutionVisualisation() // das noch korrigieren
     {
         busController.StartBusSignal(busController.busSegments[17], CalculateAlu(), true);
 
@@ -632,12 +583,12 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAmux(), true);
-        busController.StartBusSignal(busController.busSegments[7], CalculateSrBmux(), true);
+        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAMux(), true);
+        busController.StartBusSignal(busController.busSegments[7], CalculateSrcBMux(), true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    private IEnumerator ReverseWriteBackVizualization() // das noch korrigieren
+    private IEnumerator ReverseWriteBackVisualisation() // das noch korrigieren
     {
         var res = CalculateResultMux();
         busController.StartBusSignal(busController.busSegments[23], res, true);
@@ -659,10 +610,10 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         {
             switch ((CurrentBus - 1) % 4)
             {
-                case 0: yield return ReverseFetchVizualization(); break;
-                case 1: yield return ReverseDecodeVizualization(); break;
-                case 2: yield return ReverseExecutionVizualization(); break;
-                case 3: yield return ReverseWriteBackVizualization(); break;
+                case 0: yield return ReverseFetchVisualisation(); break;
+                case 1: yield return ReverseDecodeVisualisation(); break;
+                case 2: yield return ReverseExecutionVisualisation(); break;
+                case 3: yield return ReverseWriteBackVisualisation(); break;
             }
 
             CurrentBus--;
@@ -708,8 +659,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
 
     private void UpdateSidePanel() {
         var containsKey = _pc.Output % 4 == 0 
-                          && _pc.Output <= 12
-                          && _pc.Output >= 0 
+                          && _pc.Output is <= 12 and >= 0
                           && _dataIntructionMemory.Memory.ContainsKey(_pc.Output)
                           && _dataIntructionMemory.Memory[_pc.Output] > 1000000;
         if (containsKey)
@@ -724,76 +674,71 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         {
             var s = (ProcessorLevelState)TickStateValues[TickCounter - 3];
 
-            if (s.RegisterInstrValue >= 1000000)
-            {
-                var opcode = s.RegisterInstrValue & 0x7F;
+            if (s.RegisterInstrValue < 1000000) return;
+            var opcode = s.RegisterInstrValue & 0x7F;
 
-                if (opcode == 0x03)
-                {
-                    sidePanelInformer.SetStateInfo((int)StateName.MEM_WB);
-                }
+            if (opcode == 0x03)
+            {
+                sidePanelInformer.SetStateInfo((int)StateName.MEM_WB);
             }
         }
         else if (TickCounter - 3 >= 0)
         {
             var s = (ProcessorLevelState)TickStateValues[TickCounter - 2];
 
-            if (s.RegisterInstrValue >= 1000000)
-            {
-                var opcode = s.RegisterInstrValue & 0x7F;
+            if (s.RegisterInstrValue < 1000000) return;
+            var opcode = s.RegisterInstrValue & 0x7F;
 
-                switch (opcode)
-                {
-                    case 0x33:
-                    case 0x13:
-                        sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
-                        break;
-                    case 0x03:
-                        sidePanelInformer.SetStateInfo((int)StateName.MEM_READ);
-                        break;
-                    case 0x23:
-                        sidePanelInformer.SetStateInfo((int)StateName.MEM_WRITE);
-                        break;
-                    case 0x6F:
-                    case 0x67:
-                        sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
-                        break;
-                }
+            switch (opcode)
+            {
+                case 0x33:
+                case 0x13:
+                    sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
+                    break;
+                case 0x03:
+                    sidePanelInformer.SetStateInfo((int)StateName.MEM_READ);
+                    break;
+                case 0x23:
+                    sidePanelInformer.SetStateInfo((int)StateName.MEM_WRITE);
+                    break;
+                case 0x6F:
+                case 0x67:
+                    sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
+                    break;
             }
         }
         else if (TickCounter - 2 >= 0) {
             var s = (ProcessorLevelState)TickStateValues[TickCounter - 1];
 
-            if (s.RegisterInstrValue >= 1000000) {
-                var opcode = s.RegisterInstrValue & 0x7F;
+            if (s.RegisterInstrValue < 1000000) return;
+            var opcode = s.RegisterInstrValue & 0x7F;
 
-                 switch(opcode)
-                {
-                    case 0x33:
-                        sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_R);
-                        break;
-                    case 0x13:
-                        sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_I);
-                        break;
-                    case 0x03:
-                    case 0x23:
-                        sidePanelInformer.SetStateInfo((int)StateName.MEM_ADDRESS);
-                        break;
-                    case 0x63:
-                        sidePanelInformer.SetStateInfo((int)StateName.BEQ);
-                        break;
-                    case 0x6F:
-                    case 0x67:
-                        sidePanelInformer.SetStateInfo((int)StateName.JAL);
-                        break;
-                }
+            switch(opcode)
+            {
+                case 0x33:
+                    sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_R);
+                    break;
+                case 0x13:
+                    sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_I);
+                    break;
+                case 0x03:
+                case 0x23:
+                    sidePanelInformer.SetStateInfo((int)StateName.MEM_ADDRESS);
+                    break;
+                case 0x63:
+                    sidePanelInformer.SetStateInfo((int)StateName.BEQ);
+                    break;
+                case 0x6F:
+                case 0x67:
+                    sidePanelInformer.SetStateInfo((int)StateName.JAL);
+                    break;
             }
         }
         else
         {
             sidePanelInformer.SetStateInfo((int)StateName.UNKNOWN);
-            Debug.LogWarning($"pc: {_pc.Output} | mem: {_dataIntructionMemory.Memory[_pc.Output] > 1000000} | isDa: {_dataIntructionMemory.Memory.ContainsKey(_pc.Output)}");
-            Debug.LogError($"instruction reg: {_instructionReg.Output}");
+            // Debug.LogWarning($"pc: {_pc.Output} | mem: {_dataIntructionMemory.Memory[_pc.Output] > 1000000} | isDa: {_dataIntructionMemory.Memory.ContainsKey(_pc.Output)}");
+            // Debug.LogError($"instruction reg: {_instructionReg.Output}");
         }
     }
 
@@ -808,7 +753,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         LevelManager.OnRequestNextLevelData -= GetNextLevelData;
     }
 
-    private object GetNextLevelData()
+    private static object GetNextLevelData()
     {
         if (Initial != null && Initial.nextSceneInitial != null)
         {
