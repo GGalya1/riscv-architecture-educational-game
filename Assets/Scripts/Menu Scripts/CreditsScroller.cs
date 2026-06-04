@@ -53,13 +53,11 @@ public class CreditsScroller : MonoBehaviour
             creditsText.DOFade(0f, transitionDuration).SetUpdate(true);
         }
 
-        if (loadingOverlay != null)
-        {
-            yield return loadingOverlay.DOFade(0f, transitionDuration)
-                .SetUpdate(true)
-                .WaitForCompletion();
+        if (loadingOverlay == null) yield break;
+        yield return loadingOverlay.DOFade(0f, transitionDuration)
+            .SetUpdate(true)
+            .WaitForCompletion();
 
-            loadingOverlay.blocksRaycasts = false;
-        }
+        loadingOverlay.blocksRaycasts = false;
     }
 }

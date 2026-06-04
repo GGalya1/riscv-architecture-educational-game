@@ -1,171 +1,154 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public struct LevelThreeState
 {
     public int RegisterPCValue;
     public int RegisterInstrValue;
 
-    public int firstMemoryValue;
-    public int secondMemoryValue;
-    public int thirdMemoryValue;
-    public int fourthMemoryValue;
+    public int FirstMemoryValue;
+    public int SecondMemoryValue;
+    public int ThirdMemoryValue;
+    public int FourthMemoryValue;
 
-    public bool RegisterPCWE;
-    public bool RegisterInstrWE;
-    public bool IntrDataMemoryWE;
+    public bool RegisterPcwe;
+    public bool RegisterInstrWe;
+    public bool IntrDataMemoryWe;
 
-    public int CurrentChoosenMuxPath; // т.к. можем вызвать ResetVisualization и, основываясь  на выбранном пути, вызвать один из методов Vizualizer
-    public int ALUOperation;
+    public int CurrentChoosenMuxPath; // since we can call ResetVisualization and, based on the selected path, call one of the Visualizer methods
+    public int AluOperation;
 }
 
-public class LevelThirdRegisseur : BaseLevelRegisseur
+public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 {
+    [FormerlySerializedAs("_multiplexerVisualizer")]
     [Header("Level 3 Specific Components")]
-    [SerializeField] protected MuiltiplexerVizualizer _multiplexerVisualizer;
-    [SerializeField] protected RegisterVizualizer _registerSrcAVisualizer;
-    [SerializeField] protected RegisterVizualizer _registerSrcBVisualizer;
-    [SerializeField] protected IntructionDataMemoryVizualizer _registerOutputVisualizer;
-    [SerializeField] protected ALUVizualiser _aluVizualizer;
+    [SerializeField] protected MultiplexerVisualizer multiplexerVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected InstructionDataMemoryVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVizualizer;
 
     [SerializeField] protected int srcAValue = 5;
     [SerializeField] protected int srcBValue = 7;
 
-    [SerializeField] protected Blinker _numberBlinker;
+    [FormerlySerializedAs("_numberBlinker")] [SerializeField] protected Blinker numberBlinker;
 
     #region CACHED UI REFERENCES
-    protected InfoPanelUI _infoSrcARegister;
-    protected InfoPanelUI _infoSrcBRegister;
-    protected InstrMemoryControlPanel _infoDataMemory; // ?
+    protected InfoPanelUI InfoSrcARegister;
+    protected InfoPanelUI InfoSrcBRegister;
+    protected InstrMemoryControlPanel InfoDataMemory; // ?
     #endregion
 
     // Intern components for computations
-    protected Register srcA;
-    protected Register srcB;
-    protected DataInstMemory dataIntructionMemory;
+    protected Register SrcA;
+    protected Register SrcB;
+    protected DataInstMemory DataIntructionMemory;
 
     // protected override int RightAnswerValue => 66;
 
    
-    protected int _currentBus = 0; // [0, 5]
+    protected int CurrentBus; // [0, 5]
 
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
-        srcA = new Register(srcAValue); srcA.WriteEnable = true;
-        srcB = new Register(srcBValue); srcB.WriteEnable = true;
-        dataIntructionMemory = new DataInstMemory(); dataIntructionMemory.MemoryWrite = true;
-        dataIntructionMemory.LoadWord(0, 256);
-        dataIntructionMemory.LoadWord(4, 128);
-        dataIntructionMemory.LoadWord(8, -89);
-        dataIntructionMemory.LoadWord(12, 66);
-
-        // Кэширование UI-панелей визуализаторов
-        _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
-        _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
-        _infoDataMemory = _registerOutputVisualizer.UIRegisterPanel;
-
-
-        if (_levelTargetDescription == null || _levelTargetDescription.Length == 0)
+        // Initialization of logical components
+        SrcA = new Register(srcAValue)
         {
-            _levelTargetText.text = $"Ziel: \r\nSchreibe in Register 2 den Wert {RightAnswerValue}";
-        }
-        else
+            WriteEnable = true
+        };
+        SrcB = new Register(srcBValue)
         {
-            _levelTargetText.text = _levelTargetDescription;
-        }
-        
+            WriteEnable = true
+        };
+        DataIntructionMemory = new DataInstMemory
+        {
+            MemoryWrite = true
+        };
+        DataIntructionMemory.LoadWord(0, 256);
+        DataIntructionMemory.LoadWord(4, 128);
+        DataIntructionMemory.LoadWord(8, -89);
+        DataIntructionMemory.LoadWord(12, 66);
 
-        UpdateVizualizers();
+        // Caching of UI panels for visualizers
+        InfoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
+        InfoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
+        InfoDataMemory = registerOutputVisualizer.UIRegisterPanel;
+       
+
+        UpdateVisualizers();
     }
 
-    protected override void ApplyState(object state)
+    protected override void ApplyState(LevelThreeState s)
     {
-        LevelThreeState s = (LevelThreeState)state;
+        SrcA = new Register(s.RegisterPCValue);
+        SrcB = new Register(s.RegisterInstrValue);
+        DataIntructionMemory = new DataInstMemory
+        {
+            Memory =
+            {
+                [0] = s.FirstMemoryValue,
+                [4] = s.SecondMemoryValue,
+                [8] = s.ThirdMemoryValue,
+                [12] = s.FourthMemoryValue
+            }
+        };
 
-        srcA = new Register(s.RegisterPCValue);
-        srcB = new Register(s.RegisterInstrValue);
-        dataIntructionMemory = new DataInstMemory();
-        dataIntructionMemory._memory[0] = s.firstMemoryValue;
-        dataIntructionMemory._memory[4] = s.secondMemoryValue;
-        dataIntructionMemory._memory[8] = s.thirdMemoryValue;
-        dataIntructionMemory._memory[12] = s.fourthMemoryValue;
+        SrcA.WriteEnable = s.RegisterPcwe;
+        SrcB.WriteEnable = s.RegisterInstrWe;
+        DataIntructionMemory.MemoryWrite = s.IntrDataMemoryWe;
 
-        srcA.WriteEnable = s.RegisterPCWE;
-        srcB.WriteEnable = s.RegisterInstrWE;
-        dataIntructionMemory.MemoryWrite = s.IntrDataMemoryWE;
-
-        int temp = s.CurrentChoosenMuxPath;
-        if (temp == -1)
-        {
-            _multiplexerVisualizer.ResetVizualization();
-        }
-        else if (temp == 0)
-        {
-            _multiplexerVisualizer.SelectPath(0);
-        }
-        else if (temp == 1)
-        {
-            _multiplexerVisualizer.SelectPath(1);
-        }
-        else if (temp == 2)
-        {
-            _multiplexerVisualizer.SelectPath(2);
-        }
-        else
-        {
-            Debug.LogError($"Saved multiplexer value {temp} is not in [0, 2]");
-        }
+        ApplyMuxState(s.CurrentChoosenMuxPath, multiplexerVisualizer);
     }
 
     protected override void BlinkClockedComponents()
     {
-        _registerSrcAVisualizer.TriggerBlink();
-        _registerSrcBVisualizer.TriggerBlink();
-        _registerOutputVisualizer.TriggerBlink();
-        _numberBlinker.Trigger();
+        registerSrcAVisualizer.TriggerBlink();
+        registerSrcBVisualizer.TriggerBlink();
+        registerOutputVisualizer.TriggerBlink();
+        numberBlinker.Trigger();
     }
 
     protected override bool CheckWinCondition()
     {
-        return (srcB.Output == RightAnswerValue);
+        return (SrcB.Output == RightAnswerValue);
     }
 
-    protected override object GetCurrentState()
+    protected override LevelThreeState GetCurrentState()
     {
         return new LevelThreeState
         {
-            RegisterPCValue = srcA.Output,
-            RegisterInstrValue = srcB.Output,
+            RegisterPCValue = SrcA.Output,
+            RegisterInstrValue = SrcB.Output,
 
-            firstMemoryValue = dataIntructionMemory._memory[0],
-            secondMemoryValue = dataIntructionMemory._memory[4],
-            thirdMemoryValue = dataIntructionMemory._memory[8],
-            fourthMemoryValue = dataIntructionMemory._memory[12],
+            FirstMemoryValue = DataIntructionMemory.Memory[0],
+            SecondMemoryValue = DataIntructionMemory.Memory[4],
+            ThirdMemoryValue = DataIntructionMemory.Memory[8],
+            FourthMemoryValue = DataIntructionMemory.Memory[12],
 
-            RegisterPCWE = srcA.WriteEnable,
-            RegisterInstrWE = srcB.WriteEnable,
-            IntrDataMemoryWE = dataIntructionMemory.MemoryWrite,
+            RegisterPcwe = SrcA.WriteEnable,
+            RegisterInstrWe = SrcB.WriteEnable,
+            IntrDataMemoryWe = DataIntructionMemory.MemoryWrite,
 
-            CurrentChoosenMuxPath = _multiplexerVisualizer.CurrentChoosenMuxPath,
-            ALUOperation = _aluVizualizer.CurrentALUOperation,
+            CurrentChoosenMuxPath = multiplexerVisualizer.CurrentChosenMuxPath,
+            AluOperation = aluVizualizer.CurrentAluOperation,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        int path = _multiplexerVisualizer.CurrentChoosenMuxPath;
-        int[] inputs = { srcA.Output, srcB.Output };
-        int res = 0;
+        var path = multiplexerVisualizer.CurrentChosenMuxPath;
+        int[] inputs = { SrcA.Output, SrcB.Output };
 
         if (path == -1)
         {
             Debug.LogError("Multiplexer path not selected (-1). Data will be lost.");
         }
-        else if (path >= 0 && path <= 1)
+        else if (path is >= 0 and <= 1)
         {
-            res = Multiplexer.SelectNto1(inputs, path);
+            Multiplexer.SelectNto1(inputs, path);
         }
         else
         {
@@ -173,47 +156,44 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         }
 
         // sinchronyse vizualisers and concrete objects
-        srcA.WriteEnable = _registerSrcAVisualizer.isWriteEnabled;
-        srcB.WriteEnable = _registerSrcBVisualizer.isWriteEnabled;
-        dataIntructionMemory.MemoryWrite = _registerOutputVisualizer.isWriteEnabled;
+        SrcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
+        SrcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
+        DataIntructionMemory.MemoryWrite = registerOutputVisualizer.isWriteEnabled;
 
         // implementation
-        if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
+        SrcB.Input = DataIntructionMemory.Memory.GetValueOrDefault(SrcA.Output, 0);
+        
+
+        var p = multiplexerVisualizer.CurrentChosenMuxPath;
+        switch (p)
         {
-            srcB.Input = dataIntructionMemory._memory[srcA.Output];
-        }
-        else {
-            srcB.Input = 0;
-        }
-        
-
-        int p = _multiplexerVisualizer.CurrentChoosenMuxPath;
-        if (p == -1) {
-            Debug.LogError("MUX path is -1. No value will be propagated");
-            srcA.Input = 0;
-        }
-        else if (p == 0) {
-            srcA.Input = ALU.calculate(srcA.Output, 4, _aluVizualizer.CurrentALUOperation);
-        }
-        else if (p == 1) {
-            srcA.Input = ALU.calculate(srcB.Output, 4, _aluVizualizer.CurrentALUOperation);
-        }
-        else {
-            Debug.LogError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
-            srcA.Input = 0;
+            case -1:
+                Debug.LogError("MUX path is -1. No value will be propagated");
+                SrcA.Input = 0;
+                break;
+            case 0:
+                SrcA.Input = Alu.Calculate(SrcA.Output, 4, aluVizualizer.CurrentAluOperation);
+                break;
+            case 1:
+                SrcA.Input = Alu.Calculate(SrcB.Output, 4, aluVizualizer.CurrentAluOperation);
+                break;
+            default:
+                Debug.LogError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
+                SrcA.Input = 0;
+                break;
         }
         
         
 
-        srcA.PreClockUpdate();
-        srcB.PreClockUpdate();
-        dataIntructionMemory.PreClockUpdate();
+        SrcA.PreClockUpdate();
+        SrcB.PreClockUpdate();
+        DataIntructionMemory.PreClockUpdate();
 
 
         // Only if WriteEnable = true, call Clock
-        srcA.Clock();
-        srcB.Clock();
-        dataIntructionMemory.Clock();
+        SrcA.Clock();
+        SrcB.Clock();
+        DataIntructionMemory.Clock();
     }
 
     /*protected override bool IsStateEqual(object state)
@@ -228,7 +208,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
                 (s.thirdMemoryValue == dataIntructionMemory._memory[8]) &&
                 (s.fourthMemoryValue == dataIntructionMemory._memory[12]) &&
 
-                (s.CurrentChoosenMuxPath == _multiplexerVisualizer.CurrentChoosenMuxPath) &&
+                (s.CurrentChosenMuxPath == _multiplexerVisualizer.CurrentChosenMuxPath) &&
                 (s.RegisterPCWE == srcA.WriteEnable) &&
                 (s.RegisterInstrWE == srcB.WriteEnable) &&
                 (s.IntrDataMemoryWE == dataIntructionMemory.MemoryWrite) &&
@@ -237,181 +217,132 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
 
     protected override IEnumerator ReverseBusVisualizations()
     {
-        if (_currentBus >= 1 && _currentBus <= _maxTickNumber)
+        if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[5], srcA.Input, true);
+            busController.StartBusSignal(busController.busSegments[5], SrcA.Input, true);
 
-            if (_tickStateValues[_tickCounter] is LevelThreeState s)
-            {
-                int upperBusSignal = 0;
-                if (_multiplexerVisualizer.CurrentChoosenMuxPath == 0) {
-                    upperBusSignal = s.RegisterPCValue;
+
+                var upperBusSignal = 0;
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0) {
+                    upperBusSignal = TickStateValues[TickCounter].RegisterPCValue;
                 }
-                else if (_multiplexerVisualizer.CurrentChoosenMuxPath == 1) {
-                    upperBusSignal = s.RegisterInstrValue;
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1) {
+                    upperBusSignal = TickStateValues[TickCounter].RegisterInstrValue;
                 }
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[3], _busController.busSegments[4], upperBusSignal, 4, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], upperBusSignal, busController.busSegments[4], 4, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[6], _busController.busSegments[2], s.RegisterPCValue, s.RegisterInstrValue, true, true));
-            }
-
-            yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], srcB.Input, true));
-
-            if (_tickStateValues[_tickCounter] is LevelThreeState st)
-            {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[0], st.RegisterPCValue, true));
-            }
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[6], TickStateValues[TickCounter].RegisterPCValue, busController.busSegments[2], TickStateValues[TickCounter].RegisterInstrValue, true, true));
             
 
-            _currentBus--;
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[1], SrcB.Input, true));
+
+
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[0], TickStateValues[TickCounter].RegisterPCValue, true));
+            
+            
+
+            CurrentBus--;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override IEnumerator RunBusVisualizations()
     {
-        if (_currentBus >= 0 && _currentBus < _maxTickNumber)
+        if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
-            _busController.StartBusSignal(_busController.busSegments[6], srcA.Output);
+            busController.StartBusSignal(busController.busSegments[0], SrcA.Output);
+            busController.StartBusSignal(busController.busSegments[6], SrcA.Output);
 
-            // должна с коротким делеем
-            if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
+            // should be by a short divisor
+            if (DataIntructionMemory.Memory.TryGetValue(SrcA.Output, out var value))
             {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], dataIntructionMemory._memory[srcA.Output]));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], value));
             }
             else {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], 0));
             }
 
 
-            // должна после первого с коротким делеем
-            yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[2], srcB.Output));
+            // should follow the first one with a short division
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[2], SrcB.Output));
 
-            int propagationVal = 0;
-            if (_multiplexerVisualizer.CurrentChoosenMuxPath == -1)
+            var propagationVal = 0;
+            if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[4], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[4], 0));
             }
             else {
                 
-                if (_multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
-                    propagationVal = srcA.Output;
+                    propagationVal = SrcA.Output;
                 }
-                else if (_multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
-                    propagationVal = srcB.Output;
+                    propagationVal = SrcB.Output;
                 }
                 else
                 {
-                    Debug.LogError($"Unexpected MUX path {_multiplexerVisualizer.CurrentChoosenMuxPath}");
+                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[3], _busController.busSegments[4], propagationVal, 4));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], propagationVal, busController.busSegments[4], 4));
             }
 
 
             // from ALU to first register
-            yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[5], ALU.calculate(propagationVal, 4, _aluVizualizer.CurrentALUOperation)));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
 
-            _currentBus++;
+            CurrentBus++;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-
-
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, bool reverse=false)
+    protected override void UpdateVisualizers()
     {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        InfoSrcARegister.Display("Register 1", $"{SrcA.Output}");
+        InfoSrcBRegister.Display("Register 2", $"{SrcB.Output}");
+        registerOutputVisualizer.UIRegisterPanel.Display($"{DataIntructionMemory.Memory[0]}", $"{DataIntructionMemory.Memory[4]}", $"{DataIntructionMemory.Memory[8]}", $"{DataIntructionMemory.Memory[12]}");
 
-        // Запускаем третий сигнал
-        _busController.StartBusSignal(busToStart, reverse);
-    }
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
-    {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
-
-        // Запускаем третий сигнал
-        _busController.StartBusSignal(busToStart, value, reverse);
-    }
-
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart)
-    {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
-
-        _busController.StartBusSignal(firstBusToStart);
-        _busController.StartBusSignal(secondBusToStart);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
-
-        _busController.StartBusSignal(firstBusToStart, firstReverse);
-        _busController.StartBusSignal(secondBusToStart, secondReverse);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2)
-    {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
-
-        _busController.StartBusSignal(firstBusToStart, val1);
-        _busController.StartBusSignal(secondBusToStart, val2);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
-
-        _busController.StartBusSignal(firstBusToStart, val1, firstReverse);
-        _busController.StartBusSignal(secondBusToStart, val2, secondReverse);
-    }
-
-    protected override void UpdateVizualizers()
-    {
-        _infoSrcARegister.Display("Register 1", $"{srcA.Output}");
-        _infoSrcBRegister.Display("Register 2", $"{srcB.Output}");
-        //_infoDataMemory.Display($"{dataIntructionMemory._memory[0]}", $"{dataIntructionMemory._memory[4]}", $"{dataIntructionMemory._memory[8]}", $"{dataIntructionMemory._memory[12]}");
-        _registerOutputVisualizer.UIRegisterPanel.Display($"{dataIntructionMemory._memory[0]}", $"{dataIntructionMemory._memory[4]}", $"{dataIntructionMemory._memory[8]}", $"{dataIntructionMemory._memory[12]}");
-
-        _registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(srcA.WriteEnable);
-        _registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(srcB.WriteEnable);
-        _registerOutputVisualizer.ForceUpdateWriteEnableVisualization(dataIntructionMemory.MemoryWrite);
+        registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(SrcA.WriteEnable);
+        registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(SrcB.WriteEnable);
+        registerOutputVisualizer.ForceUpdateWriteEnableVisualization(DataIntructionMemory.MemoryWrite);
     }
 
     #region
-    protected override void BlockIngameInteractables()
+    protected override void BlockInGameInteractable()
     {
-        _registerSrcAVisualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerSrcBVisualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerOutputVisualizer.UIRegisterPanel.WEButton.interactable = false;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
 
-        _multiplexerVisualizer.UIController.FirstWayButton.interactable = false;
-        _multiplexerVisualizer.UIController.SecondWayButton.interactable = false;
+        multiplexerVisualizer.UIController.FirstWayButton.interactable = false;
+        multiplexerVisualizer.UIController.SecondWayButton.interactable = false;
 
 
-        _aluVizualizer.UIController.FirstOperationButton.interactable = false;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = false;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = false;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = false;
+        aluVizualizer.uiController.FirstOperationButton.interactable = false;
+        aluVizualizer.uiController.SecondOperationButton.interactable = false;
+        aluVizualizer.uiController.ThirdOperationButton.interactable = false;
+        aluVizualizer.uiController.FourthOperationButton.interactable = false;
     }
 
-    protected override void ReleaseIngameInteractables()
+    protected override void ReleaseInGameInteractable()
     {
-        _registerSrcAVisualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerSrcBVisualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerOutputVisualizer.UIRegisterPanel.WEButton.interactable = true;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        _multiplexerVisualizer.UIController.FirstWayButton.interactable = true;
-        _multiplexerVisualizer.UIController.SecondWayButton.interactable = true;
+        multiplexerVisualizer.UIController.FirstWayButton.interactable = true;
+        multiplexerVisualizer.UIController.SecondWayButton.interactable = true;
 
 
-        _aluVizualizer.UIController.FirstOperationButton.interactable = true;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = true;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = true;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = true;
+        aluVizualizer.uiController.FirstOperationButton.interactable = true;
+        aluVizualizer.uiController.SecondOperationButton.interactable = true;
+        aluVizualizer.uiController.ThirdOperationButton.interactable = true;
+        aluVizualizer.uiController.FourthOperationButton.interactable = true;
     }
     #endregion
 }

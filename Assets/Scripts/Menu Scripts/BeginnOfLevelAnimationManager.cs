@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Manages transitions between gameplay UI and dialogue panels.
@@ -18,9 +19,10 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
     [SerializeField] private RectTransform dialoguePanelRectTransform;
 
 
+    [FormerlySerializedAs("_fadeTime")]
     [Header("Animation Settings")]
-    [SerializeField] private float _fadeTime = 0.3f;
-    [SerializeField] private float _yOffset = 100f;
+    [SerializeField] private float fadeTime = 0.3f;
+    [FormerlySerializedAs("_yOffset")] [SerializeField] private float yOffset = 100f;
     [SerializeField] private Ease showEase = Ease.OutBack;
     [SerializeField] private Ease hideEase = Ease.InQuint;
 
@@ -41,7 +43,7 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
     /// </summary>
     public void HideDialogue()
     {
-        HideUI(dialoguePanelGroup, dialoguePanelRectTransform, _dialogueStartPos, _fadeTime);
+        HideUI(dialoguePanelGroup, dialoguePanelRectTransform, _dialogueStartPos, fadeTime);
 
         ShowInGameUI(oftenPanelGroup, oftenPanelRectTransform, _oftenStartPos);
         ShowInGameUI(mediumPanelGroup, mediumPanelRectTransform, _mediumStartPos);
@@ -57,17 +59,17 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
         ShowInGameUI(dialoguePanelGroup, dialoguePanelRectTransform, _dialogueStartPos);
     }
 
-    private void HideUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos, float fadeTime) {
+    private void HideUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos, float uiFadeTime) {
         panelGroup.DOKill();
         reactTransform.DOKill();
 
         panelGroup.interactable = false;
         panelGroup.blocksRaycasts = false;
 
-        Vector2 hidePos = new Vector2(startPos.x, startPos.y - _yOffset);
+        var hidePos = new Vector2(startPos.x, startPos.y - yOffset);
 
-        reactTransform.DOAnchorPos(hidePos, fadeTime).SetEase(hideEase);
-        panelGroup.DOFade(0, fadeTime);
+        reactTransform.DOAnchorPos(hidePos, uiFadeTime).SetEase(hideEase);
+        panelGroup.DOFade(0, uiFadeTime);
     }
 
     private void ShowInGameUI(CanvasGroup panelGroup, RectTransform reactTransform, Vector2 startPos) {
@@ -77,7 +79,7 @@ public class BeginnOfLevelAnimationManager : MonoBehaviour
         panelGroup.interactable = true;
         panelGroup.blocksRaycasts = true;
 
-        reactTransform.DOAnchorPos(startPos, _fadeTime).SetEase(showEase);
-        panelGroup.DOFade(1, _fadeTime);
+        reactTransform.DOAnchorPos(startPos, fadeTime).SetEase(showEase);
+        panelGroup.DOFade(1, fadeTime);
     }
 }

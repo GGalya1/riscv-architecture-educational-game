@@ -1,304 +1,306 @@
 using System.Collections;
-using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public struct ExtendedSevenLevelState
 {
     public int RegisterSrcAValue;
     public int RegisterSrcBValue;
     public int RegisterA3Value;
-    public int RegisterWD3Value;
+    public int RegisterWd3Value;
 
     public int[] RegisterFieldValue;
 
-    public bool RegisterSrcAWE;
-    public bool RegisterSrcBWE;
-    public bool RegisterA3WE;
-    public bool RegisterWD3WE;
+    public bool RegisterSrcAwe;
+    public bool RegisterSrcBwe;
+    public bool RegisterA3We;
+    public bool RegisterWd3We;
 
-    public int ALUOperation;
+    public int AluOperation;
 }
 
-public class ExtendedLevelSeven : BaseLevelRegisseur
+public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 {
+    [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level Seven Components")]
-    [SerializeField] protected RegisterVizualizer _registerSrcAVisualizer;
-    [SerializeField] protected RegisterVizualizer _registerSrcBVisualizer;
-    [SerializeField] protected RegisterVizualizer _registerA3Visualizer;
-    [SerializeField] protected RegisterVizualizer _registerWD3Visualizer;
+    [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVisualizer registerA3Visualizer;
+    [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVisualizer registerWd3Visualizer;
 
-    [SerializeField] protected ALUVizualiser _aluVizualizer;
+    [FormerlySerializedAs("aluVisualizer")] [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVisualizer;
 
-    [SerializeField] protected RegisterFileVizualizer _registerFileVisualizer;
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
 
     #region CACHED UI REFERENCES
-    protected InfoPanelUI _infoSrcARegister;
-    protected InfoPanelUI _infoSrcBRegister;
-    protected InfoPanelUI _infoA3Register;
-    protected InfoPanelUI _infoWD3Register;
+    protected InfoPanelUI InfoSrcARegister;
+    protected InfoPanelUI InfoSrcBRegister;
+    protected InfoPanelUI InfoA3Register;
+    protected InfoPanelUI InfoWd3Register;
     #endregion
 
     // Intern components for computations
-    protected Register srcA;
-    protected Register srcB;
-    protected Register a3;
-    protected Register wd3;
+    protected Register SrcA;
+    protected Register SrcB;
+    protected Register A3;
+    protected Register Wd3;
 
-    protected RegisterFile registerFile;
+    protected RegisterFile RegisterFile;
 
 
-    protected int _currentBus = 0; // [0, 10]
+    protected int CurrentBus; // [0, 10]
 
     protected override void OnLevelStart()
     {
-        srcA = new Register(2); srcA.WriteEnable = true;
-        srcB = new Register(8); srcB.WriteEnable = true;
-        a3 = new Register(0); a3.WriteEnable = true;
-        wd3 = new Register(0); wd3.WriteEnable = true;
+        SrcA = new Register(2)
+        {
+            WriteEnable = true
+        };
+        SrcB = new Register(8)
+        {
+            WriteEnable = true
+        };
+        A3 = new Register()
+        {
+            WriteEnable = true
+        };
+        Wd3 = new Register()
+        {
+            WriteEnable = true
+        };
 
-        registerFile = new RegisterFile(); registerFile.RegisterWriteEnable = true;
-        registerFile.InitializeRegisters(new int[] { 0, 1, 39, 43, 5, 6, 8,
+        RegisterFile = new RegisterFile
+        {
+            RegisterWriteEnable = true
+        };
+        RegisterFile.InitializeRegisters(new [] { 0, 1, 39, 43, 5, 6, 8,
                                                      40, 3, 39, 13, 56, 64, 20,
                                                      50, 51, 0, 12, 53, 65, 29,
                                                      60, 61, 0, 25, 54, 0, 28,
                                                      70, 30, 31, 0});
 
-        // Кэширование UI-панелей визуализаторов
-        _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
-        _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
-        _infoA3Register = _registerA3Visualizer.UIRegisterPanel;
-        _infoWD3Register = _registerWD3Visualizer.UIRegisterPanel;
+        // Caching of UI panels for visualizers
+        InfoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
+        InfoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
+        InfoA3Register = registerA3Visualizer.UIRegisterPanel;
+        InfoWd3Register = registerWd3Visualizer.UIRegisterPanel;
 
-
-        if (_levelTargetDescription == null || _levelTargetDescription.Length == 0)
-        {
-            _levelTargetText.text = $"Hier Ziel schreiben";
-        }
-        else
-        {
-            _levelTargetText.text = _levelTargetDescription;
-        }
-
-        UpdateVizualizers();
+        UpdateVisualizers();
     }
 
-    protected override void ApplyState(object state)
+    protected override void ApplyState(ExtendedSevenLevelState s)
     {
-        ExtendedSevenLevelState s = (ExtendedSevenLevelState)state;
+        SrcA = new Register(s.RegisterSrcAValue);
+        SrcB = new Register(s.RegisterSrcBValue);
+        A3 = new Register(s.RegisterA3Value);
+        Wd3 = new Register(s.RegisterWd3Value);
 
-        srcA = new Register(s.RegisterSrcAValue);
-        srcB = new Register(s.RegisterSrcBValue);
-        a3 = new Register(s.RegisterA3Value);
-        wd3 = new Register(s.RegisterWD3Value);
+        RegisterFile.InitializeRegisters(s.RegisterFieldValue);
 
-        registerFile.InitializeRegisters(s.RegisterFieldValue);
+        SrcA.WriteEnable = s.RegisterSrcAwe;
+        SrcB.WriteEnable = s.RegisterSrcBwe;
+        A3.WriteEnable = s.RegisterA3We;
+        Wd3.WriteEnable = s.RegisterWd3We;
 
-        srcA.WriteEnable = s.RegisterSrcAWE;
-        srcB.WriteEnable = s.RegisterSrcBWE;
-        a3.WriteEnable = s.RegisterA3WE;
-        wd3.WriteEnable = s.RegisterWD3WE;
-
-        _aluVizualizer.ChooseALUOperation(s.ALUOperation);
+        aluVisualizer.ChooseAluOperation(s.AluOperation);
     }
 
     protected override void BlinkClockedComponents()
     {
-        _registerSrcAVisualizer.TriggerBlink();
-        _registerSrcBVisualizer.TriggerBlink();
-        _registerA3Visualizer.TriggerBlink();
-        _registerWD3Visualizer.TriggerBlink();
+        registerSrcAVisualizer.TriggerBlink();
+        registerSrcBVisualizer.TriggerBlink();
+        registerA3Visualizer.TriggerBlink();
+        registerWd3Visualizer.TriggerBlink();
 
-        _registerFileVisualizer.TriggerBlink();
+        registerFileVisualizer.TriggerBlink();
 
     }
 
-    protected override void BlockIngameInteractables()
+    protected override void BlockInGameInteractable()
     {
-        _registerFileVisualizer.UIRegisterPanel.WEButton.interactable = false;
+        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        _registerSrcAVisualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerSrcBVisualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerA3Visualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerWD3Visualizer.UIRegisterPanel.WEButton.interactable = false;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        _aluVizualizer.UIController.FirstOperationButton.interactable = false;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = false;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = false;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = false;
+        aluVisualizer.uiController.FirstOperationButton.interactable = false;
+        aluVisualizer.uiController.SecondOperationButton.interactable = false;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
+        aluVisualizer.uiController.FourthOperationButton.interactable = false;
     }
 
     protected override bool CheckWinCondition()
     {
-        return registerFile.Registers[0] == 42;
+        return RegisterFile.Registers[0] == 42;
     }
 
-    protected override object GetCurrentState()
+    protected override ExtendedSevenLevelState GetCurrentState()
     {
         return new ExtendedSevenLevelState {
-            RegisterSrcAValue = srcA.Output,
-            RegisterSrcBValue = srcB.Output,
-            RegisterA3Value = a3.Output,
-            RegisterWD3Value = wd3.Output,
+            RegisterSrcAValue = SrcA.Output,
+            RegisterSrcBValue = SrcB.Output,
+            RegisterA3Value = A3.Output,
+            RegisterWd3Value = Wd3.Output,
 
-            RegisterFieldValue = registerFile.Registers,
+            RegisterFieldValue = (int[])RegisterFile.Registers.Clone(),
 
-            RegisterSrcAWE = srcA.WriteEnable,
-            RegisterSrcBWE = srcB.WriteEnable,
-            RegisterA3WE = a3.WriteEnable,
-            RegisterWD3WE = wd3.WriteEnable,
+            RegisterSrcAwe = SrcA.WriteEnable,
+            RegisterSrcBwe = SrcB.WriteEnable,
+            RegisterA3We = A3.WriteEnable,
+            RegisterWd3We = Wd3.WriteEnable,
 
-            ALUOperation = _aluVizualizer.CurrentALUOperation,
+            AluOperation = aluVisualizer.CurrentAluOperation,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        srcA.WriteEnable = _registerSrcAVisualizer.isWriteEnabled;
-        srcB.WriteEnable = _registerSrcBVisualizer.isWriteEnabled;
-        a3.WriteEnable = _registerA3Visualizer.isWriteEnabled;
-        wd3.WriteEnable = _registerWD3Visualizer.isWriteEnabled;
+        SrcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
+        SrcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
+        A3.WriteEnable = registerA3Visualizer.isWriteEnabled;
+        Wd3.WriteEnable = registerWd3Visualizer.isWriteEnabled;
 
-        registerFile.RegisterWriteEnable = _registerFileVisualizer.isWriteEnabled;
+        RegisterFile.RegisterWriteEnable = registerFileVisualizer.isWriteEnabled;
 
         // implementation
         // A1: [19:15] (Register Source 1)
-        registerFile.ReadAdress1 = srcA.Output;
+        RegisterFile.ReadAdress1 = SrcA.Output;
 
         // A2: [24:20] (Register Source 2)
-        registerFile.ReadAdress2 = srcB.Output;
+        RegisterFile.ReadAdress2 = SrcB.Output;
 
-        registerFile.ReadRegisters();
+        RegisterFile.ReadRegisters();
 
         // A3: [11:7] (Register Destination / rd)
 
-        int a = registerFile.ReadData1;
-        int b = registerFile.ReadData2;
+        var a = RegisterFile.ReadData1;
+        var b = RegisterFile.ReadData2;
 
-        wd3.Input = ALU.calculate(a, b, _aluVizualizer.CurrentALUOperation);
-        if (_tickCounter - 1 >= 0)
+        Wd3.Input = Alu.Calculate(a, b, aluVisualizer.CurrentAluOperation);
+        if (TickCounter - 1 >= 0)
         {
-            ExtendedSevenLevelState legcyState = (ExtendedSevenLevelState)_tickStateValues[_tickCounter - 1];
-
-            registerFile.WriteAdress = legcyState.RegisterA3Value;
+            RegisterFile.WriteAdress = TickStateValues[TickCounter - 1].RegisterA3Value;
         }
-        registerFile.WriteData = wd3.Output;
+        RegisterFile.WriteData = Wd3.Output;
 
 
-        srcA.PreClockUpdate();
-        srcB.PreClockUpdate();
-        a3.PreClockUpdate();
-        wd3.PreClockUpdate();
+        SrcA.PreClockUpdate();
+        SrcB.PreClockUpdate();
+        A3.PreClockUpdate();
+        Wd3.PreClockUpdate();
 
-        srcA.Clock();
-        srcB.Clock();
-        a3.Clock();
-        wd3.Clock();
-        registerFile.Clock();
+        SrcA.Clock();
+        SrcB.Clock();
+        A3.Clock();
+        Wd3.Clock();
+        RegisterFile.Clock();
     }
 
-    protected override void ReleaseIngameInteractables()
+    protected override void ReleaseInGameInteractable()
     {
-        _registerFileVisualizer.UIRegisterPanel.WEButton.interactable = true;
+        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        _registerSrcAVisualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerSrcBVisualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerA3Visualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerWD3Visualizer.UIRegisterPanel.WEButton.interactable = true;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        _aluVizualizer.UIController.FirstOperationButton.interactable = true;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = true;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = true;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = true;
+        aluVisualizer.uiController.FirstOperationButton.interactable = true;
+        aluVisualizer.uiController.SecondOperationButton.interactable = true;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
+        aluVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
     {
-        if (_currentBus >= 1 && _currentBus <= _maxTickNumber)
+        if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[6], wd3.Input, true);
+            busController.StartBusSignal(busController.busSegments[6], Wd3.Input, true);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[5], wd3.Input, true);
+            busController.StartBusSignal(busController.busSegments[5], Wd3.Input, true);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            int a = 0;
-            int b = 0;
-            if (srcA.Output > 0 && srcA.Output < 16)
-                a = registerFile.Registers[srcA.Output];
+            var a = 0;
+            var b = 0;
+            if (SrcA.Output is > 0 and < 16)
+                a = RegisterFile.Registers[SrcA.Output];
 
-            if (srcB.Output > 0 & srcB.Output < 16)
-                b = registerFile.Registers[srcB.Output];
+            if (SrcB.Output > 0 & SrcB.Output < 16)
+                b = RegisterFile.Registers[SrcB.Output];
 
-            _busController.StartBusSignal(_busController.busSegments[3], a, true);
-            _busController.StartBusSignal(_busController.busSegments[4], b, true);
+            busController.StartBusSignal(busController.busSegments[3], a, true);
+            busController.StartBusSignal(busController.busSegments[4], b, true);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output, true);
-            _busController.StartBusSignal(_busController.busSegments[1], srcB.Output, true);
-            _busController.StartBusSignal(_busController.busSegments[2], a3.Output, true);
+            busController.StartBusSignal(busController.busSegments[0], SrcA.Output, true);
+            busController.StartBusSignal(busController.busSegments[1], SrcB.Output, true);
+            busController.StartBusSignal(busController.busSegments[2], A3.Output, true);
 
-            _currentBus--;
+            CurrentBus--;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override IEnumerator RunBusVisualizations()
     {
-        if (_currentBus >= 0 && _currentBus < _maxTickNumber)
+        if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
-            _busController.StartBusSignal(_busController.busSegments[1], srcB.Output);
-            _busController.StartBusSignal(_busController.busSegments[2], a3.Output);
+            busController.StartBusSignal(busController.busSegments[0], SrcA.Output);
+            busController.StartBusSignal(busController.busSegments[1], SrcB.Output);
+            busController.StartBusSignal(busController.busSegments[2], A3.Output);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            int a = 0;
-            int b = 0;
-            if (srcA.Output > 0 && srcA.Output < 16)
-                a = registerFile.Registers[srcA.Output];
+            var a = 0;
+            var b = 0;
+            if (SrcA.Output is > 0 and < 16)
+                a = RegisterFile.Registers[SrcA.Output];
             
-            if(srcB.Output > 0 & srcB.Output < 16)
-                b = registerFile.Registers[srcB.Output];
+            if(SrcB.Output > 0 & SrcB.Output < 16)
+                b = RegisterFile.Registers[SrcB.Output];
             
 
-            _busController.StartBusSignal(_busController.busSegments[3], a);
-            _busController.StartBusSignal(_busController.busSegments[4], b);
+            busController.StartBusSignal(busController.busSegments[3], a);
+            busController.StartBusSignal(busController.busSegments[4], b);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[5], ALU.calculate(a, b, _aluVizualizer.CurrentALUOperation));
+            busController.StartBusSignal(busController.busSegments[5], Alu.Calculate(a, b, aluVisualizer.CurrentAluOperation));
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[6], wd3.Output);
+            busController.StartBusSignal(busController.busSegments[6], Wd3.Output);
 
-            _currentBus++;
+            CurrentBus++;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-    protected override void UpdateVizualizers()
+    protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register A1", $"{srcA.Output}");
-        _infoSrcBRegister.Display("Register A2", $"{srcB.Output}");
-        _infoA3Register.Display("Register A3", $"{a3.Output}");
-        _infoWD3Register.Display("Register WD3", $"{wd3.Output}");
+        InfoSrcARegister.Display("Register A1", $"{SrcA.Output}");
+        InfoSrcBRegister.Display("Register A2", $"{SrcB.Output}");
+        InfoA3Register.Display("Register A3", $"{A3.Output}");
+        InfoWd3Register.Display("Register WD3", $"{Wd3.Output}");
 
 
-        _registerFileVisualizer.UIRegisterPanel.Display(registerFile.Registers);
+        registerFileVisualizer.UIRegisterPanel.Display(RegisterFile.Registers);
 
 
         // ==============================  WE SECTION  =====================================
-        _registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(srcA.WriteEnable);
-        _registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(srcB.WriteEnable);
-        _registerA3Visualizer.ForceUpdateWriteEnableVisualization(a3.WriteEnable);
-        _registerWD3Visualizer.ForceUpdateWriteEnableVisualization(wd3.WriteEnable);
+        registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(SrcA.WriteEnable);
+        registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(SrcB.WriteEnable);
+        registerA3Visualizer.ForceUpdateWriteEnableVisualization(A3.WriteEnable);
+        registerWd3Visualizer.ForceUpdateWriteEnableVisualization(Wd3.WriteEnable);
 
-        _registerFileVisualizer.ForceUpdateWriteEnableVisualization(registerFile.RegisterWriteEnable);
+        registerFileVisualizer.ForceUpdateWriteEnableVisualization(RegisterFile.RegisterWriteEnable);
     }
 }

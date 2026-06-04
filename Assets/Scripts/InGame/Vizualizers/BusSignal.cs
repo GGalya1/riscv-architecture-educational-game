@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class BusSignal : BaseVizualizer
+public class BusSignal : BaseVisualizer
 {
-    private InfoPanelUI _uiController;
-    public InfoPanelUI UIRegisterPanel => _uiController;
+    public InfoPanelUI UIRegisterPanel { get; private set; }
 
     protected override void Awake()
     {
@@ -11,21 +10,21 @@ public class BusSignal : BaseVizualizer
 
         base.Awake();
 
-        if (_uiController != null)
+        if (UIRegisterPanel != null)
         {
-            _uiController.Display("", "N/A");
+            UIRegisterPanel.Display("", "N/A");
         }
     }
 
-    public override void ResetVizualization()
+    public override void ResetVisualisation()
     {
         throw new System.NotImplementedException();
     }
 
     protected override void InitializePanelController()
     {
-        _uiController = _panelInstance.GetComponent<InfoPanelUI>();
-        if (_uiController == null)
+        UIRegisterPanel = panelInstance.GetComponent<InfoPanelUI>();
+        if (UIRegisterPanel == null)
         {
             Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }

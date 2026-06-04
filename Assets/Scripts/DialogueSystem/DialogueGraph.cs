@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Acts as a container for a collection of dialogue nodes.
@@ -12,6 +13,6 @@ public class DialogueGraph : ScriptableObject
     /// The list of all nodes belonging to this dialogue graph.
     /// The indices of these nodes are referenced by DialogueNode's for branching.
     /// </summary>
-    [Tooltip("List of all dialogue steps in this specific conversation.")]
-    public List<DialogueNode> Nodes;
+    [FormerlySerializedAs("Nodes")] [Tooltip("List of all dialogue steps in this specific conversation.")]
+    public List<DialogueNode> nodes;
 }

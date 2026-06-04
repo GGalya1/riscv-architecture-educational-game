@@ -69,5 +69,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Full Mehrtaktprozessor/Level 10.unity
     guid: 94ae3717184a6fb498674999c8b7d6df
   m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: a14338f34efcce845918c7e64a301eba, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.localization.settings: {fileID: 11400000, guid: e78799fa0f6c85a48be10143bf62cf94, type: 2}
   m_UseUCBPForAssetBundles: 0

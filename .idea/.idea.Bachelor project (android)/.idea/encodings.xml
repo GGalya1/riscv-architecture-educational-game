@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/DialogueSystem/DialogueUI.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/CameraController.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/BaseLevelRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/First/LevelOneRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/Five/LevelFiveRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/FullProcessorRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/LevelFourthRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/LevelThirdRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/LevelZeroRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/Seven/ExtendedLevelSeven.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/Seven/LevelSevenRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Regisseur/Seven/SubExtendedRegisseur.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Vizualizers/AluVisualiser.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Vizualizers/BaseVisualizer.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Vizualizers/BusController.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/InGame/Vizualizers/MuiltiplexerVizualizer.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Menu Scripts/Localization/FontManager.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Processior Components/combinational/Extender.cs" charset="UTF-8" />
+  </component>
+</project>

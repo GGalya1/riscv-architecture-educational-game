@@ -1,27 +1,27 @@
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.XR;
+using UnityEngine.Serialization;
 
-public class MuiltiplexerVizualizer: BaseVizualizer
+public class MultiplexerVisualizer: BaseVisualizer
 {
+    [FormerlySerializedAs("_inputBuses")]
     [Header("Bus Line Renderers")]
-    [SerializeField] private LineRenderer[] _inputBuses;
+    [SerializeField] private LineRenderer[] inputBuses;
 
-    [SerializeField] private LineRenderer _outputBus;
-    [SerializeField] private LineRenderer _controlBus;
+    [FormerlySerializedAs("_outputBus")] [SerializeField] private LineRenderer outputBus;
+    [FormerlySerializedAs("_controlBus")] [SerializeField] private LineRenderer controlBus;
 
+    [FormerlySerializedAs("_bitRenderers")]
     [Header("Visual Bits Renderers")]
-    [SerializeField] private Renderer[] _bitRenderers;
+    [SerializeField] private Renderer[] bitRenderers;
 
+    [FormerlySerializedAs("_disabledColor")]
     [Header("Colors")]
-    [SerializeField] private Color _disabledColor = Color.gray;
-    [SerializeField] private Color _activeColor = Color.red;
+    [SerializeField] private Color disabledColor = Color.gray;
+    [FormerlySerializedAs("_activeColor")] [SerializeField] private Color activeColor = Color.red;
 
-    private MultiplexerControlPanel _uiController;
-    public MultiplexerControlPanel UIController => _uiController;
+    public MultiplexerControlPanel UIController { get; private set; }
 
-    private int _currentChoosenPath = -1;
-    public int CurrentChoosenMuxPath => _currentChoosenPath;
+    public int CurrentChosenMuxPath { get; private set; } = -1;
 
     private MaterialPropertyBlock _propBlock;
     private static readonly int ColorPropertyID = Shader.PropertyToID("_BaseColor");
@@ -33,44 +33,44 @@ public class MuiltiplexerVizualizer: BaseVizualizer
         base.Awake();
 
  
-        if (_uiController != null)
+        if (UIController != null)
         {
-            if (_bitRenderers.Length > 2) 
+            if (bitRenderers.Length > 2) 
             {
-                _uiController.Setup(true, true, true, "Multiplexer 3");
+                UIController.Setup(true, true, true, "Multiplexer 3");
             }
             else
             {
-                _uiController.Setup(true, true, false, "Multiplexer 2");
+                UIController.Setup(true, true, false, "Multiplexer 2");
             }
         }
 
-        _uiController.FirstWayButton.onClick.AddListener(() => SelectPath(0));
-        _uiController.SecondWayButton.onClick.AddListener(() => SelectPath(1));
-        _uiController.ThirdWayButton.onClick.AddListener(() => SelectPath(2));
+        UIController.FirstWayButton.onClick.AddListener(() => SelectPath(0));
+        UIController.SecondWayButton.onClick.AddListener(() => SelectPath(1));
+        UIController.ThirdWayButton.onClick.AddListener(() => SelectPath(2));
 
-        ResetVizualization();
+        ResetVisualisation();
     }
     protected override void InitializePanelController()
     {
-        // Специфичная для этого класса инициализация контроллера
-        _uiController = _panelInstance.GetComponent<MultiplexerControlPanel>();
-        if (_uiController == null)
+        // Controller initialization specific to this class
+        UIController = panelInstance.GetComponent<MultiplexerControlPanel>();
+        if (UIController == null)
         {
             Debug.LogError($"MultiplexerControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 
-    public override void ResetVizualization() {
-        _currentChoosenPath = -1;
+    public override void ResetVisualisation() {
+        CurrentChosenMuxPath = -1;
         UpdateVisuals(-1);
     }
     public void SelectPath(int index)
     {
-        if (index < 0 || index >= _inputBuses.Length) return;
+        if (index < 0 || index >= inputBuses.Length) return;
 
         // Debug.Log($"Path {index + 1} chosen");
-        _currentChoosenPath = index;
+        CurrentChosenMuxPath = index;
         UpdateVisuals(index);
         HideData();
     }
@@ -78,25 +78,25 @@ public class MuiltiplexerVizualizer: BaseVizualizer
     #region helpers
     private void UpdateVisuals(int activeIndex)
     {
-        for (int i = 0; i < _inputBuses.Length; i++)
+        for (var i = 0; i < inputBuses.Length; i++)
         {
-            bool isActive = (i == activeIndex);
-            SetColor(_inputBuses[i], isActive ? _activeColor : _disabledColor);
+            var isActive = (i == activeIndex);
+            SetColor(inputBuses[i], isActive ? activeColor : disabledColor);
 
-            if (i < _bitRenderers.Length)
-                SetColor(_bitRenderers[i], isActive ? _activeColor : _disabledColor);
+            if (i < bitRenderers.Length)
+                SetColor(bitRenderers[i], isActive ? activeColor : disabledColor);
         }
 
-        SetColor(_outputBus, activeIndex != -1 ? _activeColor : _disabledColor);
+        SetColor(outputBus, activeIndex != -1 ? activeColor : disabledColor);
     }
 
-    private void SetColor(Renderer renderer, Color color)
+    private void SetColor(Renderer rnd, Color color)
     {
-        if (renderer == null) return;
+        if (rnd == null) return;
 
-        renderer.GetPropertyBlock(_propBlock);
+        rnd.GetPropertyBlock(_propBlock);
         _propBlock.SetColor(ColorPropertyID, color);
-        renderer.SetPropertyBlock(_propBlock);
+        rnd.SetPropertyBlock(_propBlock);
     }
     #endregion
 }

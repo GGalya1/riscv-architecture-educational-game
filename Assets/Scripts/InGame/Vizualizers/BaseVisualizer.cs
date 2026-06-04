@@ -1,129 +1,138 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
-// Абстрактный базовый класс для всей визуализации компонентов
-public abstract class BaseVizualizer : MonoBehaviour, IVizualizer
+// An abstract base class for all component rendering
+public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
 {
     // --- FIELDS FOR CONFIGURATION (Visible in Inspector) ---
 
-    [SerializeField] protected GameObject _panelInstance;
-    [SerializeField] private CanvasGroup _panelCanvasGroup;
+    [FormerlySerializedAs("_panelInstance")] [SerializeField] protected GameObject panelInstance;
+    [FormerlySerializedAs("_panelCanvasGroup")] [SerializeField] private CanvasGroup panelCanvasGroup;
 
+    [FormerlySerializedAs("_selectionColor")]
     [Header("Visual Settings")]
-    [SerializeField] protected Color _selectionColor = Color.blue;
+    [SerializeField] protected Color selectionColor = Color.blue;
 
+    [FormerlySerializedAs("_animDuration")]
     [Header("Animation Settings")]
-    [SerializeField] private float _animDuration = 0.25f;
-    [SerializeField] private float _moveDistance = 0.2f;
+    [SerializeField] private float animDuration = 0.25f;
+    [FormerlySerializedAs("_moveDistance")] [SerializeField] private float moveDistance = 0.2f;
 
     // --- FIELDS FOR CACHED REFERENCES ---
 
-    // Кэшированная основная камера, для позиционирования UI
-    protected Camera _staticCamera;
+    // Cached main camera, for UI positioning
+    private Camera _staticCamera;
 
-    // Кэшированный рендерер, если нужно менять цвет модели (для простого изменения цвета)
-    [SerializeField] protected Renderer _bigModelRenderer;
+    // Cached renderer, if you need to change the model's color (for a simple color change)
+    [FormerlySerializedAs("_bigModelRenderer")] [SerializeField] protected Renderer bigModelRenderer;
 
-    // Флаг, показывающий, активна ли визуализация в данный момент
-    protected bool isVisualizationActive = false;
+    // A flag indicating whether the visualization is currently active
+    private bool _isVisualizationActive;
     private Vector3 _targetLocalPos;
 
     // --- PUBLIC PROPERTIES (Read-Only access to configuration) ---
 
-    public GameObject PanelPrefab => _panelInstance;
+    public GameObject PanelPrefab => panelInstance;
 
     // --- OPTIMIZATION FIELDS ---
     private Color _originalColor;
     private MaterialPropertyBlock _propBlock;
+    private bool _isBigModelRendererNull;
     private static readonly int ColorPropertyID = Shader.PropertyToID("_BaseColor");
 
     // --- UNITY LIFECYCLE ---
+
+    private void Start()
+    {
+        _isBigModelRendererNull = bigModelRenderer == null;
+    }
 
     protected virtual void Awake()
     {
         _propBlock = new MaterialPropertyBlock();
 
-        if (_bigModelRenderer != null)
+        if (bigModelRenderer != null)
         {
-            _originalColor = _bigModelRenderer.sharedMaterial.color;
+            _originalColor = bigModelRenderer.sharedMaterial.color;
         }
 
-        // 2. Кэширование камерыa
+        // 2. Camera caching
         _staticCamera = Camera.main;
         if (_staticCamera == null)
         {
             Debug.LogError($"Main camera not found by {gameObject.name}!");
         }
 
-        // 3. Создание и инициализация панели UI
-        _targetLocalPos = _panelInstance.transform.localPosition;
+        // 3. Creating and initializing the UI panel
+        _targetLocalPos = panelInstance.transform.localPosition;
         PrepareHiddenState();
 
-        // Абстрактный метод, который должен быть реализован наследником
+        // An abstract method that must be implemented by a subclass
         InitializePanelController();
     }
 
-    // --- PUBLIC INTERFACE (IVizualizer) ---
+    // --- PUBLIC INTERFACE (IVisualizer) ---
 
-    // ShowData и HideData имеют общую логику, но ShowData имеет специфику
+    // ShowData and HideData share the same basic logic, but ShowData has some specific features
     public virtual void ShowData()
     {
-        if (isVisualizationActive)
+        if (_isVisualizationActive)
         {
             HideData();
             return;
         }
 
-        // Общая логика
-        isVisualizationActive = true;
-        SetModelColor(_selectionColor);
+        // General logic
+        _isVisualizationActive = true;
+        SetModelColor(selectionColor);
 
-        _panelInstance.transform.DOKill();
-        _panelCanvasGroup.DOKill();
+        panelInstance.transform.DOKill();
+        panelCanvasGroup.DOKill();
 
-        _panelInstance.transform.DOLocalMove(_targetLocalPos, _animDuration).SetEase(Ease.OutCubic);
-        _panelCanvasGroup.DOFade(1f, _animDuration).SetEase(Ease.OutCubic).OnComplete(() => {
-            _panelCanvasGroup.interactable = true;
-            _panelCanvasGroup.blocksRaycasts = true;
+        panelInstance.transform.DOLocalMove(_targetLocalPos, animDuration).SetEase(Ease.OutCubic);
+        panelCanvasGroup.DOFade(1f, animDuration).SetEase(Ease.OutCubic).OnComplete(() => {
+            panelCanvasGroup.interactable = true;
+            panelCanvasGroup.blocksRaycasts = true;
         });
     }
 
     public virtual void HideData()
     {
-        isVisualizationActive = false;
+        _isVisualizationActive = false;
         SetModelColor(_originalColor);
 
-        _panelCanvasGroup.interactable = false;
-        _panelCanvasGroup.blocksRaycasts = false;
+        panelCanvasGroup.interactable = false;
+        panelCanvasGroup.blocksRaycasts = false;
 
-        _panelInstance.transform.DOKill();
-        _panelCanvasGroup.DOKill();
+        panelInstance.transform.DOKill();
+        panelCanvasGroup.DOKill();
 
-        _panelCanvasGroup.DOFade(0f, _animDuration).SetEase(Ease.InCubic);
-        _panelInstance.transform.DOLocalMove(_targetLocalPos - Vector3.up * _moveDistance, _animDuration)
+        panelCanvasGroup.DOFade(0f, animDuration).SetEase(Ease.InCubic);
+        panelInstance.transform.DOLocalMove(_targetLocalPos - Vector3.up * moveDistance, animDuration)
                 .SetEase(Ease.InCubic);  
     }
     private void SetModelColor(Color color)
     {
-        if (_bigModelRenderer == null) return;
+        if (_isBigModelRendererNull) return;
 
-        _bigModelRenderer.GetPropertyBlock(_propBlock);
+        bigModelRenderer.GetPropertyBlock(_propBlock);
         _propBlock.SetColor(ColorPropertyID, color);
-        _bigModelRenderer.SetPropertyBlock(_propBlock);
+        bigModelRenderer.SetPropertyBlock(_propBlock);
     }
 
-    // Абстрактные методы, которые должны быть реализованы в дочерних классах
-    public abstract void ResetVizualization();
+    // Abstract methods that must be implemented in subclasses
+    public abstract void ResetVisualisation();
     protected abstract void InitializePanelController();
 
     // --- PRIVATE/PROTECTED METHODS ---
 
     private void PrepareHiddenState()
     {
-        _panelCanvasGroup.alpha = 0;
-        _panelCanvasGroup.interactable = false;
-        _panelCanvasGroup.blocksRaycasts = false;
+        panelCanvasGroup.alpha = 0;
+        panelCanvasGroup.interactable = false;
+        panelCanvasGroup.blocksRaycasts = false;
 
-        _panelInstance.transform.localPosition = _targetLocalPos - Vector3.up * _moveDistance;
+        panelInstance.transform.localPosition = _targetLocalPos - Vector3.up * moveDistance;
     }
 }

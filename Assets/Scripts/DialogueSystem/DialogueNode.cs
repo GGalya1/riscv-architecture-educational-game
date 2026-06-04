@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// Represents a single step (node) in a dialogue tree.
@@ -7,10 +8,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewDialogueNode", menuName = "Dialogue System/Node")]
 public class DialogueNode : ScriptableObject
 {
+    [FormerlySerializedAs("DialogueText")]
     [Header("Content")]
     [Tooltip("The text spoken by the character to the player.")]
     [TextArea(3, 10)]
-    public string DialogueText;
+    public string dialogueText;
 
     [Tooltip("The name of the character speaking this line.")]
     private string _characterName;

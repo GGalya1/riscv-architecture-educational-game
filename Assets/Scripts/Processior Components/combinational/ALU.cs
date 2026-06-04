@@ -1,23 +1,23 @@
 using UnityEngine;
 
-public static class ALU
+public static class Alu
 {
-    public static (int result, bool zero) calculate(int A, int B, AluOperation operation) {
-        int result = 0;
+    public static (int result, bool zero) Calculate(int a, int b, AluOperation operation) {
+        var result = 0;
         
         switch (operation)
         {
             case AluOperation.ADD:
-                result = A + B;
+                result = a + b;
                 break;
             case AluOperation.SUB:
-                result = A - B;
+                result = a - b;
                 break;
             case AluOperation.AND:
-                result = A & B;
+                result = a & b;
                 break;
             case AluOperation.OR:
-                result = A | B;
+                result = a | b;
                 break;
 
             default:
@@ -25,33 +25,20 @@ public static class ALU
                 break;
         }
 
-        bool zero = result == 0;
+        var zero = result == 0;
         return (result, zero);
     }
 
-    public static int calculate(int A, int B, int operation)
+    public static int Calculate(int a, int b, int operation)
     {
-        int result = 0;
-
-        switch (operation)
+        var result = operation switch
         {
-            case 0:
-                result = A + B;
-                break;
-            case 1:
-                result = A - B;
-                break;
-            case 2:
-                result = A & B;
-                break;
-            case 3:
-                result = A | B;
-                break;
-
-            default:
-                Debug.LogError($"ALU Error: Unknown operation code {operation}.");
-                break;
-        }
+            0 => a + b,
+            1 => a - b,
+            2 => a & b,
+            3 => a | b,
+            _ => 0
+        };
 
         return result;
     }

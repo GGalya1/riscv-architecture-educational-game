@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class RegisterControlPanel: InfoPanelUI
 {
-    [SerializeField] private Button _weButton;
-    public Button WEButton => _weButton;
+    [FormerlySerializedAs("_weButton")] [SerializeField] private Button weButton;
+    public Button WeButton => weButton;
 }

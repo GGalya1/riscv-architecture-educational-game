@@ -11,5 +11,5 @@ public class ProcessStateInfo : ScriptableObject
     [TextArea(3, 20)]
     public string stateSignals;
 
-    public bool doesHaveChoice = false;
+    public bool doesHaveChoice;
 }

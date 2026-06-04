@@ -1,236 +1,195 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public struct ExtendedFirstLevelState
 {
     public int RegisterOutputValue;
 
-    public int MUXup;
-    public int MUXmiddle;
-    public int MUXdown;
-    public int MUXoutput;
+    public int MuXup;
+    public int MuXmiddle;
+    public int MuXdown;
+    public int MuXoutput;
 }
 
-public class LevelOneExtended : BaseLevelRegisseur
+public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 {
+    [FormerlySerializedAs("_registerOutputVisualizer")]
     [Header("MUXes specific components")]
-    [SerializeField] private RegisterVizualizer _registerOutputVisualizer;
-    [SerializeField] private MuiltiplexerVizualizer _upperMUXVisualizer;
-    [SerializeField] private MuiltiplexerVizualizer _middleMUXVisualizer;
-    [SerializeField] private MuiltiplexerVizualizer _downMUXVisualizer;
-    [SerializeField] private MuiltiplexerVizualizer _outputMUXVisualizer;
+    [SerializeField] private RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_upperMUXVisualizer")] [SerializeField] private MultiplexerVisualizer upperMuxVisualizer;
+    [FormerlySerializedAs("_middleMUXVisualizer")] [SerializeField] private MultiplexerVisualizer middleMuxVisualizer;
+    [FormerlySerializedAs("_downMUXVisualizer")] [SerializeField] private MultiplexerVisualizer downMuxVisualizer;
+    [FormerlySerializedAs("_outputMUXVisualizer")] [SerializeField] private MultiplexerVisualizer outputMuxVisualizer;
 
-    [SerializeField] private Blinker[] _numberBlinkers;
+    [FormerlySerializedAs("_numberBlinkers")] [SerializeField] private Blinker[] numberBlinkers;
 
     protected override int RightAnswerValue => 12;
 
-    private Register output;
+    private Register _output;
     private InfoPanelUI _infoOutputRegister;
 
-    protected int _currentBus = 0; // [0, 2]
+    protected int CurrentBus; // [0, 2]
 
     protected override void OnLevelStart()
     {
-        _infoOutputRegister = _registerOutputVisualizer.UIRegisterPanel;
-        output = new Register(11); output.WriteEnable = true;
+        _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
+        _output = new Register(11)
+        {
+            WriteEnable = true
+        };
 
-        UpdateVizualizers();
+        UpdateVisualizers();
     }
 
-    protected override void ApplyState(object state)
+    protected override void ApplyState(ExtendedFirstLevelState s) // "s" for state
     {
-        ExtendedFirstLevelState s = (ExtendedFirstLevelState)state;
-
-        output = new Register(s.RegisterOutputValue);
-
-        muxVizualizerHelper(s.MUXup, _upperMUXVisualizer);
-        muxVizualizerHelper(s.MUXmiddle, _middleMUXVisualizer);
-        muxVizualizerHelper(s.MUXdown, _downMUXVisualizer);
-        muxVizualizerHelper(s.MUXoutput, _outputMUXVisualizer);
+        _output = new Register(s.RegisterOutputValue);
+        
+        ApplyMuxState(s.MuXup, upperMuxVisualizer);
+        ApplyMuxState(s.MuXmiddle, middleMuxVisualizer);
+        ApplyMuxState(s.MuXdown, downMuxVisualizer);
+        ApplyMuxState(s.MuXoutput, outputMuxVisualizer);
     }
 
     protected override void BlinkClockedComponents()
     {
-        foreach (Blinker b in _numberBlinkers) {
+        foreach (var b in numberBlinkers) {
             b.Trigger();
         }
     }
 
-    protected override void BlockIngameInteractables()
+    protected override void BlockInGameInteractable()
     {
-        _registerOutputVisualizer.UIRegisterPanel.WEButton.interactable = false;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        SwitchMUXInteractables(false, _upperMUXVisualizer);
-        SwitchMUXInteractables(false, _middleMUXVisualizer);
-        SwitchMUXInteractables(false, _downMUXVisualizer);
-        SwitchMUXInteractables(false, _outputMUXVisualizer);
+        SwitchMuxInteractable(false, upperMuxVisualizer);
+        SwitchMuxInteractable(false, middleMuxVisualizer);
+        SwitchMuxInteractable(false, downMuxVisualizer);
+        SwitchMuxInteractable(false, outputMuxVisualizer);
     }
 
     protected override bool CheckWinCondition()
     {
-        return output.Output == RightAnswerValue;
+        return _output.Output == RightAnswerValue;
     }
 
-    protected override object GetCurrentState()
+    protected override ExtendedFirstLevelState GetCurrentState()
     {
         return new ExtendedFirstLevelState
         {
-            RegisterOutputValue = output.Output,
+            RegisterOutputValue = _output.Output,
 
-            MUXup = _upperMUXVisualizer.CurrentChoosenMuxPath,
-            MUXmiddle = _middleMUXVisualizer.CurrentChoosenMuxPath,
-            MUXdown = _downMUXVisualizer.CurrentChoosenMuxPath,
-            MUXoutput = _outputMUXVisualizer.CurrentChoosenMuxPath,
+            MuXup = upperMuxVisualizer.CurrentChosenMuxPath,
+            MuXmiddle = middleMuxVisualizer.CurrentChosenMuxPath,
+            MuXdown = downMuxVisualizer.CurrentChosenMuxPath,
+            MuXoutput = outputMuxVisualizer.CurrentChosenMuxPath,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        int up = calculateMUX(_upperMUXVisualizer.CurrentChoosenMuxPath, -4, 0, -1);
-        int left = calculateMUX(_middleMUXVisualizer.CurrentChoosenMuxPath, 8, 12, -1);
-        int down = calculateMUX(_downMUXVisualizer.CurrentChoosenMuxPath, left, -8, -12);
+        var up = EvaluateMux(upperMuxVisualizer.CurrentChosenMuxPath, -4, 0, -1);
+        var left = EvaluateMux(middleMuxVisualizer.CurrentChosenMuxPath, 8, 12, -1);
+        var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
-        output.Input = calculateMUX(_outputMUXVisualizer.CurrentChoosenMuxPath, up, 4, down);
+        _output.Input = EvaluateMux(outputMuxVisualizer.CurrentChosenMuxPath, up, 4, down);
 
-        output.PreClockUpdate();
-        output.Clock();
+        _output.PreClockUpdate();
+        _output.Clock();
     }
 
-    protected override void ReleaseIngameInteractables()
+    protected override void ReleaseInGameInteractable()
     {
-        _registerOutputVisualizer.UIRegisterPanel.WEButton.interactable = true;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        SwitchMUXInteractables(true, _upperMUXVisualizer);
-        SwitchMUXInteractables(true, _middleMUXVisualizer);
-        SwitchMUXInteractables(true, _downMUXVisualizer);
-        SwitchMUXInteractables(true, _outputMUXVisualizer);
+        SwitchMuxInteractable(true, upperMuxVisualizer);
+        SwitchMuxInteractable(true, middleMuxVisualizer);
+        SwitchMuxInteractable(true, downMuxVisualizer);
+        SwitchMuxInteractable(true, outputMuxVisualizer);
     }
 
     protected override IEnumerator ReverseBusVisualizations()
     {
-        if (_currentBus >= 1 && _currentBus <= _maxTickNumber)
+        if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            int up = _upperMUXVisualizer.CurrentChoosenMuxPath == 0 ? -4 : 0;
-            int left = _middleMUXVisualizer.CurrentChoosenMuxPath == 0 ? 8 : 12;
-            int down = calculateMUX(_downMUXVisualizer.CurrentChoosenMuxPath, left, -8, -12);
+            var up = upperMuxVisualizer.CurrentChosenMuxPath == 0 ? -4 : 0;
+            var left = middleMuxVisualizer.CurrentChosenMuxPath == 0 ? 8 : 12;
+            var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
-            _busController.StartBusSignal(_busController.busSegments[10], output.Input, true);
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            busController.StartBusSignal(busController.busSegments[10], _output.Input, true);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[7], up, true);
-            _busController.StartBusSignal(_busController.busSegments[8], down, true);
-            _busController.StartBusSignal(_busController.busSegments[9], 4, true);
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            busController.StartBusSignal(busController.busSegments[7], up, true);
+            busController.StartBusSignal(busController.busSegments[8], down, true);
+            busController.StartBusSignal(busController.busSegments[9], 4, true);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[2], left, true);
-            _busController.StartBusSignal(_busController.busSegments[3], -8, true);
-            _busController.StartBusSignal(_busController.busSegments[4], -12, true);
+            busController.StartBusSignal(busController.busSegments[2], left, true);
+            busController.StartBusSignal(busController.busSegments[3], -8, true);
+            busController.StartBusSignal(busController.busSegments[4], -12, true);
 
-            _busController.StartBusSignal(_busController.busSegments[5], -4, true);
-            _busController.StartBusSignal(_busController.busSegments[6], 0, true);
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            busController.StartBusSignal(busController.busSegments[5], -4, true);
+            busController.StartBusSignal(busController.busSegments[6], 0, true);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[0], 8, true);
-            _busController.StartBusSignal(_busController.busSegments[1], 12, true);
+            busController.StartBusSignal(busController.busSegments[0], 8, true);
+            busController.StartBusSignal(busController.busSegments[1], 12, true);
 
-            _currentBus--;
+            CurrentBus--;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override IEnumerator RunBusVisualizations()
     {
-        if (_currentBus >= 0 && _currentBus < _maxTickNumber)
+        if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            int up = calculateMUX(_upperMUXVisualizer.CurrentChoosenMuxPath, -4, 0, -1);
-            int left = calculateMUX(_middleMUXVisualizer.CurrentChoosenMuxPath, 8, 12, -1);
-            int down = calculateMUX(_downMUXVisualizer.CurrentChoosenMuxPath, left, -8, -12);
-            int output = calculateMUX(_outputMUXVisualizer.CurrentChoosenMuxPath, up, 4, down);
+            var up = EvaluateMux(upperMuxVisualizer.CurrentChosenMuxPath, -4, 0, -1);
+            var left = EvaluateMux(middleMuxVisualizer.CurrentChosenMuxPath, 8, 12, -1);
+            var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
+            var output = EvaluateMux(outputMuxVisualizer.CurrentChosenMuxPath, up, 4, down);
 
-            _busController.StartBusSignal(_busController.busSegments[0], 8);
-            _busController.StartBusSignal(_busController.busSegments[1], 12);
+            busController.StartBusSignal(busController.busSegments[0], 8);
+            busController.StartBusSignal(busController.busSegments[1], 12);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[2], left);
-            _busController.StartBusSignal(_busController.busSegments[3], -8);
-            _busController.StartBusSignal(_busController.busSegments[4], -12);
+            busController.StartBusSignal(busController.busSegments[2], left);
+            busController.StartBusSignal(busController.busSegments[3], -8);
+            busController.StartBusSignal(busController.busSegments[4], -12);
 
-            _busController.StartBusSignal(_busController.busSegments[5], -4);
-            _busController.StartBusSignal(_busController.busSegments[6], 0);
+            busController.StartBusSignal(busController.busSegments[5], -4);
+            busController.StartBusSignal(busController.busSegments[6], 0);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[7], up);
-            _busController.StartBusSignal(_busController.busSegments[8], down);
-            _busController.StartBusSignal(_busController.busSegments[9], 4);
+            busController.StartBusSignal(busController.busSegments[7], up);
+            busController.StartBusSignal(busController.busSegments[8], down);
+            busController.StartBusSignal(busController.busSegments[9], 4);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[10], output);
+            busController.StartBusSignal(busController.busSegments[10], output);
 
-            _currentBus++;
+            CurrentBus++;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-    protected override void UpdateVizualizers()
+    protected override void UpdateVisualizers()
     {
-        _infoOutputRegister.Display("Register 1", $"{output.Output}");
+        _infoOutputRegister.Display("Register 1", $"{_output.Output}");
     }
 
     #region helpers
-    private void muxVizualizerHelper(int currentPath, MuiltiplexerVizualizer mux)
-    {
-        if (currentPath == -1)
-        {
-            mux.ResetVizualization();
-        }
-        else if (currentPath == 0)
-        {
-            mux.SelectPath(0);
-        }
-        else if (currentPath == 1)
-        {
-            mux.SelectPath(1);
-        }
-        else if (currentPath == 2)
-        {
-            mux.SelectPath(2);
-        }
-        else
-        {
-            Debug.LogError($"Saved multiplexer value {currentPath} is not in [0, 3]");
-        }
-    }
-    private void SwitchMUXInteractables(bool trigger, MuiltiplexerVizualizer target)
+    private static void SwitchMuxInteractable(bool trigger, MultiplexerVisualizer target)
     {
         target.UIController.FirstWayButton.interactable = trigger;
         target.UIController.SecondWayButton.interactable = trigger;
         target.UIController.ThirdWayButton.interactable = trigger;
-    }
-    private int calculateMUX(int muxCurrentPath, int first, int second, int third)
-    {
-        int result = 0;
-        if (muxCurrentPath == 0)
-        {
-            result = first;
-        }
-        else if (muxCurrentPath == 1)
-        {
-            result = second;
-        }
-        else if (muxCurrentPath == 2)
-        {
-            result = third;
-        }
-        /*else
-        {
-            Debug.LogError($"Unexpected MUX path {muxCurrentPath}. Expected value: [0, 3]");
-        }*/
-        return result;
     }
     #endregion
 }

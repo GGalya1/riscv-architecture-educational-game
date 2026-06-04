@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Serialization;
 
 public class Blinker : MonoBehaviour
 {
-    [SerializeField] private Renderer _targetRenderer;
-    [SerializeField] private Color _blinkColor = Color.yellow;
-    [SerializeField] private float _duration = 1.0f;
+    [FormerlySerializedAs("_targetRenderer")] [SerializeField] private Renderer targetRenderer;
+    [FormerlySerializedAs("_blinkColor")] [SerializeField] private Color blinkColor = Color.yellow;
+    [FormerlySerializedAs("_duration")] [SerializeField] private float duration = 1.0f;
 
     private Color _originalColor;
     private Coroutine _coroutine;
@@ -14,26 +15,26 @@ public class Blinker : MonoBehaviour
 
     private void Awake()
     {
-        if (_targetRenderer == null) _targetRenderer = GetComponent<Renderer>();
+        if (targetRenderer == null) targetRenderer = GetComponent<Renderer>();
 
         _propBlock = new MaterialPropertyBlock();
         
-        if (_targetRenderer != null)
-            _originalColor = _targetRenderer.sharedMaterial.color;
+        if (targetRenderer != null)
+            _originalColor = targetRenderer.sharedMaterial.color;
     }
 
     public void Trigger()
     {
-        if (_targetRenderer == null) return;
+        if (targetRenderer == null) return;
         if (_coroutine != null) StopCoroutine(_coroutine);
         _coroutine = StartCoroutine(BlinkSequence());
     }
 
     private IEnumerator BlinkSequence()
     {
-        SetRendererColor(_blinkColor);
+        SetRendererColor(blinkColor);
 
-        yield return new WaitForSeconds(_duration);
+        yield return new WaitForSeconds(duration);
 
         SetRendererColor(_originalColor);
         _coroutine = null;
@@ -41,8 +42,8 @@ public class Blinker : MonoBehaviour
 
     private void SetRendererColor(Color color)
     {
-        _targetRenderer.GetPropertyBlock(_propBlock);
+        targetRenderer.GetPropertyBlock(_propBlock);
         _propBlock.SetColor(ColorPropertyID, color);
-        _targetRenderer.SetPropertyBlock(_propBlock);
+        targetRenderer.SetPropertyBlock(_propBlock);
     }
 }

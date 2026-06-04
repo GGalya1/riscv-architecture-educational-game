@@ -33,7 +33,7 @@ public class Register: ISequentialLogic
     /// The buffer value that holds the data to be written to <see cref="Output"/>
     /// on the rising edge of the next clock (during <see cref="Clock"/> call).
     /// </summary>
-    private int _nextValue = 0;
+    private int _nextValue;
     #endregion
 
     #region CONSTRUCTOR
@@ -55,9 +55,9 @@ public class Register: ISequentialLogic
     /// <br/>If <c>true</c>, it buffers the current <see cref="Input"/> into <c>_nextValue</c>.
     /// <br/>(Simulates the combinatorial logic preparing the data for the latch).
     /// </summary>
-    public void PreClockUpdate() {
-        if (WriteEnable) _nextValue = Input;
-        else _nextValue = Output;
+    public void PreClockUpdate()
+    {
+        _nextValue = WriteEnable ? Input : Output;
     }
 
     /// <summary>

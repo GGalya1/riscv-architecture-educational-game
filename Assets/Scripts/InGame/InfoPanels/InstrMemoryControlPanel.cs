@@ -1,22 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class InstrMemoryControlPanel: InfoPanelUI
 {
-    [SerializeField] private Button _weButton;
-    public Button WEButton => _weButton;
+    [FormerlySerializedAs("_weButton")] [SerializeField] private Button weButton;
+    public Button WeButton => weButton;
 
-    public TextMeshProUGUI firstAddresValue;
-    public TextMeshProUGUI secondAddresValue;
-    public TextMeshProUGUI thirdAddresValue;
-    public TextMeshProUGUI fourthAddresValue;
+    [FormerlySerializedAs("firstAddresValue")] public TextMeshProUGUI firstAddressValue;
+    [FormerlySerializedAs("secondAddresValue")] public TextMeshProUGUI secondAddressValue;
+    [FormerlySerializedAs("thirdAddresValue")] public TextMeshProUGUI thirdAddressValue;
+    [FormerlySerializedAs("fourthAddresValue")] public TextMeshProUGUI fourthAddressValue;
 
     public void Display(string firstVal, string secondVal, string thirdVal, string fourthVal)
     {
-        firstAddresValue.text = firstVal;
-        secondAddresValue.text = secondVal;
-        thirdAddresValue.text = thirdVal;
-        fourthAddresValue.text = fourthVal;
+        firstAddressValue.text = firstVal;
+        secondAddressValue.text = secondVal;
+        thirdAddressValue.text = thirdVal;
+        fourthAddressValue.text = fourthVal;
     }
 }

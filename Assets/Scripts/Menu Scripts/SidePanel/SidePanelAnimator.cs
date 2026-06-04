@@ -1,5 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SidePanelAnimator : MonoBehaviour
 {
@@ -12,26 +13,26 @@ public class SidePanelAnimator : MonoBehaviour
     [Range(0.5f, 3.0f)]
     public float bouncePower = 1.2f;
 
-    [SerializeField] private RectTransform _rectTransform;
-    private bool _isOpen = false;
+    [FormerlySerializedAs("_rectTransform")] [SerializeField] private RectTransform rectTransform;
+    private bool _isOpen;
 
-    void Awake()
+    private void Awake()
     {
-        _rectTransform.anchoredPosition = new Vector2(hiddenPosX, _rectTransform.anchoredPosition.y);
+        rectTransform.anchoredPosition = new Vector2(hiddenPosX, rectTransform.anchoredPosition.y);
     }
 
     public void TogglePanel()
     {
-        _rectTransform.DOKill();
+        rectTransform.DOKill();
 
         if (!_isOpen)
         {
-            _rectTransform.DOAnchorPosX(visiblePosX, duration)
+            rectTransform.DOAnchorPosX(visiblePosX, duration)
                 .SetEase(Ease.OutBack, bouncePower);
         }
         else
         {
-            _rectTransform.DOAnchorPosX(hiddenPosX, duration)
+            rectTransform.DOAnchorPosX(hiddenPosX, duration)
                 .SetEase(Ease.InCubic);
         }
 

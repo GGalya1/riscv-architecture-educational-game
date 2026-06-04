@@ -1,24 +1,27 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public struct LevelTwoExtendedState
 {
     public int RegisterAValue;
-    public bool RegisterAWE;
+    public bool RegisterAwe;
     public int RegisterBValue;
-    public bool RegisterBWE;
+    public bool RegisterBwe;
     public int OutputValue;
-    public bool OutputWE;
-    public int ALUOperation;
+    public bool OutputWe;
+    public int AluOperation;
 }
 
-public class LevelTwoExtended : BaseLevelRegisseur
+public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
 {
+    [FormerlySerializedAs("aluVisualizer")]
+    [FormerlySerializedAs("_aluVizualizer")]
     [Header("Level 2 (Extender) Specific Components")]
-    [SerializeField] private ALUVizualiser _aluVizualizer;
-    [SerializeField] private RegisterVizualizer _registerSrcAVizualizer;
-    [SerializeField] private RegisterVizualizer _registerSrcBVizualizer;
-    [SerializeField] private RegisterVizualizer _registerOutputVizualizer;
+    [SerializeField] private AluVisualiser aluVisualizer;
+    [FormerlySerializedAs("registerSrcAVizualizer")] [FormerlySerializedAs("_registerSrcAVizualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
+    [FormerlySerializedAs("registerSrcBVizualizer")] [FormerlySerializedAs("_registerSrcBVizualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
+    [FormerlySerializedAs("registerOutputVizualizer")] [FormerlySerializedAs("_registerOutputVizualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
 
     [SerializeField] private int srcAValue;
     [SerializeField] private int srcBValue;
@@ -29,171 +32,161 @@ public class LevelTwoExtended : BaseLevelRegisseur
     private InfoPanelUI _infoOutputRegister;
     #endregion
 
-    private Register srcA;
-    private Register srcB;
-    private Register output;
+    private Register _srcA;
+    private Register _srcB;
+    private Register _output;
 
-    private int _currentBus = 0; // [0, 1]
+    private int _currentBus; // [0, 1]
 
     protected override void OnLevelStart()
     {
-        srcA = new Register(srcAValue); srcA.WriteEnable = true;
-        srcB = new Register(srcBValue); srcB.WriteEnable = true;
-        output = new Register(0); output.WriteEnable = true;
-
-        _infoSrcARegister = _registerSrcAVizualizer.UIRegisterPanel;
-        _infoSrcBRegister = _registerSrcBVizualizer.UIRegisterPanel;
-        _infoOutputRegister = _registerOutputVizualizer.UIRegisterPanel;
-
-
-        if (_levelTargetDescription == null || _levelTargetDescription.Length == 0)
+        _srcA = new Register(srcAValue)
         {
-            _levelTargetText.text = $"Ziel: \r\nSchreibe in Register 3 den Wert {RightAnswerValue}";
-        }
-        else
+            WriteEnable = true
+        };
+        _srcB = new Register(srcBValue)
         {
-            _levelTargetText.text = _levelTargetDescription;
-        }
+            WriteEnable = true
+        };
+        _output = new Register()
+        {
+            WriteEnable = true
+        };
 
-        UpdateVizualizers();
+        _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
+        _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
+        _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
+
+        UpdateVisualizers();
     }
 
-    protected override void ApplyState(object state)
+    protected override void ApplyState(LevelTwoExtendedState s)
     {
-        LevelTwoExtendedState s = (LevelTwoExtendedState)state;
+        _srcA = new Register(s.RegisterAValue)
+        {
+            WriteEnable = s.RegisterAwe
+        };
 
-        srcA = new Register(s.RegisterAValue);
-        srcA.WriteEnable = s.RegisterAWE;
+        _srcB = new Register(s.RegisterBValue)
+        {
+            WriteEnable = s.RegisterBwe
+        };
 
-        srcB = new Register(s.RegisterBValue);
-        srcB.WriteEnable = s.RegisterBWE;
+        _output = new Register(s.OutputValue)
+        {
+            WriteEnable = s.OutputWe
+        };
 
-        output = new Register(s.OutputValue);
-        output.WriteEnable = s.OutputWE;
-
-        _aluVizualizer.ChooseALUOperation(s.ALUOperation);
+        aluVisualizer.ChooseAluOperation(s.AluOperation);
     }
 
     protected override void BlinkClockedComponents()
     {
-        _registerSrcAVizualizer.TriggerBlink();
-        _registerSrcBVizualizer.TriggerBlink();
-        _registerOutputVizualizer.TriggerBlink();
+        registerSrcAVisualizer.TriggerBlink();
+        registerSrcBVisualizer.TriggerBlink();
+        registerOutputVisualizer.TriggerBlink();
     }
 
-    protected override void BlockIngameInteractables()
+    protected override void BlockInGameInteractable()
     {
-        _registerSrcAVizualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerSrcBVizualizer.UIRegisterPanel.WEButton.interactable = false;
-        _registerOutputVizualizer.UIRegisterPanel.WEButton.interactable = false;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        _aluVizualizer.UIController.FirstOperationButton.interactable = false;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = false;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = false;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = false;
+        aluVisualizer.uiController.FirstOperationButton.interactable = false;
+        aluVisualizer.uiController.SecondOperationButton.interactable = false;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
+        aluVisualizer.uiController.FourthOperationButton.interactable = false;
     }
 
     protected override bool CheckWinCondition()
     {
-        return (output.Output == RightAnswerValue);
+        return (_output.Output == RightAnswerValue);
     }
 
-    protected override object GetCurrentState()
+    protected override LevelTwoExtendedState GetCurrentState()
     {
         return new LevelTwoExtendedState
         {
-            RegisterAValue = srcA.Output,
-            RegisterAWE = srcA.WriteEnable,
-            RegisterBValue = srcB.Output,
-            RegisterBWE = srcB.WriteEnable,
-            OutputValue = output.Output,
-            OutputWE = output.WriteEnable,
-            ALUOperation = _aluVizualizer.CurrentALUOperation,
+            RegisterAValue = _srcA.Output,
+            RegisterAwe = _srcA.WriteEnable,
+            RegisterBValue = _srcB.Output,
+            RegisterBwe = _srcB.WriteEnable,
+            OutputValue = _output.Output,
+            OutputWe = _output.WriteEnable,
+            AluOperation = aluVisualizer.CurrentAluOperation,
         };
     }
 
     protected override void HandleClockUpdate()
     {
-        // sinchronyse vizualisers and concrete objects
-        srcA.WriteEnable = _registerSrcAVizualizer.isWriteEnabled;
-        srcB.WriteEnable = _registerSrcBVizualizer.isWriteEnabled;
-        output.WriteEnable = _registerOutputVizualizer.isWriteEnabled;
+        // synchronize visualizers and concrete objects
+        _srcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
+        _srcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
+        _output.WriteEnable = registerOutputVisualizer.isWriteEnabled;
 
-        output.Input = ALU.calculate(srcA.Output, srcB.Output, _aluVizualizer.CurrentALUOperation);
-        srcA.PreClockUpdate();
-        srcB.PreClockUpdate();
-        output.PreClockUpdate();
+        _output.Input = Alu.Calculate(_srcA.Output, _srcB.Output, aluVisualizer.CurrentAluOperation);
+        _srcA.PreClockUpdate();
+        _srcB.PreClockUpdate();
+        _output.PreClockUpdate();
 
-        srcA.Clock();
-        srcB.Clock();
-        output.Clock();
+        _srcA.Clock();
+        _srcB.Clock();
+        _output.Clock();
     }
 
-    /*protected override bool IsStateEqual(object state)
+    protected override void ReleaseInGameInteractable()
     {
-        if (!(state is LevelTwoExtendedState s)) return false;
+        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
+        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        return (s.RegisterAValue == srcA.Output) &&
-            (s.RegisterAWE == srcA.WriteEnable) &&
-            (s.RegisterBValue == srcB.Output) &&
-            (s.RegisterBWE == srcB.WriteEnable) &&
-            (s.OutputValue == output.Output) &&
-            (s.OutputWE == output.WriteEnable) &&
-            (s.ALUOperation == _aluVizualizer.CurrentALUOperation);
-    }*/
-
-    protected override void ReleaseIngameInteractables()
-    {
-        _registerSrcAVizualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerSrcBVizualizer.UIRegisterPanel.WEButton.interactable = true;
-        _registerOutputVizualizer.UIRegisterPanel.WEButton.interactable = true;
-
-        _aluVizualizer.UIController.FirstOperationButton.interactable = true;
-        _aluVizualizer.UIController.SecondOperationButton.interactable = true;
-        _aluVizualizer.UIController.ThirdOperationButton.interactable = true;
-        _aluVizualizer.UIController.FourthOperationButton.interactable = true;
+        aluVisualizer.uiController.FirstOperationButton.interactable = true;
+        aluVisualizer.uiController.SecondOperationButton.interactable = true;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
+        aluVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
     {
-        if (_currentBus >= 1 && _currentBus <= _maxTickNumber)
+        if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[2], output.Input, true);
+            busController.StartBusSignal(busController.busSegments[2], _output.Input, true);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output, true);
-            _busController.StartBusSignal(_busController.busSegments[1], srcB.Output, true);
+            busController.StartBusSignal(busController.busSegments[0], _srcA.Output, true);
+            busController.StartBusSignal(busController.busSegments[1], _srcB.Output, true);
 
             _currentBus--;
         }
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override IEnumerator RunBusVisualizations()
     {
-        if (_currentBus >= 0 && _currentBus < _maxTickNumber)
+        if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
-            _busController.StartBusSignal(_busController.busSegments[1], srcB.Output);
+            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
+            busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
 
-            yield return new WaitUntil(() => _busController.NoActiveSignals);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            _busController.StartBusSignal(_busController.busSegments[2], ALU.calculate(srcA.Output, srcB.Output, _aluVizualizer.CurrentALUOperation));
+            busController.StartBusSignal(busController.busSegments[2], Alu.Calculate(_srcA.Output, _srcB.Output, aluVisualizer.CurrentAluOperation));
 
             _currentBus++;
         }
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-    protected override void UpdateVizualizers()
+    protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register 1", $"{srcA.Output}");
-        _infoSrcBRegister.Display("Register 2", $"{srcB.Output}");
-        _infoOutputRegister.Display("Register 3", $"{output.Output}");
+        _infoSrcARegister.Display("Register 1", $"{_srcA.Output}");
+        _infoSrcBRegister.Display("Register 2", $"{_srcB.Output}");
+        _infoOutputRegister.Display("Register 3", $"{_output.Output}");
 
-        _registerSrcAVizualizer.ForceUpdateWriteEnableVisualization(srcA.WriteEnable);
-        _registerSrcBVizualizer.ForceUpdateWriteEnableVisualization(srcB.WriteEnable);
-        _registerOutputVizualizer.ForceUpdateWriteEnableVisualization(output.WriteEnable);
+        registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
+        registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);
+        registerOutputVisualizer.ForceUpdateWriteEnableVisualization(_output.WriteEnable);
     }
 }

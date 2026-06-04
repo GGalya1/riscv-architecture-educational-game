@@ -31,22 +31,28 @@ public class CameraController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Camera cam;
 
-    private Vector2 lastInputPosition;
-    private bool isDraggingCamera = false;
-    private Vector3 targetPosition;
-    private Vector3 currentVelocity;
-    private Transform cachedTransform;
+    private Vector2 _lastInputPosition;
+    private bool _isDraggingCamera;
+    private Vector3 _targetPosition;
+    private Vector3 _currentVelocity;
+    private Transform _cachedTransform;
+    private bool _currentNull;
 
 
-    void Awake()
+    private void Start()
+    {
+        _currentNull = EventSystem.current == null;
+    }
+
+    private void Awake()
     {
         // Cache transform for performance and sync targetX with initial position
-        cachedTransform = transform;
-        targetPosition = cachedTransform.position;
+        _cachedTransform = transform;
+        _targetPosition = _cachedTransform.position;
         if (cam == null) cam = Camera.main;
     }
 
-    void Update()
+    private void Update()
     {
         HandleInput();
         ApplyMovement();
@@ -58,44 +64,44 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void HandleInput()
     {
-        Vector2 currentPos = GetPointerPosition();
+        var currentPos = GetPointerPosition();
 
         // Pressing
         if (GetPointerDown())
         {
             if (IsPointerOverUI() || IsClickingInteractiveObject(currentPos))
             {
-                isDraggingCamera = false;
+                _isDraggingCamera = false;
                 return;
             }
 
-            isDraggingCamera = true;
-            lastInputPosition = currentPos;
-            targetPosition = cachedTransform.position; // Сбрасываем таргет на текущую позицию
+            _isDraggingCamera = true;
+            _lastInputPosition = currentPos;
+            _targetPosition = _cachedTransform.position; // РЎР±СЂР°СЃС‹РІР°РµРј С‚Р°СЂРіРµС‚ РЅР° С‚РµРєСѓС‰СѓСЋ РїРѕР·РёС†РёСЋ
         }
 
         // Holding
-        if (isDraggingCamera && GetPointerHeld())
+        if (_isDraggingCamera && GetPointerHeld())
         {
-            Vector2 delta = (currentPos - lastInputPosition) * sensitivity;
+            var delta = (currentPos - _lastInputPosition) * sensitivity;
 
-            float moveX = delta.x;
-            float moveZ = delta.y;
+            var moveX = delta.x;
+            var moveZ = delta.y;
 
-            targetPosition.x -= moveX;
-            targetPosition.z -= moveZ;
+            _targetPosition.x -= moveX;
+            _targetPosition.z -= moveZ;
 
-            // Ограничиваем движение
-            targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
-            targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
+            // РћРіСЂР°РЅРёС‡РёРІР°РµРј РґРІРёР¶РµРЅРёРµ
+            _targetPosition.x = Mathf.Clamp(_targetPosition.x, minX, maxX);
+            _targetPosition.z = Mathf.Clamp(_targetPosition.z, minZ, maxZ);
 
-            lastInputPosition = currentPos;
+            _lastInputPosition = currentPos;
         }
 
         // Releasing
         if (GetPointerUp())
         {
-            isDraggingCamera = false;
+            _isDraggingCamera = false;
         }
     }
 
@@ -104,7 +110,7 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private void ApplyMovement()
     {
-        cachedTransform.position = Vector3.SmoothDamp(cachedTransform.position, targetPosition, ref currentVelocity, smoothness);
+        _cachedTransform.position = Vector3.SmoothDamp(_cachedTransform.position, _targetPosition, ref _currentVelocity, smoothness);
     }
 
     /// <summary>
@@ -118,15 +124,15 @@ public class CameraController : MonoBehaviour
         return Mouse.current != null ? Mouse.current.position.ReadValue() : Vector2.zero;
     }
 
-    private bool GetPointerDown() =>
+    private static bool GetPointerDown() =>
       (Mouse.current?.leftButton.wasPressedThisFrame ?? false) ||
       (Touchscreen.current?.primaryTouch.press.wasPressedThisFrame ?? false);
 
-    private bool GetPointerHeld() =>
+    private static bool GetPointerHeld() =>
       (Mouse.current?.leftButton.isPressed ?? false) ||
       (Touchscreen.current?.primaryTouch.press.isPressed ?? false);
 
-    private bool GetPointerUp() =>
+    private static bool GetPointerUp() =>
       (Mouse.current?.leftButton.wasReleasedThisFrame ?? false) ||
       (Touchscreen.current?.primaryTouch.press.wasReleasedThisFrame ?? false);
 
@@ -136,12 +142,8 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private bool IsClickingInteractiveObject(Vector2 screenPos)
     {
-        Ray ray = cam.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit))
-        {
-            return hit.collider.TryGetComponent<ClickableObject>(out _);
-        }
-        return false;
+        var ray = cam.ScreenPointToRay(screenPos);
+        return Physics.Raycast(ray, out var hit) && hit.collider.TryGetComponent<ClickableObject>(out _);
     }
 
     /// <summary>
@@ -149,74 +151,69 @@ public class CameraController : MonoBehaviour
     /// </summary>
     private bool IsPointerOverUI()
     {
-        if (EventSystem.current == null) return false;
+        if (_currentNull) return false;
 
         if (EventSystem.current.IsPointerOverGameObject()) return true;
 
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
-        {
-            int id = Touchscreen.current.primaryTouch.touchId.ReadValue();
-            return EventSystem.current.IsPointerOverGameObject(id);
-        }
+        if (Touchscreen.current == null || !Touchscreen.current.primaryTouch.press.isPressed) return false;
+        var id = Touchscreen.current.primaryTouch.touchId.ReadValue();
+        return EventSystem.current.IsPointerOverGameObject(id);
 
-        return false;
     }
 
     private void HandleZoomInput()
     {
         float zoomAmount = 0;
 
-        // 1. Для ПК (Колесо мыши)
+        // For PC (Mouse wheel)
         if (Mouse.current != null)
         {
-            float scroll = Mouse.current.scroll.ReadValue().y;
+            var scroll = Mouse.current.scroll.ReadValue().y;
             if (Mathf.Abs(scroll) > 0.1f)
             {
                 zoomAmount = scroll * scrollSensitivity * 0.01f;
             }
         }
 
-        // 2. Для Телефонов (Pinch Zoom)
+        // For Phones (Pinch Zoom)
         if (Touchscreen.current != null)
         {
             var touches = Touchscreen.current.touches;
 
-            // Проверяем, что как минимум два пальца активны
+            // We check that at least two fingers are active
             if (touches[0].isInProgress && touches[1].isInProgress)
             {
                 var t1 = touches[0];
                 var t2 = touches[1];
 
-                Vector2 t1Pos = t1.position.ReadValue();
-                Vector2 t2Pos = t2.position.ReadValue();
-                Vector2 t1Delta = t1.delta.ReadValue();
-                Vector2 t2Delta = t2.delta.ReadValue();
+                var t1Pos = t1.position.ReadValue();
+                var t2Pos = t2.position.ReadValue();
+                var t1Delta = t1.delta.ReadValue();
+                var t2Delta = t2.delta.ReadValue();
 
-                // Позиции в предыдущем кадре
-                Vector2 t1PrevPos = t1Pos - t1Delta;
-                Vector2 t2PrevPos = t2Pos - t2Delta;
+                // Positions in the previous frame
+                var t1PrevPos = t1Pos - t1Delta;
+                var t2PrevPos = t2Pos - t2Delta;
 
-                float prevDist = Vector2.Distance(t1PrevPos, t2PrevPos);
-                float curDist = Vector2.Distance(t1Pos, t2Pos);
+                var prevDist = Vector2.Distance(t1PrevPos, t2PrevPos);
+                var curDist = Vector2.Distance(t1Pos, t2Pos);
 
-                // Используем zoomSensitivity для тача (обычно нужно значение побольше, чем для мыши)
+                // We use zoomSensitivity for touch input (you usually need a higher value than for a mouse)
                 zoomAmount = (curDist - prevDist) * zoomSensitivity;
 
-                // Важно: когда зумим двумя пальцами, отключаем перемещение камеры
-                isDraggingCamera = false;
+                // Important: When zooming with two fingers, disable camera movement
+                _isDraggingCamera = false;
             }
         }
 
-        if (Mathf.Abs(zoomAmount) > 0.001f)
-        {
-            Vector3 moveDirection = cam.transform.forward;
-            Vector3 newTarget = targetPosition + moveDirection * zoomAmount;
+        if (!(Mathf.Abs(zoomAmount) > 0.001f)) return;
+        var moveDirection = cam.transform.forward;
+        var newTarget = _targetPosition + moveDirection * zoomAmount;
 
-            // Ограничение по высоте
-            if (newTarget.y >= minHeight && newTarget.y <= maxHeight)
-            {
-                targetPosition = newTarget;
-            }
+        // Height restriction
+        if (newTarget.y >= minHeight && newTarget.y <= maxHeight)
+        {
+            _targetPosition = newTarget;
         }
     }
 }

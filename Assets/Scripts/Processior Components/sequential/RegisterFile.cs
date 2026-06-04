@@ -1,7 +1,6 @@
 public class RegisterFile: ISequentialLogic
 {
     // data for 32 registers (0-31)
-    private int[] _registers;
 
     #region INPUTS
 
@@ -26,7 +25,7 @@ public class RegisterFile: ISequentialLogic
     public int ReadData2 { get; set; }
     #endregion
 
-    public int[] Registers => _registers;
+    public int[] Registers { get; private set; }
 
     #region Sequential logic
 
@@ -36,8 +35,8 @@ public class RegisterFile: ISequentialLogic
 
     public void Clock() {
         if (RegisterWriteEnable) {
-            if (WriteAdress < _registers.Length && WriteAdress >= 0) {
-                _registers[WriteAdress] = WriteData;
+            if (WriteAdress < Registers.Length && WriteAdress >= 0) {
+                Registers[WriteAdress] = WriteData;
             }
         }
     }
@@ -45,23 +44,23 @@ public class RegisterFile: ISequentialLogic
 
     public RegisterFile()
     {
-        _registers = new int[32];
+        Registers = new int[32];
     }
 
     public void InitializeRegisters(int[] values) {
-        _registers = values;
+        Registers = values;
     }
 
     // read of registers in Register file is O(1)
     public void ReadRegisters() {
-        if (ReadAdress1 <= 0 || ReadAdress1 >= _registers.Length)
+        if (ReadAdress1 <= 0 || ReadAdress1 >= Registers.Length)
             ReadData1 = 0;
         else 
-            ReadData1 = _registers[ReadAdress1];
+            ReadData1 = Registers[ReadAdress1];
 
-        if (ReadAdress2 <= 0 || ReadAdress2 >= _registers.Length)
+        if (ReadAdress2 <= 0 || ReadAdress2 >= Registers.Length)
             ReadData2 = 0;
         else
-            ReadData2 = _registers[ReadAdress2];
+            ReadData2 = Registers[ReadAdress2];
     }
 }

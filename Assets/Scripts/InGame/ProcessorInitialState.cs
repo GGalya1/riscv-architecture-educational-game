@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "ProcessorInitialState", menuName = "Scriptable Objects/ProcessorInitialState")]
 public class ProcessorInitialState : ScriptableObject
@@ -13,12 +14,12 @@ public class ProcessorInitialState : ScriptableObject
     public int fourthMemoWord;
     public int pcRegisterInitialValue;
 
-    [Header("Answer Fields")]
-    public ExerciseTyp _aufgabeTyp = ExerciseTyp.REGISTER_FIELD;
-    public int RegisterFieldAdressAnswer;
-    public int RegisterFieldValueAnswer;
-    public int MemoryAdressAnswer;
-    public int MemoryValueAnswer;
+    [FormerlySerializedAs("_aufgabeTyp")] [Header("Answer Fields")]
+    public ExerciseTyp aufgabeTyp = ExerciseTyp.REGISTER_FIELD;
+    [FormerlySerializedAs("registerFieldAdressAnswer")] [FormerlySerializedAs("RegisterFieldAdressAnswer")] public int registerFieldAddressAnswer;
+    [FormerlySerializedAs("RegisterFieldValueAnswer")] public int registerFieldValueAnswer;
+    [FormerlySerializedAs("memoryAdressAnswer")] [FormerlySerializedAs("MemoryAdressAnswer")] public int memoryAddressAnswer;
+    [FormerlySerializedAs("MemoryValueAnswer")] public int memoryValueAnswer;
     public int pcValueAnswer;
 
     [Header("Level Dialogues")]

@@ -5,26 +5,26 @@ using UnityEngine.UI;
 
 public class BusController : MonoBehaviour
 {
-    [Header("UI Элементы")]
+    [Header("UI Elements")]
     public Slider speedSlider;
 
-    [Header("Настройки движения")]
-    public GameObject spherePrefab;      // Префаб шара (сигнала)
-    public float movementSpeed = 7f;     // Скорость движения шара
+    [Header("Motion settings")]
+    public GameObject spherePrefab;      // Sphere prefab (aka signal)
+    public float movementSpeed = 7f;     // Velocity of sphere
 
-    [Header("Все сегменты шин")]
-    // Здесь мы храним ссылки на все LineRenderer в сцене.
-    // Назначаются через инспектор.
+    [Header("All bus segments")]
+    // This is where we store references to all LineRenderers in the scene.
+    // These are assigned via the Inspector.
     public LineRenderer[] busSegments;
 
-    // Словарь для хранения пути каждой шины, чтобы не вычислять его каждый раз
-    private Dictionary<LineRenderer, Vector3[]> busPaths = new Dictionary<LineRenderer, Vector3[]>();
-    private Dictionary<LineRenderer, Vector3[]> reverseBusPaths = new Dictionary<LineRenderer, Vector3[]>();
+    // A dictionary to store the path for each bus so it doesn't have to be calculated every time
+    private readonly Dictionary<LineRenderer, Vector3[]> _busPaths = new Dictionary<LineRenderer, Vector3[]>();
+    private readonly Dictionary<LineRenderer, Vector3[]> _reverseBusPaths = new Dictionary<LineRenderer, Vector3[]>();
 
-    private List<BusSignal> activeSignals = new List<BusSignal>();
-    public bool NoActiveSignals => activeSignals.Count == 0;
+    private readonly List<BusSignal> _activeSignals = new List<BusSignal>();
+    public bool NoActiveSignals => _activeSignals.Count == 0;
 
-    void Start()
+    private void Start()
     {
         InitializePaths();
 
@@ -39,32 +39,33 @@ public class BusController : MonoBehaviour
             Debug.LogError("Slider is null !");
         }
 
-        Debug.Log($"Контроллер загрузил {busPaths.Count} сегментов шин.");
+        Debug.Log($"The controller has loaded {_busPaths.Count} bus segments.");
     }
 
     /// <summary>
-    /// Публичный метод для запуска сигнала по конкретной шине.
-    /// Этот метод ты будешь вызывать из других скриптов (например, при клике на блок CPU).
+    /// A public method for triggering a signal on a specific bus.
+    /// You will call this method from other scripts (for example, when clicking on the CPU block).
     /// </summary>
-    /// <param name="targetBus">LineRenderer, по которому должен пойти сигнал.</param>
+    /// <param name="targetBus">LineRenderer, through which the signal should be sent.</param>
+    /// /// <param name="reversedPath">bool, says if the path must be animated in reverse direction</param>
     public void StartBusSignal(LineRenderer targetBus, bool reversedPath = false)
     {
-        Vector3[] pathPoints = GetPathPoints(targetBus, reversedPath);
+        var pathPoints = GetPathPoints(targetBus, reversedPath);
         if (pathPoints == null || pathPoints.Length < 2) return;
 
-        // Создаем шар
-        GameObject currentSphere = Instantiate(spherePrefab);
+        // Create a sphere
+        var currentSphere = Instantiate(spherePrefab);
         currentSphere.SetActive(true);
         
         currentSphere.transform.position = pathPoints[0];
 
-        // Получаем компонент BusSignal
-        BusSignal signal = currentSphere.GetComponent<BusSignal>();
+        // Retrieving the BusSignal component
+        var signal = currentSphere.GetComponent<BusSignal>();
         
-        // 2. Важно: Настраиваем скорость и добавляем в список мониторинга
+        // 2. Important: Adjust the speed and add it to the monitoring list
         if (signal != null)
         {
-            activeSignals.Add(signal);
+            _activeSignals.Add(signal);
         }
 
         StartCoroutine(MoveSphereAlongPath(signal, pathPoints));
@@ -72,42 +73,41 @@ public class BusController : MonoBehaviour
 
     public void StartBusSignal(LineRenderer targetBus, int value, bool reversedPath = false)
     {
-        Vector3[] pathPoints = GetPathPoints(targetBus, reversedPath);
+        var pathPoints = GetPathPoints(targetBus, reversedPath);
         if (pathPoints == null || pathPoints.Length < 2) return;
 
-        // Создаем шар
-        GameObject currentSphere = Instantiate(spherePrefab);
+        // Create a sphere
+        var currentSphere = Instantiate(spherePrefab);
         currentSphere.SetActive(true);
 
         currentSphere.transform.position = pathPoints[0];
 
-        // Получаем компонент BusSignal
-        BusSignal signal = currentSphere.GetComponent<BusSignal>();
+        // Retrieving the BusSignal component
+        var signal = currentSphere.GetComponent<BusSignal>();
         signal.UIRegisterPanel.Display("Signal", $"{value}");
 
-        // 2. Важно: Настраиваем скорость и добавляем в список мониторинга
+        // 2. Important: Adjust the speed and add it to the monitoring list
         if (signal != null)
         {
-            activeSignals.Add(signal);
+            _activeSignals.Add(signal);
         }
 
         StartCoroutine(MoveSphereAlongPath(signal, pathPoints));
     }
 
-    // Coroutine для движения шара по заданному массиву точек
-    IEnumerator MoveSphereAlongPath(BusSignal signal, Vector3[] pathPoints)
+    // A coroutine to move a ball along a given array of points
+    private IEnumerator MoveSphereAlongPath(BusSignal signal, Vector3[] pathPoints)
     {
         if (signal == null) yield break;
 
-        for (int i = 1; i < pathPoints.Length; i++)
+        for (var i = 1; i < pathPoints.Length; i++)
         {
-            Vector3 startPoint = pathPoints[i - 1];
-            Vector3 targetPoint = pathPoints[i];
+            var targetPoint = pathPoints[i];
 
             while (signal.transform.position != targetPoint)
             {
-                // Берем актуальную скорость (обычную или ускоренную)
-                float currentSpeed = movementSpeed;
+                // Take the current speed (normal or fast-forward)
+                var currentSpeed = movementSpeed;
 
                 signal.transform.position = Vector3.MoveTowards(
                     signal.transform.position,
@@ -118,8 +118,8 @@ public class BusController : MonoBehaviour
             }
         }
 
-        // 4. Удаляем из списка перед уничтожением
-        activeSignals.Remove(signal);
+        // 4. Remove from the list before destruction
+        _activeSignals.Remove(signal);
         Destroy(signal.UIRegisterPanel.gameObject);
         Destroy(signal.gameObject);
     }
@@ -131,64 +131,64 @@ public class BusController : MonoBehaviour
     }
 
     private void InitializePaths() {
-        foreach (LineRenderer lr in busSegments)
+        foreach (var lr in busSegments)
         {
-            // Проверка на null (если в инспекторе есть пустые слоты)
+            // Check for null (if there are empty slots in the inspector)
             if (lr == null)
             {
-                Debug.LogWarning("Обнаружен пустой слот LineRenderer в массиве busSegments. Пропускаю.");
+                Debug.LogWarning("An empty LineRenderer slot was found in the busSegments array. Skipping it.");
                 continue;
             }
 
-            // Трансформ, относительно которого LineRenderer хранит свои точки
-            Transform busTransform = lr.transform;
+            // The transform relative to which the LineRenderer stores its points
+            var busTransform = lr.transform;
 
-            int pointCount = lr.positionCount;
+            var pointCount = lr.positionCount;
             if (pointCount < 2)
             {
-                Debug.LogWarning($"Шина '{lr.gameObject.name}' имеет менее 2 точек и не будет загружена.");
+                Debug.LogWarning($"The '{lr.gameObject.name}' bus has fewer than 2 vertices and will not be loaded.");
                 continue;
             }
 
-            // Получаем локальные координаты из LineRenderer
-            Vector3[] localPoints = new Vector3[pointCount];
+            // Retrieve local coordinates from the LineRenderer
+            var localPoints = new Vector3[pointCount];
             lr.GetPositions(localPoints);
 
-            // Массивы для хранения путей в мировом пространстве
-            Vector3[] worldPoints = new Vector3[pointCount];
-            Vector3[] reversedWorldPoints = new Vector3[pointCount];
+            // Arrays for storing paths in world space
+            var worldPoints = new Vector3[pointCount];
+            var reversedWorldPoints = new Vector3[pointCount];
 
-            // --- 2. ПРЕОБРАЗОВАНИЕ ЛОКАЛЬНЫХ ТОЧЕК В МИРОВЫЕ ---
+            // --- 2. CONVERSION OF LOCAL POINTS TO WORLD COORDINATES ---
 
-            for (int i = 0; i < pointCount; i++)
+            for (var i = 0; i < pointCount; i++)
             {
-                // Используем TransformPoint, чтобы перевести локальную позицию (localPoints[i])
-                // в глобальную (мировую) позицию, учитывая положение и вращение родителя шины (busTransform).
+                // We use TransformPoint to convert the local position (localPoints[i])
+                // to a global (world) position, taking into account the position and rotation of the bus's parent (busTransform).
                 worldPoints[i] = busTransform.TransformPoint(localPoints[i]);
             }
 
-            // --- 3. СОХРАНЕНИЕ ПРЯМОГО ПУТИ ---
+            // --- 3. SAVING THE STRAIGHT PATH ---
 
-            // Сохраняем массив мировых координат для прямого движения
-            busPaths.Add(lr, worldPoints);
+            // We store an array of world coordinates for forward motion
+            _busPaths.Add(lr, worldPoints);
 
-            // --- 4. СОХРАНЕНИЕ ОБРАТНОГО ПУТИ (РЕВЕРС) ---
+            // --- 4. SAVING THE RETURN PATH (REVERSE) ---
 
-            // Копируем массив мировых координат
+            // Copy the array of world coordinates
             System.Array.Copy(worldPoints, reversedWorldPoints, pointCount);
 
-            // Реверсируем порядок элементов для обратного движения
+            // Reverse the order of the elements for backward movement
             System.Array.Reverse(reversedWorldPoints);
 
-            // Сохраняем массив реверсивных мировых координат
-            reverseBusPaths.Add(lr, reversedWorldPoints);
+            // We store an array of inverse global coordinates
+            _reverseBusPaths.Add(lr, reversedWorldPoints);
         }
     }
 
     private Vector3[] GetPathPoints(LineRenderer targetBus, bool reversed)
     {
         if (targetBus == null) return null;
-        var dict = reversed ? reverseBusPaths : busPaths;
-        return dict.ContainsKey(targetBus) ? dict[targetBus] : null;
+        var dict = reversed ? _reverseBusPaths : _busPaths;
+        return dict.GetValueOrDefault(targetBus);
     }
 }

@@ -16,6 +16,7 @@ public class MainMenu : MonoBehaviour
     [Header("Loading Screen")]
     [SerializeField] private CanvasGroup loadingOverlay;
     [SerializeField] private float transitionDuration = 1f;
+    private bool _isLoadingOverlayNotNull;
 
     private const string UNLOCKED_LEVEL_KEY = "UnlockedLevelIndex";
 
@@ -25,15 +26,14 @@ public class MainMenu : MonoBehaviour
 
         UpdateLevelButtons();
 
-        if (loadingOverlay != null)
-        {
-            loadingOverlay.alpha = 1f;
-            loadingOverlay.blocksRaycasts = true;
-        }
+        if (loadingOverlay == null) return;
+        loadingOverlay.alpha = 1f;
+        loadingOverlay.blocksRaycasts = true;
     }
 
     private void Start()
     {
+        _isLoadingOverlayNotNull = loadingOverlay != null;
         if (loadingOverlay != null)
         {
             loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true).OnComplete(() => {
@@ -43,13 +43,14 @@ public class MainMenu : MonoBehaviour
     }
     private IEnumerator LoadLevelWithFade(int levelID)
     {
-        if (loadingOverlay != null)
+        if (_isLoadingOverlayNotNull)
         {
             loadingOverlay.blocksRaycasts = true;
             yield return loadingOverlay.DOFade(1f, transitionDuration).SetUpdate(true).WaitForCompletion();
         }
 
-        AsyncOperation op = SceneManager.LoadSceneAsync(levelID);
+        var op = SceneManager.LoadSceneAsync(levelID);
+        if (op == null) yield break;
         op.allowSceneActivation = false;
 
         while (op.progress < 0.9f)
@@ -60,15 +61,15 @@ public class MainMenu : MonoBehaviour
         op.allowSceneActivation = true;
     }
 
-    public void UpdateLevelButtons()
+    private void UpdateLevelButtons()
     {
         if (levelButtons == null || levelButtons.Length == 0) return;
 
         // Default to 1 if the key doesn't exist
-        int unlockedLevels = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+        var unlockedLevels = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
 
         // One loop to rule them all: set interactable state based on index
-        for (int i = 0; i < levelButtons.Length; i++)
+        for (var i = 0; i < levelButtons.Length; i++)
         {
             // A button is interactable if its index is less than the number of unlocked levels
             levelButtons[i].interactable = (i < unlockedLevels);
@@ -77,7 +78,7 @@ public class MainMenu : MonoBehaviour
     public void UnlockAllLevels()
     {
         // int totalScenes = SceneManager.sceneCountInBuildSettings - 1;
-        int totalScenes = 25;
+        const int totalScenes = 25;
 
         PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, totalScenes);
         PlayerPrefs.Save();
@@ -113,7 +114,7 @@ public class MainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    private void SetFrameRate()
+    private static void SetFrameRate()
     {
     #if UNITY_ANDROID || UNITY_IOS
         Application.targetFrameRate = 60;

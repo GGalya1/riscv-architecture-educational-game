@@ -1,204 +1,187 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelFourthRegisseur : LevelThirdRegisseur
 {
     protected override void OnLevelStart()
     {
-        // Инициализация логических компонентов
-        srcA = new Register(0); srcA.WriteEnable = true;
-        srcB = new Register(8); srcB.WriteEnable = true;
-        dataIntructionMemory = new DataInstMemory(); dataIntructionMemory.MemoryWrite = true;
-        dataIntructionMemory.LoadWord(0, 0);
-        dataIntructionMemory.LoadWord(4, 3);
-        dataIntructionMemory.LoadWord(8, -256);
-        dataIntructionMemory.LoadWord(12, -1024);
-
-        // Кэширование UI-панелей визуализаторов
-        _infoSrcARegister = _registerSrcAVisualizer.UIRegisterPanel;
-        _infoSrcBRegister = _registerSrcBVisualizer.UIRegisterPanel;
-        _infoDataMemory = _registerOutputVisualizer.UIRegisterPanel;
-
-
-        if (_levelTargetDescription == null || _levelTargetDescription.Length == 0)
+        // Initialization of logical components
+        SrcA = new Register()
         {
-            _levelTargetText.text = $"Ziel: \r\nSchreibe in Speicher zwei Werte an Adressen 0 und 8.\nWobei Wert an Adresse 0 muss kleiner sein als an Adresse 8.";
-        }
-        else
+            WriteEnable = true
+        };
+        SrcB = new Register(8)
         {
-            _levelTargetText.text = _levelTargetDescription;
-        }
+            WriteEnable = true
+        };
+        DataIntructionMemory = new DataInstMemory
+        {
+            MemoryWrite = true
+        };
+        DataIntructionMemory.LoadWord(0, 0);
+        DataIntructionMemory.LoadWord(4, 3);
+        DataIntructionMemory.LoadWord(8, -256);
+        DataIntructionMemory.LoadWord(12, -1024);
 
-        UpdateVizualizers();
+        // Caching of UI panels for visualizers
+        InfoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
+        InfoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
+        InfoDataMemory = registerOutputVisualizer.UIRegisterPanel;
+        
+
+        UpdateVisualizers();
     }
 
     protected override bool CheckWinCondition()
     {
-        return dataIntructionMemory._memory[0] < dataIntructionMemory._memory[_correctAnswer];
+        return DataIntructionMemory.Memory[0] < DataIntructionMemory.Memory[correctAnswer];
     }
 
     protected override void HandleClockUpdate() {
-        int path = _multiplexerVisualizer.CurrentChoosenMuxPath;
-        int[] inputs = { srcA.Output, srcB.Output };
-        int res = 0;
+        var path = multiplexerVisualizer.CurrentChosenMuxPath;
+        int[] inputs = { SrcA.Output, SrcB.Output };
 
         if (path == -1)
         {
             Debug.LogError("Multiplexer path not selected (-1). Data will be lost.");
         }
-        else if (path >= 0 && path <= 1)
+        else if (path is >= 0 and <= 1)
         {
-            res = Multiplexer.SelectNto1(inputs, path);
+            Multiplexer.SelectNto1(inputs, path);
         }
         else
         {
             Debug.LogError($"Multiplexer path {path} is an invalid value!");
         }
 
-        // sinchronyse vizualisers and concrete objects
-        srcA.WriteEnable = _registerSrcAVisualizer.isWriteEnabled;
-        srcB.WriteEnable = _registerSrcBVisualizer.isWriteEnabled;
-        dataIntructionMemory.MemoryWrite = _registerOutputVisualizer.isWriteEnabled;
+        // synchronize visualizer and concrete objects
+        SrcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
+        SrcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
+        DataIntructionMemory.MemoryWrite = registerOutputVisualizer.isWriteEnabled;
 
         // implementation
-        if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
-        {
-            srcB.Input = dataIntructionMemory._memory[srcA.Output];
-        }
-        else
-        {
-            srcB.Input = 0;
-            // if(dataIntructionMemory.MemoryWrite)
-            //  XXX
-        }
+        SrcB.Input = DataIntructionMemory.Memory.GetValueOrDefault(SrcA.Output, 0);
 
-        dataIntructionMemory.Adress = srcA.Output;
-        dataIntructionMemory.WriteData = srcB.Output;
-
-
-        // Debug.Log($"[0]: {dataIntructionMemory._memory[0]} \n[4]: {dataIntructionMemory._memory[4]} \n[8]: {dataIntructionMemory._memory[8]}\n[12]: {dataIntructionMemory._memory[12]}");
-
-        int p = _multiplexerVisualizer.CurrentChoosenMuxPath;
+        DataIntructionMemory.Address = SrcA.Output;
+        DataIntructionMemory.WriteData = SrcB.Output;
+        
+        var p = multiplexerVisualizer.CurrentChosenMuxPath;
         if (p == -1)
         {
             Debug.LogError("MUX path is -1. No value will be propagated");
-            srcA.Input = 0;
+            SrcA.Input = 0;
         }
         else if (p == 0)
         {
-            srcA.Input = ALU.calculate(srcA.Output, 4, _aluVizualizer.CurrentALUOperation);
+            SrcA.Input = Alu.Calculate(SrcA.Output, 4, aluVizualizer.CurrentAluOperation);
         }
         else if (p == 1)
         {
-            srcA.Input = ALU.calculate(srcB.Output, 4, _aluVizualizer.CurrentALUOperation);
+            SrcA.Input = Alu.Calculate(SrcB.Output, 4, aluVizualizer.CurrentAluOperation);
         }
         else
         {
             Debug.LogError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
-            srcA.Input = 0;
+            SrcA.Input = 0;
         }
 
 
 
-        srcA.PreClockUpdate();
-        srcB.PreClockUpdate();
-        dataIntructionMemory.PreClockUpdate();
+        SrcA.PreClockUpdate();
+        SrcB.PreClockUpdate();
+        DataIntructionMemory.PreClockUpdate();
 
 
         // Only if WriteEnable = true, call Clock
-        srcA.Clock();
-        srcB.Clock();
-        dataIntructionMemory.Clock();
+        SrcA.Clock();
+        SrcB.Clock();
+        DataIntructionMemory.Clock();
     }
 
     protected override IEnumerator RunBusVisualizations() {
-        if (_currentBus >= 0 && _currentBus < _maxTickNumber)
+        if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[0], srcA.Output);
-            _busController.StartBusSignal(_busController.busSegments[6], srcA.Output);
+            busController.StartBusSignal(busController.busSegments[0], SrcA.Output);
+            busController.StartBusSignal(busController.busSegments[6], SrcA.Output);
 
-            // должна с коротким делеем
-            if (dataIntructionMemory._memory.ContainsKey(srcA.Output))
+            // should be after a short delay
+            if (DataIntructionMemory.Memory.TryGetValue(SrcA.Output, out var value))
             {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], dataIntructionMemory._memory[srcA.Output]));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], value));
             }
             else
             {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], 0));
             }
 
 
-            // должна после первого с коротким делеем
-            yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[2], _busController.busSegments[7], srcB.Output, srcB.Output));
+            // should follow the first one with a short delay
+            yield return StartCoroutine(DelayedSignals(busController.busSegments[2], SrcB.Output, busController.busSegments[7], SrcB.Output));
 
-            int propagationVal = 0;
-            if (_multiplexerVisualizer.CurrentChoosenMuxPath == -1)
+            var propagationVal = 0;
+            if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[4], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[4], 0));
             }
             else
             {
 
-                if (_multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
-                    propagationVal = srcA.Output;
+                    propagationVal = SrcA.Output;
                 }
-                else if (_multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
-                    propagationVal = srcB.Output;
+                    propagationVal = SrcB.Output;
                 }
                 else
                 {
-                    Debug.LogError($"Unexpected MUX path {_multiplexerVisualizer.CurrentChoosenMuxPath}");
+                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[3], _busController.busSegments[4], propagationVal, 4));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], propagationVal, busController.busSegments[4], 4));
             }
 
 
             // from ALU to first register
-            yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[5], ALU.calculate(propagationVal, 4, _aluVizualizer.CurrentALUOperation)));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
 
-            _currentBus++;
+            CurrentBus++;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     protected override IEnumerator ReverseBusVisualizations() {
-        if (_currentBus >= 1 && _currentBus <= _maxTickNumber)
+        if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            _busController.StartBusSignal(_busController.busSegments[5], srcA.Input, true);
+            busController.StartBusSignal(busController.busSegments[5], SrcA.Input, true);
 
-            if (_tickStateValues[_tickCounter] is LevelThreeState s)
-            {
-                int upperBusSignal = 0;
-                if (_multiplexerVisualizer.CurrentChoosenMuxPath == 0)
+
+                var upperBusSignal = 0;
+                if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
                 {
-                    upperBusSignal = s.RegisterPCValue;
+                    upperBusSignal = TickStateValues[TickCounter].RegisterPCValue;
                 }
-                else if (_multiplexerVisualizer.CurrentChoosenMuxPath == 1)
+                else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                 {
-                    upperBusSignal = s.RegisterInstrValue;
+                    upperBusSignal = TickStateValues[TickCounter].RegisterInstrValue;
                 }
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[3], _busController.busSegments[4], upperBusSignal, 4, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], upperBusSignal, busController.busSegments[4], 4, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[7], _busController.busSegments[2], s.RegisterInstrValue, s.RegisterInstrValue, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[7], TickStateValues[TickCounter].RegisterInstrValue, busController.busSegments[2], TickStateValues[TickCounter].RegisterInstrValue, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(_busController.busSegments[6], _busController.busSegments[1], s.RegisterPCValue, srcB.Input, true, true));
-            }
-
-            // yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[1], srcB.Input, true));
-
-            if (_tickStateValues[_tickCounter] is LevelThreeState st)
-            {
-                yield return StartCoroutine(DelayedBusSignal(_busController.busSegments[0], st.RegisterPCValue, true));
-            }
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[6], TickStateValues[TickCounter].RegisterPCValue, busController.busSegments[1], SrcB.Input, true, true));
 
 
-            _currentBus--;
+
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[0], TickStateValues[TickCounter].RegisterPCValue, true));
+
+
+            CurrentBus--;
         }
 
-        yield return new WaitUntil(() => _busController.NoActiveSignals);
+        yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
 

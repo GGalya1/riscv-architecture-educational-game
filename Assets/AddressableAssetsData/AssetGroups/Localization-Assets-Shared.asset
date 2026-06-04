@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Localization-Assets-Shared
+  m_GUID: 89d49f68a4d58fa4e8ff74730daa09b2
+  m_SerializeEntries:
+  - m_GUID: 00e0883632a245941b2a8a91840f80a5
+    m_Address: TitanOne-Regular SDF
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a75a6118b34c944489053591a6a5ecc9
+    m_Address: Assets/Locales/Font Table Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a90139d818c196e4fb10b27bb674fa6a
+    m_Address: Assets/Locales/Main menu lables Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: bed3a311e2395784cbe23d76fe9c2461, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e8308de8f4406c04db49b499b7b869c4, type: 2}
+    - {fileID: 11400000, guid: 53551322c11e4f44c923c74152811f1f, type: 2}

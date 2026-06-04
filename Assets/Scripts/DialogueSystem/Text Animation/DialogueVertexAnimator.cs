@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class DialogueVertexAnimator
 {
-    public bool textAnimating = false;
-    private bool stopAnimating = false;
+    private bool _textAnimating;
+    private bool _stopAnimating;
 
-    private readonly TMP_Text textBox;
-    private readonly float textAnimationScale;
+    private readonly TMP_Text _textBox;
+    private readonly float _textAnimationScale;
     /* private readonly AudioSourceGroup audioSourceGroup;
     public DialogueVertexAnimator(TMP_Text _textBox, AudioSourceGroup _audioSourceGroup)
     {
@@ -19,176 +19,169 @@ public class DialogueVertexAnimator
         textAnimationScale = textBox.fontSize;
     }*/
 
-    public DialogueVertexAnimator(TMP_Text _textBox)
+    public DialogueVertexAnimator(TMP_Text textBox)
     {
-        textBox = _textBox;
-        textAnimationScale = textBox.fontSize;
+        this._textBox = textBox;
+        _textAnimationScale = this._textBox.fontSize;
     }
 
-    private static readonly Color32 clear = new Color32(0, 0, 0, 0);
+    private static readonly Color32 Clear = new Color32(0, 0, 0, 0);
     private const float CHAR_ANIM_TIME = 0.07f;
-    private static readonly Vector3 vecZero = Vector3.zero;
-    public IEnumerator AnimateTextIn(List<DialogueCommand> commands, string processedMessage, AudioClip voice_sound, Action onFinish)
+    private static readonly Vector3 VecZero = Vector3.zero;
+    public IEnumerator AnimateTextIn(List<DialogueCommand> commands, string processedMessage, AudioClip voiceSound, Action onFinish)
     {
-        textAnimating = true;
-        float secondsPerCharacter = 1f / 150f;
+        _textAnimating = true;
+        var secondsPerCharacter = 1f / 150f;
         float timeOfLastCharacter = 0;
 
-        TextAnimInfo[] textAnimInfo = SeparateOutTextAnimInfo(commands);
-        TMP_TextInfo textInfo = textBox.textInfo;
-        for (int i = 0; i < textInfo.meshInfo.Length; i++) //Clear the mesh 
+        var textAnimInfo = SeparateOutTextAnimInfo(commands);
+        var textInfo = _textBox.textInfo;
+        foreach (var meshInfer in textInfo.meshInfo)
         {
-            TMP_MeshInfo meshInfer = textInfo.meshInfo[i];
-            if (meshInfer.vertices != null)
+            if (meshInfer.vertices == null) continue;
+            for (var j = 0; j < meshInfer.vertices.Length; j++)
             {
-                for (int j = 0; j < meshInfer.vertices.Length; j++)
-                {
-                    meshInfer.vertices[j] = vecZero;
-                }
+                meshInfer.vertices[j] = VecZero;
             }
         }
 
-        textBox.text = processedMessage;
-        textBox.ForceMeshUpdate();
+        _textBox.text = processedMessage;
+        _textBox.ForceMeshUpdate();
 
-        TMP_MeshInfo[] cachedMeshInfo = textInfo.CopyMeshInfoVertexData();
-        Color32[][] originalColors = new Color32[textInfo.meshInfo.Length][];
-        for (int i = 0; i < originalColors.Length; i++)
+        var cachedMeshInfo = textInfo.CopyMeshInfoVertexData();
+        var originalColors = new Color32[textInfo.meshInfo.Length][];
+        for (var i = 0; i < originalColors.Length; i++)
         {
-            Color32[] theColors = textInfo.meshInfo[i].colors32;
+            var theColors = textInfo.meshInfo[i].colors32;
             originalColors[i] = new Color32[theColors.Length];
             Array.Copy(theColors, originalColors[i], theColors.Length);
         }
-        int charCount = textInfo.characterCount;
-        float[] charAnimStartTimes = new float[charCount];
-        for (int i = 0; i < charCount; i++)
+        var charCount = textInfo.characterCount;
+        var charAnimStartTimes = new float[charCount];
+        for (var i = 0; i < charCount; i++)
         {
             charAnimStartTimes[i] = -1; //indicate the character as not yet started animating.
         }
-        int visableCharacterIndex = 0;
+        var visibleCharacterIndex = 0;
         while (true)
         {
-            if (stopAnimating)
+            if (_stopAnimating)
             {
-                for (int i = visableCharacterIndex; i < charCount; i++)
+                for (var i = visibleCharacterIndex; i < charCount; i++)
                 {
                     charAnimStartTimes[i] = Time.unscaledTime;
                 }
-                visableCharacterIndex = charCount;
+                visibleCharacterIndex = charCount;
                 FinishAnimating(onFinish);
             }
             if (ShouldShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
             {
-                if (visableCharacterIndex <= charCount)
+                if (visibleCharacterIndex <= charCount)
                 {
-                    ExecuteCommandsForCurrentIndex(commands, visableCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
-                    if (visableCharacterIndex < charCount && ShouldShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
+                    ExecuteCommandsForCurrentIndex(commands, visibleCharacterIndex, ref secondsPerCharacter, ref timeOfLastCharacter);
+                    if (visibleCharacterIndex < charCount && ShouldShowNextCharacter(secondsPerCharacter, timeOfLastCharacter))
                     {
-                        charAnimStartTimes[visableCharacterIndex] = Time.unscaledTime;
-                        PlayDialogueSound(voice_sound);
-                        visableCharacterIndex++;
+                        charAnimStartTimes[visibleCharacterIndex] = Time.unscaledTime;
+                        PlayDialogueSound(voiceSound);
+                        visibleCharacterIndex++;
                         timeOfLastCharacter = Time.unscaledTime;
-                        if (visableCharacterIndex == charCount)
+                        if (visibleCharacterIndex == charCount)
                         {
                             FinishAnimating(onFinish);
                         }
                     }
                 }
             }
-            for (int j = 0; j < charCount; j++)
+            for (var j = 0; j < charCount; j++)
             {
-                TMP_CharacterInfo charInfo = textInfo.characterInfo[j];
-                if (charInfo.isVisible) //Invisible characters have a vertexIndex of 0 because they have no vertices and so they should be ignored to avoid messing up the first character in the string whic also has a vertexIndex of 0
+                var charInfo = textInfo.characterInfo[j];
+                if (!charInfo.isVisible) continue; //Invisible characters have a vertexIndex of 0 because they have no vertices, and so they should be ignored to avoid messing up the first character in the string which also has a vertexIndex of 0
+                var vertexIndex = charInfo.vertexIndex;
+                var materialIndex = charInfo.materialReferenceIndex;
+                var destinationColors = textInfo.meshInfo[materialIndex].colors32;
+                var theColor = j < visibleCharacterIndex ? originalColors[materialIndex][vertexIndex] : Clear;
+                destinationColors[vertexIndex + 0] = theColor;
+                destinationColors[vertexIndex + 1] = theColor;
+                destinationColors[vertexIndex + 2] = theColor;
+                destinationColors[vertexIndex + 3] = theColor;
+
+                var sourceVertices = cachedMeshInfo[materialIndex].vertices;
+                var destinationVertices = textInfo.meshInfo[materialIndex].vertices;
+                float charSize = 0;
+                var charAnimStartTime = charAnimStartTimes[j];
+                if (charAnimStartTime >= 0)
                 {
-                    int vertexIndex = charInfo.vertexIndex;
-                    int materialIndex = charInfo.materialReferenceIndex;
-                    Color32[] destinationColors = textInfo.meshInfo[materialIndex].colors32;
-                    Color32 theColor = j < visableCharacterIndex ? originalColors[materialIndex][vertexIndex] : clear;
-                    destinationColors[vertexIndex + 0] = theColor;
-                    destinationColors[vertexIndex + 1] = theColor;
-                    destinationColors[vertexIndex + 2] = theColor;
-                    destinationColors[vertexIndex + 3] = theColor;
-
-                    Vector3[] sourceVertices = cachedMeshInfo[materialIndex].vertices;
-                    Vector3[] destinationVertices = textInfo.meshInfo[materialIndex].vertices;
-                    float charSize = 0;
-                    float charAnimStartTime = charAnimStartTimes[j];
-                    if (charAnimStartTime >= 0)
-                    {
-                        float timeSinceAnimStart = Time.unscaledTime - charAnimStartTime;
-                        charSize = Mathf.Min(1, timeSinceAnimStart / CHAR_ANIM_TIME);
-                    }
-
-                    Vector3 animPosAdjustment = GetAnimPosAdjustment(textAnimInfo, j, textBox.fontSize, Time.unscaledTime);
-                    Vector3 offset = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
-                    destinationVertices[vertexIndex + 0] = ((sourceVertices[vertexIndex + 0] - offset) * charSize) + offset + animPosAdjustment;
-                    destinationVertices[vertexIndex + 1] = ((sourceVertices[vertexIndex + 1] - offset) * charSize) + offset + animPosAdjustment;
-                    destinationVertices[vertexIndex + 2] = ((sourceVertices[vertexIndex + 2] - offset) * charSize) + offset + animPosAdjustment;
-                    destinationVertices[vertexIndex + 3] = ((sourceVertices[vertexIndex + 3] - offset) * charSize) + offset + animPosAdjustment;
+                    var timeSinceAnimStart = Time.unscaledTime - charAnimStartTime;
+                    charSize = Mathf.Min(1, timeSinceAnimStart / CHAR_ANIM_TIME);
                 }
+
+                var animPosAdjustment = GetAnimPosAdjustment(textAnimInfo, j, _textBox.fontSize, Time.unscaledTime);
+                var offset = (sourceVertices[vertexIndex + 0] + sourceVertices[vertexIndex + 2]) / 2;
+                destinationVertices[vertexIndex + 0] = ((sourceVertices[vertexIndex + 0] - offset) * charSize) + offset + animPosAdjustment;
+                destinationVertices[vertexIndex + 1] = ((sourceVertices[vertexIndex + 1] - offset) * charSize) + offset + animPosAdjustment;
+                destinationVertices[vertexIndex + 2] = ((sourceVertices[vertexIndex + 2] - offset) * charSize) + offset + animPosAdjustment;
+                destinationVertices[vertexIndex + 3] = ((sourceVertices[vertexIndex + 3] - offset) * charSize) + offset + animPosAdjustment;
             }
-            textBox.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-            for (int i = 0; i < textInfo.meshInfo.Length; i++)
+            _textBox.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+            for (var i = 0; i < textInfo.meshInfo.Length; i++)
             {
-                TMP_MeshInfo theInfo = textInfo.meshInfo[i];
+                var theInfo = textInfo.meshInfo[i];
                 theInfo.mesh.vertices = theInfo.vertices;
-                textBox.UpdateGeometry(theInfo.mesh, i);
+                _textBox.UpdateGeometry(theInfo.mesh, i);
             }
             yield return null;
         }
     }
 
-    private void ExecuteCommandsForCurrentIndex(List<DialogueCommand> commands, int visableCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
+    private static void ExecuteCommandsForCurrentIndex(List<DialogueCommand> commands, int visibleCharacterIndex, ref float secondsPerCharacter, ref float timeOfLastCharacter)
     {
-        for (int i = 0; i < commands.Count; i++)
+        for (var i = 0; i < commands.Count; i++)
         {
-            DialogueCommand command = commands[i];
-            if (command.position == visableCharacterIndex)
+            var command = commands[i];
+            if (command.Position != visibleCharacterIndex) continue;
+            switch (command.Type)
             {
-                switch (command.type)
-                {
-                    case DialogueCommandType.Pause:
-                        timeOfLastCharacter = Time.unscaledTime + command.floatValue;
-                        break;
-                    case DialogueCommandType.TextSpeedChange:
-                        secondsPerCharacter = 1f / command.floatValue;
-                        break;
-                }
-                commands.RemoveAt(i);
-                i--;
+                case DialogueCommandType.Pause:
+                    timeOfLastCharacter = Time.unscaledTime + command.FloatValue;
+                    break;
+                case DialogueCommandType.TextSpeedChange:
+                    secondsPerCharacter = 1f / command.FloatValue;
+                    break;
             }
+            commands.RemoveAt(i);
+            i--;
         }
     }
 
     private void FinishAnimating(Action onFinish)
     {
-        textAnimating = false;
-        stopAnimating = false;
+        _textAnimating = false;
+        _stopAnimating = false;
         onFinish?.Invoke();
     }
 
     private const float NOISE_MAGNITUDE_ADJUSTMENT = 0.06f;
     private const float NOISE_FREQUENCY_ADJUSTMENT = 15f;
     private const float WAVE_MAGNITUDE_ADJUSTMENT = 0.06f;
-    private Vector3 GetAnimPosAdjustment(TextAnimInfo[] textAnimInfo, int charIndex, float fontSize, float time)
+    private static Vector3 GetAnimPosAdjustment(TextAnimInfo[] textAnimInfo, int charIndex, float fontSize, float time)
     {
         float x = 0;
         float y = 0;
-        for (int i = 0; i < textAnimInfo.Length; i++)
+        foreach (var info in textAnimInfo)
         {
-            TextAnimInfo info = textAnimInfo[i];
-            if (charIndex >= info.startIndex && charIndex < info.endIndex)
+            if (charIndex < info.StartIndex || charIndex >= info.EndIndex) continue;
+            switch (info.Type)
             {
-                if (info.type == TextAnimationType.shake)
+                case TextAnimationType.SHAKE:
                 {
-                    float scaleAdjust = fontSize * NOISE_MAGNITUDE_ADJUSTMENT;
+                    var scaleAdjust = fontSize * NOISE_MAGNITUDE_ADJUSTMENT;
                     x += (Mathf.PerlinNoise((charIndex + time) * NOISE_FREQUENCY_ADJUSTMENT, 0) - 0.5f) * scaleAdjust;
                     y += (Mathf.PerlinNoise((charIndex + time) * NOISE_FREQUENCY_ADJUSTMENT, 1000) - 0.5f) * scaleAdjust;
+                    break;
                 }
-                else if (info.type == TextAnimationType.wave)
-                {
+                case TextAnimationType.WAVE:
                     y += Mathf.Sin((charIndex * 1.5f) + (time * 6)) * fontSize * WAVE_MAGNITUDE_ADJUSTMENT;
-                }
+                    break;
             }
         }
         return new Vector3(x, y, 0);
@@ -200,43 +193,42 @@ public class DialogueVertexAnimator
     }
     public void SkipToEndOfCurrentMessage()
     {
-        if (textAnimating)
+        if (_textAnimating)
         {
-            stopAnimating = true;
+            _stopAnimating = true;
         }
     }
 
-    private float timeUntilNextDialogueSound = 0;
-    private float lastDialogueSound = 0;
-    private void PlayDialogueSound(AudioClip voice_sound)
+    private float _timeUntilNextDialogueSound;
+    private float _lastDialogueSound;
+    private void PlayDialogueSound(AudioClip voiceSound)
     {
-        if (Time.unscaledTime - lastDialogueSound > timeUntilNextDialogueSound)
-        {
-            timeUntilNextDialogueSound = UnityEngine.Random.Range(0.02f, 0.08f);
-            lastDialogueSound = Time.unscaledTime;
-            // audioSourceGroup.PlayFromNextSource(voice_sound); //Use Multiple Audio Sources to allow playing multiple sounds at once
-        }
+        if (!(Time.unscaledTime - _lastDialogueSound > _timeUntilNextDialogueSound)) return;
+        _timeUntilNextDialogueSound = UnityEngine.Random.Range(0.02f, 0.08f);
+        _lastDialogueSound = Time.unscaledTime;
+        // audioSourceGroup.PlayFromNextSource(voice_sound); //Use Multiple Audio Sources to allow playing multiple sounds at once
     }
 
-    public static TextAnimInfo[] SeparateOutTextAnimInfo(List<DialogueCommand> commands)
+    private static TextAnimInfo[] SeparateOutTextAnimInfo(List<DialogueCommand> commands)
     {
-        List<TextAnimInfo> tempResult = new List<TextAnimInfo>();
-        List<DialogueCommand> animStartCommands = new List<DialogueCommand>();
-        List<DialogueCommand> animEndCommands = new List<DialogueCommand>();
-        for (int i = 0; i < commands.Count; i++)
+        var tempResult = new List<TextAnimInfo>();
+        var animStartCommands = new List<DialogueCommand>();
+        var animEndCommands = new List<DialogueCommand>();
+        for (var i = 0; i < commands.Count; i++)
         {
-            DialogueCommand command = commands[i];
-            if (command.type == DialogueCommandType.AnimStart)
+            var command = commands[i];
+            switch (command.Type)
             {
-                animStartCommands.Add(command);
-                commands.RemoveAt(i);
-                i--;
-            }
-            else if (command.type == DialogueCommandType.AnimEnd)
-            {
-                animEndCommands.Add(command);
-                commands.RemoveAt(i);
-                i--;
+                case DialogueCommandType.AnimStart:
+                    animStartCommands.Add(command);
+                    commands.RemoveAt(i);
+                    i--;
+                    break;
+                case DialogueCommandType.AnimEnd:
+                    animEndCommands.Add(command);
+                    commands.RemoveAt(i);
+                    i--;
+                    break;
             }
         }
         if (animStartCommands.Count != animEndCommands.Count)
@@ -245,15 +237,15 @@ public class DialogueVertexAnimator
         }
         else
         {
-            for (int i = 0; i < animStartCommands.Count; i++)
+            for (var i = 0; i < animStartCommands.Count; i++)
             {
-                DialogueCommand startCommand = animStartCommands[i];
-                DialogueCommand endCommand = animEndCommands[i];
+                var startCommand = animStartCommands[i];
+                var endCommand = animEndCommands[i];
                 tempResult.Add(new TextAnimInfo
                 {
-                    startIndex = startCommand.position,
-                    endIndex = endCommand.position,
-                    type = startCommand.textAnimValue
+                    StartIndex = startCommand.Position,
+                    EndIndex = endCommand.Position,
+                    Type = startCommand.TextAnimValue
                 });
             }
         }
@@ -263,7 +255,7 @@ public class DialogueVertexAnimator
 
 public struct TextAnimInfo
 {
-    public int startIndex;
-    public int endIndex;
-    public TextAnimationType type;
+    public int StartIndex;
+    public int EndIndex;
+    public TextAnimationType Type;
 }

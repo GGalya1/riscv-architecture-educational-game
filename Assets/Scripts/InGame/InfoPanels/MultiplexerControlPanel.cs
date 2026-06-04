@@ -1,23 +1,24 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Serialization;
 
 public class MultiplexerControlPanel: MonoBehaviour
 {
     public TextMeshProUGUI titleText;
-    [SerializeField] private Button _firstWayButton;
-    [SerializeField] private Button _secondWayButton;
-    [SerializeField] private Button _thirdWayButton;
+    [FormerlySerializedAs("_firstWayButton")] [SerializeField] private Button firstWayButton;
+    [FormerlySerializedAs("_secondWayButton")] [SerializeField] private Button secondWayButton;
+    [FormerlySerializedAs("_thirdWayButton")] [SerializeField] private Button thirdWayButton;
 
-    public Button FirstWayButton => _firstWayButton;
-    public Button SecondWayButton => _secondWayButton;
-    public Button ThirdWayButton => _thirdWayButton;
+    public Button FirstWayButton => firstWayButton;
+    public Button SecondWayButton => secondWayButton;
+    public Button ThirdWayButton => thirdWayButton;
 
     public void Setup(bool firstButton, bool secondButton, bool thirdButton, string title)
     {
-        if (_firstWayButton != null) _firstWayButton.gameObject.SetActive(firstButton);
-        if (_secondWayButton != null) _secondWayButton.gameObject.SetActive(secondButton);
-        if (_thirdWayButton != null) _thirdWayButton.gameObject.SetActive(thirdButton);
+        if (firstWayButton != null) firstWayButton.gameObject.SetActive(firstButton);
+        if (secondWayButton != null) secondWayButton.gameObject.SetActive(secondButton);
+        if (thirdWayButton != null) thirdWayButton.gameObject.SetActive(thirdButton);
 
         titleText.text = title;
     }

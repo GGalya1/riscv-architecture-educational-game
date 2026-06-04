@@ -2,8 +2,8 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /// <summary>
@@ -14,35 +14,36 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Dependencies")]
     public GameObject endLevelMenuUI;
-    [SerializeField] private BeginnOfLevelAnimationManager _animManager;
-    [SerializeField] private DialogueManager _dialogueManager;
+    [FormerlySerializedAs("_animManager")] [SerializeField] private BeginnOfLevelAnimationManager animManager;
+    [FormerlySerializedAs("_dialogueManager")] [SerializeField] private DialogueManager dialogueManager;
 
     [Header("Loading Screen")]
     [SerializeField] private CanvasGroup loadingOverlay;
     [SerializeField] private float transitionDuration = 1f;
 
+    [FormerlySerializedAs("BGGroup")]
     [Header("Results Panel Animation")]
-    [SerializeField] private CanvasGroup BGGroup;
+    [SerializeField] private CanvasGroup bgGroup;
     [SerializeField] private CanvasGroup resultsPanelGroup;
     [SerializeField] private RectTransform resultsPanelRectTransform;
-    [SerializeField] private float _fadeTime = 0.3f;
+    [FormerlySerializedAs("_fadeTime")] [SerializeField] private float fadeTime = 0.3f;
 
     [Header("Star Rating")]
     public Image[] stars;
     public Sprite gainedStar;
-    [SerializeField] private float _starPopDuration = 1.8f;
+    [FormerlySerializedAs("_starPopDuration")] [SerializeField] private float starPopDuration = 1.8f;
 
     // for transition between processor levels
-    [HideInInspector] public static Func<object> OnRequestNextLevelData;
+    public static Func<object> OnRequestNextLevelData;
 
     private const string UNLOCKED_LEVEL_KEY = "UnlockedLevelIndex";
 
     public void Awake()
     {
         // Subscribe to dialogue events to toggle UI visibility
-        _dialogueManager.OnDialogueBegin += _animManager.HideUIAndShowDialogue;
-        _dialogueManager.OnDialogueEnd += _animManager.HideDialogue;
-        _dialogueManager.OnHintEnabled += _animManager.HideUIAndShowDialogue;
+        dialogueManager.OnDialogueBegin += animManager.HideUIAndShowDialogue;
+        dialogueManager.OnDialogueEnd += animManager.HideDialogue;
+        dialogueManager.OnHintEnabled += animManager.HideUIAndShowDialogue;
 
         InitializeResultsPanel();
 
@@ -55,19 +56,17 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        if (loadingOverlay != null)
-        {
-            Sequence fadeInSequence = DOTween.Sequence();
-            fadeInSequence.AppendInterval(0.2f);
-            fadeInSequence.Append(loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true));
-            fadeInSequence.OnComplete(() => {
-                loadingOverlay.blocksRaycasts = false;
-            });
-        }
+        if (loadingOverlay == null) return;
+        var fadeInSequence = DOTween.Sequence();
+        fadeInSequence.AppendInterval(0.2f);
+        fadeInSequence.Append(loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true));
+        fadeInSequence.OnComplete(() => {
+            loadingOverlay.blocksRaycasts = false;
+        });
     }
 
     public void SetLevelDialogue(DialogueGraph d) {
-        _dialogueManager.SetActiveGraph(d);
+        dialogueManager.SetActiveGraph(d);
     }
 
     /// <summary>
@@ -96,11 +95,11 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         if (SceneManager.GetActiveScene().buildIndex == 20) {
-            object nextData = OnRequestNextLevelData?.Invoke();
+            var nextData = OnRequestNextLevelData?.Invoke();
 
             if (nextData != null)
             {
-                FullProcessorRegiseur._initial = (ProcessorInitialState)nextData;
+                FullProcessorRegisseur.Initial = (ProcessorInitialState)nextData;
 
                 StartCoroutine(LoadWithTransition(20));
             }
@@ -112,10 +111,10 @@ public class LevelManager : MonoBehaviour
             return;
         }
 
-        int nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        var nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         // Save progress if this is a new level
-        int savedProgress = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+        var savedProgress = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
         if (nextLevelIndex > savedProgress)
         {
             PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, nextLevelIndex);
@@ -150,7 +149,8 @@ public class LevelManager : MonoBehaviour
         yield return loadingOverlay.DOFade(1f, transitionDuration).SetUpdate(true).WaitForCompletion();
 
         // Loading next level
-        AsyncOperation op = SceneManager.LoadSceneAsync(targetIndex);
+        var op = SceneManager.LoadSceneAsync(targetIndex);
+        if (op == null) yield break;
         op.allowSceneActivation = false;
 
         while (op.progress < 0.9f)
@@ -168,23 +168,21 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void OpenEndOfLevelMenu()
     {
-        if (endLevelMenuUI != null)
-        {
-            BGGroup.DOKill();
-            BGGroup.interactable = true;
-            BGGroup.blocksRaycasts = true;
-            BGGroup.DOFade(1, _fadeTime);
+        if (endLevelMenuUI == null) return;
+        bgGroup.DOKill();
+        bgGroup.interactable = true;
+        bgGroup.blocksRaycasts = true;
+        bgGroup.DOFade(1, fadeTime);
 
 
-            resultsPanelRectTransform.DOKill();
-            resultsPanelGroup.DOKill();
+        resultsPanelRectTransform.DOKill();
+        resultsPanelGroup.DOKill();
 
-            resultsPanelGroup.interactable = true;
-            resultsPanelGroup.blocksRaycasts = true;
+        resultsPanelGroup.interactable = true;
+        resultsPanelGroup.blocksRaycasts = true;
 
-            resultsPanelRectTransform.DOAnchorPos(Vector2.zero, _fadeTime).SetEase(Ease.OutBack);
-            resultsPanelGroup.DOFade(1, _fadeTime);
-        }
+        resultsPanelRectTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(Ease.OutBack);
+        resultsPanelGroup.DOFade(1, fadeTime);
     }
     private void InitializeResultsPanel()
     {
@@ -198,19 +196,18 @@ public class LevelManager : MonoBehaviour
     /// Updates stars based on player performance with a pop animation.
     /// </summary>
     /// <param name="gainedStarsCount">Number of stars to fill (0 to 3).</param>
-    public void setGainedStars(int gainedStarsCount) {
-        int count = Mathf.Clamp(gainedStarsCount, 0, stars.Length);
+    public void SetGainedStars(int gainedStarsCount) {
+        var count = Mathf.Clamp(gainedStarsCount, 0, stars.Length);
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
-            int index = i; // Closure safety
-            stars[index].sprite = gainedStar;
+            stars[i].sprite = gainedStar;
 
             // Star animation
-            stars[index].transform.localScale = Vector3.zero;
-            stars[index].transform.DOScale(Vector3.one, _starPopDuration)
+            stars[i].transform.localScale = Vector3.zero;
+            stars[i].transform.DOScale(Vector3.one, starPopDuration)
                 .SetEase(Ease.OutBack)
-                .SetDelay(index * 0.15f); // Stars pop one by one
+                .SetDelay(i * 0.15f); // Stars pop one by one
         }
     }
     #endregion
@@ -218,11 +215,9 @@ public class LevelManager : MonoBehaviour
     private void OnDestroy()
     {
         // Crucial: unsubscribe to prevent memory leaks and ghost calls
-        if (_dialogueManager != null)
-        {
-            _dialogueManager.OnDialogueBegin -= _animManager.HideUIAndShowDialogue;
-            _dialogueManager.OnDialogueEnd -= _animManager.HideDialogue;
-            _dialogueManager.OnHintEnabled -= _animManager.HideUIAndShowDialogue;
-        }
+        if (dialogueManager == null) return;
+        dialogueManager.OnDialogueBegin -= animManager.HideUIAndShowDialogue;
+        dialogueManager.OnDialogueEnd -= animManager.HideDialogue;
+        dialogueManager.OnHintEnabled -= animManager.HideUIAndShowDialogue;
     }
 }

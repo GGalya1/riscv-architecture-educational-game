@@ -1,29 +1,37 @@
 using UnityEngine;
-using System.Collections;
+using UnityEngine.Serialization;
 
-public class IntructionDataMemoryVizualizer: BaseVizualizer
+public class InstructionDataMemoryVisualizer: BaseVisualizer
 {
-    private InstrMemoryControlPanel _uiController;
-    public InstrMemoryControlPanel UIRegisterPanel => _uiController;
+    public InstrMemoryControlPanel UIRegisterPanel { get; private set; }
 
+    [FormerlySerializedAs("_writeEnableIndicator")]
     [Header("Write Enable Visualization")]
     [Tooltip("Object that controls WE-signal and Stop-image")]
-    [SerializeField] private GameObject _writeEnableIndicator;
+    [SerializeField] private GameObject writeEnableIndicator;
     public bool isWriteEnabled;
 
+    [FormerlySerializedAs("_blinker")]
     [Header("Blinker of sequential component")]
-    [SerializeField] private Blinker _blinker;
+    [SerializeField] private Blinker blinker;
+
+    private bool _isWriteEnableIndicatorNull;
+
+    private void Start()
+    {
+        _isWriteEnableIndicatorNull = writeEnableIndicator == null;
+    }
 
     protected override void Awake()
     {
         base.Awake();
 
         // Set the initial state for STOP indicator
-        if (_writeEnableIndicator != null)
+        if (writeEnableIndicator != null)
         {
-            _writeEnableIndicator.SetActive(false);
+            writeEnableIndicator.SetActive(false);
             isWriteEnabled = true;
-            _uiController.WEButton.onClick.AddListener(SwitchWriteEnableVisualization);
+            UIRegisterPanel.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
         }
     }
 
@@ -33,35 +41,31 @@ public class IntructionDataMemoryVizualizer: BaseVizualizer
     /// </summary>
     protected override void InitializePanelController()
     {
-        _uiController = _panelInstance.GetComponent<InstrMemoryControlPanel>();
-        if (_uiController == null)
+        UIRegisterPanel = panelInstance.GetComponent<InstrMemoryControlPanel>();
+        if (UIRegisterPanel == null)
         {
             Debug.LogError($"InstrMemoryControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
-    public void SwitchWriteEnableVisualization()
+    private void SwitchWriteEnableVisualization()
     {
-        if (_writeEnableIndicator != null)
-        {
-            // if WE is true -> indicator must be inactive
-            // if WE is false -> indicator must be active
-            isWriteEnabled = !isWriteEnabled;
-            _writeEnableIndicator.SetActive(!isWriteEnabled);
-            HideData();
-        }
+        if (writeEnableIndicator == null) return;
+        // if WriteEnable is true -> indicator must be inactive
+        // if WriteEnable is false -> indicator must be active
+        isWriteEnabled = !isWriteEnabled;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
+        HideData();
     }
     public void ForceUpdateWriteEnableVisualization(bool flag)
     {
-        if (_writeEnableIndicator != null)
-        {
-            isWriteEnabled = flag;
-            _writeEnableIndicator.SetActive(!isWriteEnabled);
-        }
+        if (_isWriteEnableIndicatorNull) return;
+        isWriteEnabled = flag;
+        writeEnableIndicator.SetActive(!isWriteEnabled);
     }
 
     public void TriggerBlink() {
-        _blinker.Trigger();
+        blinker.Trigger();
     }
 
-    public override void ResetVizualization() { }
+    public override void ResetVisualisation() { }
 }
