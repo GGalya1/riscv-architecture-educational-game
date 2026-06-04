@@ -61,9 +61,6 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
         InfoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         InfoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         InfoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
-
-
-        SetLevelTargetText(levelTargetDescription);
         
 
         UpdateVizualizers();

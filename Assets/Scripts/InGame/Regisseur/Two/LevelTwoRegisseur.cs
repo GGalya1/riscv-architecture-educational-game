@@ -34,9 +34,6 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
 
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
 
-
-        SetLevelTargetText(levelTargetDescription);
-
         UpdateVizualizers();
     }
 

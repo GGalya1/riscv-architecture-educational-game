@@ -50,8 +50,6 @@ public class LevelZeroRegisseur : BaseLevelRegisseur
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        SetLevelTargetText(levelTargetDescription);
-
         UpdateVizualizers();
     }
 

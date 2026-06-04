@@ -47,9 +47,6 @@ public class LevelTwoExtended : BaseLevelRegisseur
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-
-        SetLevelTargetText(levelTargetDescription);
-
         UpdateVizualizers();
     }
 

@@ -104,6 +104,7 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
         prevClick.onClick.AddListener(HandlePrevTick);
         checkSolutionButton.onClick.AddListener(CheckSolution);
         currentTickText.text = $"{TickCounter}";
+        levelTargetText.text = levelTargetDescription;
 
         // 2. Initializing history
         TickStateValues = new object[maxTickNumber]; // Can be _maxTickNumber + 1
@@ -343,9 +344,6 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
         0 => v0, 1 => v1, 2 => v2,
         _ => 0
     };
-    
-    protected void SetLevelTargetText(string fallback)
-        => levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? fallback : levelTargetDescription;
     
     protected IEnumerator DelayedSignal(LineRenderer seg, int value, bool reverse = false)
     {

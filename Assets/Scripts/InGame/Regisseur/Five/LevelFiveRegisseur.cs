@@ -74,8 +74,6 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
         _infoDataMemory = memoryVisualizer.UIRegisterPanel;
-
-        SetLevelTargetText(levelTargetDescription);
             
 
         memoryVisualizer.UIRegisterPanel.Display($"{_dataIntructionMemory.Memory[0]}", $"{_dataIntructionMemory.Memory[4]}", $"{_dataIntructionMemory.Memory[8]}", $"{_dataIntructionMemory.Memory[12]}");

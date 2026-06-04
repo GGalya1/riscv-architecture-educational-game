@@ -66,9 +66,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         InfoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         InfoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         InfoDataMemory = registerOutputVisualizer.UIRegisterPanel;
-
-
-        SetLevelTargetText(levelTargetDescription);
+       
 
         UpdateVizualizers();
     }

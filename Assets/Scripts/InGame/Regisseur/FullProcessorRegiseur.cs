@@ -141,9 +141,6 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoAluOutRegister = registerAluOutVisualizer.UIRegisterPanel;
 
-
-        SetLevelTargetText(levelTargetDescription);
-
         UpdateVizualizers();
     }
 

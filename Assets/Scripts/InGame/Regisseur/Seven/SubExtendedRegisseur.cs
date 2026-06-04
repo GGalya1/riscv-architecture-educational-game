@@ -73,9 +73,6 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
         InfoImmRegister = registerImmediateVisualizer.UIRegisterPanel;
         InfoA3Register = registerA3Visualizer.UIRegisterPanel;
         InfoWd3Register = registerWd3Visualizer.UIRegisterPanel;
-
-
-        SetLevelTargetText(levelTargetDescription);
         
         UpdateVizualizers();
     }

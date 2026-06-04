@@ -41,8 +41,6 @@ public class LevelFiveExtended : BaseLevelRegisseur
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        SetLevelTargetText(levelTargetDescription);
-
         UpdateVizualizers();
     }
 
