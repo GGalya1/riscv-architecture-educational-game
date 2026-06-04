@@ -75,8 +75,8 @@ public class SubExtendedRegisseur : BaseLevelRegisseur
         InfoWd3Register = registerWd3Visualizer.UIRegisterPanel;
 
 
-        levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? $"Hier Ziel schreiben" : levelTargetDescription;
-
+        SetLevelTargetText(levelTargetDescription);
+        
         UpdateVizualizers();
     }
 

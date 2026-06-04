@@ -142,8 +142,7 @@ public class FullProcessorRegiseur : BaseLevelRegisseur
         _infoAluOutRegister = registerAluOutVisualizer.UIRegisterPanel;
 
 
-        levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? $"Hier Ziel schreiben" : levelTargetDescription;
-
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

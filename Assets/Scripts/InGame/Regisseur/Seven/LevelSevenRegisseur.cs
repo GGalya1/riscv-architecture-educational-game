@@ -63,14 +63,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur
         InfoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Ziel: \r\nSchreibe in Register 3 die Summe von r7 und r6.";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
         
 
         UpdateVizualizers();

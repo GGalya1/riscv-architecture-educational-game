@@ -50,8 +50,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? "Ziel: \r\nSchreibe in Register 3 den Wert 4" : levelTargetDescription;
-
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

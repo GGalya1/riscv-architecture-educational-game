@@ -75,12 +75,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
 
         _infoDataMemory = memoryVisualizer.UIRegisterPanel;
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0) {
-            levelTargetText.text = $"Ziel: \r\nExtende alle Werte aus dem Speicher korrekt und lege in Register 3.";
-        }
-        else {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
             
 
         memoryVisualizer.UIRegisterPanel.Display($"{_dataIntructionMemory.Memory[0]}", $"{_dataIntructionMemory.Memory[4]}", $"{_dataIntructionMemory.Memory[8]}", $"{_dataIntructionMemory.Memory[12]}");

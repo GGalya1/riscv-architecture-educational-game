@@ -35,14 +35,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
 
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Ziel: \r\nSchreibe in Register 1 den Wert {RightAnswerValue}";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

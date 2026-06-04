@@ -52,14 +52,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
 
-        if (string.IsNullOrEmpty(levelTargetDescription))
-        {
-            levelTargetText.text = "Ziel: \r\nSchreibe in Register 3 den Wert 4";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

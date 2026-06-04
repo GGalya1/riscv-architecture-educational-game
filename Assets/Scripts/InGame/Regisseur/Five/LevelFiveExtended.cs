@@ -41,14 +41,7 @@ public class LevelFiveExtended : BaseLevelRegisseur
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Ziel: \r\nErweitere korrekt den Wert aus dem Register 1 und schreib den Wert in Register 3.";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

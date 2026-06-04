@@ -344,5 +344,8 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
         _ => 0
     };
     
+    protected void SetLevelTargetText(string fallback)
+        => levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? fallback : levelTargetDescription;
+    
     # endregion
 }

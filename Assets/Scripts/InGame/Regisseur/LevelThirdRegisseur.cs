@@ -68,8 +68,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         InfoDataMemory = registerOutputVisualizer.UIRegisterPanel;
 
 
-        levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? $"Ziel: \r\nSchreibe in Register 2 den Wert {RightAnswerValue}" : levelTargetDescription;
-        
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

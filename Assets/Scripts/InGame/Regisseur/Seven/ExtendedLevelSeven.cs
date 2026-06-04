@@ -71,14 +71,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur
         InfoWd3Register = registerWd3Visualizer.UIRegisterPanel;
 
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Hier Ziel schreiben";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

@@ -20,14 +20,7 @@ public class LevelFourthRegisseur : LevelThirdRegisseur
         InfoDataMemory = registerOutputVisualizer.UIRegisterPanel;
 
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Ziel: \r\nSchreibe in Speicher zwei Werte an Adressen 0 und 8.\nWobei Wert an Adresse 0 muss kleiner sein als an Adresse 8.";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }

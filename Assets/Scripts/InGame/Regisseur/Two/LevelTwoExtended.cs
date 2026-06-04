@@ -48,14 +48,7 @@ public class LevelTwoExtended : BaseLevelRegisseur
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
 
-        if (levelTargetDescription == null || levelTargetDescription.Length == 0)
-        {
-            levelTargetText.text = $"Ziel: \r\nSchreibe in Register 3 den Wert {RightAnswerValue}";
-        }
-        else
-        {
-            levelTargetText.text = levelTargetDescription;
-        }
+        SetLevelTargetText(levelTargetDescription);
 
         UpdateVizualizers();
     }
