@@ -347,5 +347,20 @@ public abstract class BaseLevelRegisseur : MonoBehaviour
     protected void SetLevelTargetText(string fallback)
         => levelTargetText.text = string.IsNullOrEmpty(levelTargetDescription) ? fallback : levelTargetDescription;
     
+    protected IEnumerator DelayedSignal(LineRenderer seg, int value, bool reverse = false)
+    {
+        yield return new WaitUntil(() => busController.NoActiveSignals);
+        busController.StartBusSignal(seg, value, reverse);
+    }
+
+    protected IEnumerator DelayedSignals(
+        LineRenderer seg1, int val1,
+        LineRenderer seg2, int val2,
+        bool rev1 = false, bool rev2 = false)
+    {
+        yield return new WaitUntil(() => busController.NoActiveSignals);
+        busController.StartBusSignal(seg1, val1, rev1);
+        busController.StartBusSignal(seg2, val2, rev2);
+    }
     # endregion
 }

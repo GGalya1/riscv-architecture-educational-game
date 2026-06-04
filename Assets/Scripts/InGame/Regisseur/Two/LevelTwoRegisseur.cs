@@ -105,7 +105,10 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
             busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
             busController.StartBusSignal(busController.busSegments[1], 4);
 
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2]));
+            yield return StartCoroutine(DelayedSignal(
+                busController.busSegments[2],
+                Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation)
+            ));
 
             _currentBus++;
         }
@@ -114,18 +117,23 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
 
     protected override IEnumerator ReverseBusVisualizations()
     {
-        if (_currentBus >= 1 && _currentBus <= 5)
+        if (_currentBus is >= 1 and <= 5)
         {
 
             busController.StartBusSignal(busController.busSegments[2], _srcA.Input, true);
 
-             yield return StartCoroutine(DelayedBusSignals(busController.busSegments[0], busController.busSegments[1]));
+            var prevVal = TickStateValues[TickCounter] is LevelTwoState s ? s.RegisterAValue : 0;
+
+            yield return StartCoroutine(DelayedSignals(
+                busController.busSegments[0], prevVal,
+                busController.busSegments[1], 4, true, true
+            ));
             
             _currentBus--;
         }
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    IEnumerator DelayedBusSignal(LineRenderer busToStart)
+    /*IEnumerator DelayedBusSignal(LineRenderer busToStart)
     {
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -140,7 +148,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur
         }
         
         busController.StartBusSignal(secondBusToStart, 4, true);
-    }
+    }*/
     #endregion
 
     #region
