@@ -92,17 +92,17 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
 
             if (_dataIntructionMemory.Memory.ContainsKey(_srcA.Output))
             {
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[1], busController.busSegments[6], _dataIntructionMemory.Memory[_srcA.Output], Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation)));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], _dataIntructionMemory.Memory[_srcA.Output], busController.busSegments[6], Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation)));
             }
             else
             {
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[1], busController.busSegments[6], 0, Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation)));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], 0, busController.busSegments[6], Alu.Calculate(_srcA.Output, 4, aluVizualizer.CurrentAluOperation)));
             }
 
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2], _srcB.Output));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[2], _srcB.Output));
 
 
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[3], Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_srcB.Output)));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[3], Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_srcB.Output)));
 
             CurrentBus++;
         }
@@ -118,9 +118,9 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
 
             if (TickStateValues[TickCounter] is LevelFiveState s)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2], s.RegisterInstrValue, true));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[2], s.RegisterInstrValue, true));
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[1], busController.busSegments[6], _srcB.Input, _srcA.Input, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], _srcB.Input, busController.busSegments[6], _srcA.Input, true, true));
 
                 yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -347,50 +347,4 @@ public class LevelFiveRegisseur : BaseLevelRegisseur
         );
         memoryVisualizer.ForceUpdateWriteEnableVisualization (_dataIntructionMemory.MemoryWrite);
     }
-
-    #region helpers
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, bool reverse = false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        // We're sending the third signal
-        busController.StartBusSignal(busToStart, reverse);
-    }
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        // We're sending the third signal
-        busController.StartBusSignal(busToStart, value, reverse);
-    }
-
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart);
-        busController.StartBusSignal(secondBusToStart);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, firstReverse);
-        busController.StartBusSignal(secondBusToStart, secondReverse);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, val1);
-        busController.StartBusSignal(secondBusToStart, val2);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, val1, firstReverse);
-        busController.StartBusSignal(secondBusToStart, val2, secondReverse);
-    }
-    #endregion
 }

@@ -223,16 +223,16 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
                 else if (multiplexerVisualizer.CurrentChosenMuxPath == 1) {
                     upperBusSignal = s.RegisterInstrValue;
                 }
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], upperBusSignal, 4, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], upperBusSignal, busController.busSegments[4], 4, true, true));
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[6], busController.busSegments[2], s.RegisterPCValue, s.RegisterInstrValue, true, true));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[6], s.RegisterPCValue, busController.busSegments[2], s.RegisterInstrValue, true, true));
             }
 
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[1], SrcB.Input, true));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[1], SrcB.Input, true));
 
             if (TickStateValues[TickCounter] is LevelThreeState st)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[0], st.RegisterPCValue, true));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[0], st.RegisterPCValue, true));
             }
             
 
@@ -252,20 +252,20 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
             // should be by a short divisor
             if (DataIntructionMemory.Memory.ContainsKey(SrcA.Output))
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[1], DataIntructionMemory.Memory[SrcA.Output]));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], DataIntructionMemory.Memory[SrcA.Output]));
             }
             else {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[1], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], 0));
             }
 
 
             // should follow the first one with a short division
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2], SrcB.Output));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[2], SrcB.Output));
 
             var propagationVal = 0;
             if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[4], 0));
+                yield return StartCoroutine(DelayedSignal(busController.busSegments[4], 0));
             }
             else {
                 
@@ -282,12 +282,12 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
                     Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[3], busController.busSegments[4], propagationVal, 4));
+                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], propagationVal, busController.busSegments[4], 4));
             }
 
 
             // from ALU to first register
-            yield return StartCoroutine(DelayedBusSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
+            yield return StartCoroutine(DelayedSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVizualizer.CurrentAluOperation)));
 
             CurrentBus++;
         }
@@ -295,57 +295,10 @@ public class LevelThirdRegisseur : BaseLevelRegisseur
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-
-
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, bool reverse=false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        // Sending the third signal
-        busController.StartBusSignal(busToStart, reverse);
-    }
-    protected IEnumerator DelayedBusSignal(LineRenderer busToStart, int value, bool reverse = false)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        // Sending the third signal
-        busController.StartBusSignal(busToStart, value, reverse);
-    }
-
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart);
-        busController.StartBusSignal(secondBusToStart);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, firstReverse);
-        busController.StartBusSignal(secondBusToStart, secondReverse);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, val1);
-        busController.StartBusSignal(secondBusToStart, val2);
-    }
-    protected IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart, int val1, int val2, bool firstReverse, bool secondReverse)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, val1, firstReverse);
-        busController.StartBusSignal(secondBusToStart, val2, secondReverse);
-    }
-
     protected override void UpdateVizualizers()
     {
         InfoSrcARegister.Display("Register 1", $"{SrcA.Output}");
         InfoSrcBRegister.Display("Register 2", $"{SrcB.Output}");
-        //_infoDataMemory.Display($"{dataIntructionMemory._memory[0]}", $"{dataIntructionMemory._memory[4]}", $"{dataIntructionMemory._memory[8]}", $"{dataIntructionMemory._memory[12]}");
         registerOutputVisualizer.UIRegisterPanel.Display($"{DataIntructionMemory.Memory[0]}", $"{DataIntructionMemory.Memory[4]}", $"{DataIntructionMemory.Memory[8]}", $"{DataIntructionMemory.Memory[12]}");
 
         registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(SrcA.WriteEnable);
