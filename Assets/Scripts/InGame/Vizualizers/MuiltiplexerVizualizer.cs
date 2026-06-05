@@ -98,5 +98,12 @@ public class MultiplexerVisualizer: BaseVisualizer
         _propBlock.SetColor(ColorPropertyID, color);
         rnd.SetPropertyBlock(_propBlock);
     }
+    
+    public void SwitchMuxInteractable(bool trigger)
+    {
+        UIController.FirstWayButton.interactable = trigger;
+        UIController.SecondWayButton.interactable = trigger;
+        UIController.ThirdWayButton.interactable = trigger;
+    }
     #endregion
 }

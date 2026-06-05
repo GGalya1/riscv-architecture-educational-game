@@ -63,10 +63,10 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
     {
         registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        SwitchMuxInteractable(false, upperMuxVisualizer);
-        SwitchMuxInteractable(false, middleMuxVisualizer);
-        SwitchMuxInteractable(false, downMuxVisualizer);
-        SwitchMuxInteractable(false, outputMuxVisualizer);
+        upperMuxVisualizer.SwitchMuxInteractable(false);
+        middleMuxVisualizer.SwitchMuxInteractable(false);
+        downMuxVisualizer.SwitchMuxInteractable(false);
+        outputMuxVisualizer.SwitchMuxInteractable(false);
     }
 
     protected override bool CheckWinCondition()
@@ -103,10 +103,10 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
     {
         registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        SwitchMuxInteractable(true, upperMuxVisualizer);
-        SwitchMuxInteractable(true, middleMuxVisualizer);
-        SwitchMuxInteractable(true, downMuxVisualizer);
-        SwitchMuxInteractable(true, outputMuxVisualizer);
+        upperMuxVisualizer.SwitchMuxInteractable(true);
+        middleMuxVisualizer.SwitchMuxInteractable(true);
+        downMuxVisualizer.SwitchMuxInteractable(true);
+        outputMuxVisualizer.SwitchMuxInteractable(true);
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -183,13 +183,4 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
     {
         _infoOutputRegister.Display("Register 1", $"{_output.Output}");
     }
-
-    #region helpers
-    private static void SwitchMuxInteractable(bool trigger, MultiplexerVisualizer target)
-    {
-        target.UIController.FirstWayButton.interactable = trigger;
-        target.UIController.SecondWayButton.interactable = trigger;
-        target.UIController.ThirdWayButton.interactable = trigger;
-    }
-    #endregion
 }

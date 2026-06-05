@@ -47,10 +47,10 @@ public enum ExerciseTyp {
 public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 {
     [FormerlySerializedAs("_registerPCVisualizer")]
-    [Header("Precossor Specific Components")]
+    [Header("Processor Specific Components")]
     [SerializeField] private RegisterVisualizer registerPCVisualizer;
     [FormerlySerializedAs("_registerOldPCVisualizer")] [SerializeField] private RegisterVisualizer registerOldPCVisualizer;
-    [FormerlySerializedAs("_registerIntructionVisualizer")] [SerializeField] private RegisterVisualizer registerIntructionVisualizer;
+    [FormerlySerializedAs("registerIntructionVisualizer")] [FormerlySerializedAs("_registerIntructionVisualizer")] [SerializeField] private RegisterVisualizer registerInstructionVisualizer;
     [FormerlySerializedAs("_registerDataVisualizer")] [SerializeField] private RegisterVisualizer registerDataVisualizer;
     [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
     [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
@@ -61,8 +61,8 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     [FormerlySerializedAs("_srcBMUXVisualizer")] [SerializeField] private MultiplexerVisualizer srcBmuxVisualizer;
     [FormerlySerializedAs("_resultMUXVisualizer")] [SerializeField] private MultiplexerVisualizer resultMuxVisualizer;
 
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVizualizer;
-    [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVizualizer;
+    [FormerlySerializedAs("aluVizualizer")] [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVisualizer;
+    [FormerlySerializedAs("extenderVizualizer")] [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVisualizer;
 
     [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private InstructionDataMemoryVisualizer memoryVisualizer;
     [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] private RegisterFileVisualizer registerFileVisualizer;
@@ -80,7 +80,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     #region CACHED UI REFERENCES
     private InfoPanelUI _infoPCRegister;
     private InfoPanelUI _infoOldPCRegister;
-    private InfoPanelUI _infoIntructionRegister;
+    private InfoPanelUI _infoInstructionRegister;
     private InfoPanelUI _infoDataRegister;
     private InfoPanelUI _infoSrcARegister;
     private InfoPanelUI _infoSrcBRegister;
@@ -98,11 +98,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     private Register _srcB;
     private Register _aluOutReg;
 
-    private DataInstMemory _dataIntructionMemory;
+    private DataInstMemory _dataInstructionMemory;
     private RegisterFile _registerFile;
 
 
     private int _currentBus; // [0, 10]
+    private const int MIN_VALID_INSTRUCTION = 1000000;
 
     protected void Awake()
     {
@@ -149,20 +150,20 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
                                                      60, 61, 0, 25, 54, 0, 28,
                                                      70, 30, 31, 0});
 
-        _dataIntructionMemory = new DataInstMemory
+        _dataInstructionMemory = new DataInstMemory
         {
             MemoryWrite = true
         };
 
-        _dataIntructionMemory.LoadWord(0, Initial.firstMemoWord);
-        _dataIntructionMemory.LoadWord(4, Initial.secondMemoWord);
-        _dataIntructionMemory.LoadWord(8, Initial.thirdMemoWord);
-        _dataIntructionMemory.LoadWord(12, Initial.fourthMemoWord);
+        _dataInstructionMemory.LoadWord(0, Initial.firstMemoWord);
+        _dataInstructionMemory.LoadWord(4, Initial.secondMemoWord);
+        _dataInstructionMemory.LoadWord(8, Initial.thirdMemoWord);
+        _dataInstructionMemory.LoadWord(12, Initial.fourthMemoWord);
 
         // Caching of UI panels for visualizers
         _infoPCRegister = registerPCVisualizer.UIRegisterPanel;
         _infoOldPCRegister = registerOldPCVisualizer.UIRegisterPanel;
-        _infoIntructionRegister = registerIntructionVisualizer.UIRegisterPanel;
+        _infoInstructionRegister = registerInstructionVisualizer.UIRegisterPanel;
         _infoDataRegister = registerDataVisualizer.UIRegisterPanel;
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
@@ -186,7 +187,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         ApplyMuxState(s.MuXsrcBPath, srcBmuxVisualizer);
         ApplyMuxState(s.MuXresultPath, resultMuxVisualizer);
 
-        _dataIntructionMemory = new DataInstMemory
+        _dataInstructionMemory = new DataInstMemory
         {
             Memory =
             {
@@ -208,15 +209,15 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         _srcB.WriteEnable = s.RegisterSrcBwe;
         _aluOutReg.WriteEnable = s.RegisterAluOutWe;
 
-        aluVizualizer.ChooseAluOperation(s.AluOperation);
-        extenderVizualizer.ChooseAluOperation(s.ExtenderOperation);
+        aluVisualizer.ChooseAluOperation(s.AluOperation);
+        extenderVisualizer.ChooseAluOperation(s.ExtenderOperation);
     }
 
     protected override void BlinkClockedComponents()
     {
         registerPCVisualizer.TriggerBlink();
         registerOldPCVisualizer.TriggerBlink();
-        registerIntructionVisualizer.TriggerBlink();
+        registerInstructionVisualizer.TriggerBlink();
         registerDataVisualizer.TriggerBlink();
         registerSrcAVisualizer.TriggerBlink();
         registerSrcBVisualizer.TriggerBlink();
@@ -233,59 +234,47 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         memoryVisualizer.UIRegisterPanel.WeButton.interactable = false;
         registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        SwitchInteractablesAccessability(false);
+        SwitchInteractableAccessibility(false);
 
-        SwitchMuxInteractables(false, adrMuxVisualizer);
-        SwitchMuxInteractables(false, srcAmuxVisualizer);
-        SwitchMuxInteractables(false, srcBmuxVisualizer);
-        SwitchMuxInteractables(false, resultMuxVisualizer);
+        adrMuxVisualizer.SwitchMuxInteractable(false);
+        srcAmuxVisualizer.SwitchMuxInteractable(false);
+        srcBmuxVisualizer.SwitchMuxInteractable(false);
+        resultMuxVisualizer.SwitchMuxInteractable(false);
 
-        aluVizualizer.uiController.FirstOperationButton.interactable = false;
-        aluVizualizer.uiController.SecondOperationButton.interactable = false;
-        aluVizualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVizualizer.uiController.FourthOperationButton.interactable = false;
+        aluVisualizer.uiController.FirstOperationButton.interactable = false;
+        aluVisualizer.uiController.SecondOperationButton.interactable = false;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
+        aluVisualizer.uiController.FourthOperationButton.interactable = false;
 
-        extenderVizualizer.uiController.FirstOperationButton.interactable = false;
-        extenderVizualizer.uiController.SecondOperationButton.interactable = false;
-        extenderVizualizer.uiController.ThirdOperationButton.interactable = false;
-        extenderVizualizer.uiController.FourthOperationButton.interactable = false;
+        extenderVisualizer.uiController.FirstOperationButton.interactable = false;
+        extenderVisualizer.uiController.SecondOperationButton.interactable = false;
+        extenderVisualizer.uiController.ThirdOperationButton.interactable = false;
+        extenderVisualizer.uiController.FourthOperationButton.interactable = false;
     }
-    private void SwitchInteractablesAccessability(bool trigger) {
+    private void SwitchInteractableAccessibility(bool trigger) {
         registerPCVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerOldPCVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
-        registerIntructionVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
+        registerInstructionVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerDataVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerAluOutVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
     }
-    private static void SwitchMuxInteractables(bool trigger, MultiplexerVisualizer target)
-    {
-        target.UIController.FirstWayButton.interactable = trigger;
-        target.UIController.SecondWayButton.interactable = trigger;
-        target.UIController.ThirdWayButton.interactable = trigger;
-    }
 
     protected override bool CheckWinCondition()
     {
-        if (Initial.aufgabeTyp == ExerciseTyp.REGISTER_FIELD)
+        return Initial.aufgabeTyp switch
         {
-            return _registerFile.Registers[Initial.registerFieldAddressAnswer] == Initial.registerFieldValueAnswer;
-        }
-        else if (Initial.aufgabeTyp == ExerciseTyp.MEMORY)
-        {
-            return _dataIntructionMemory.Memory[Initial.memoryAddressAnswer] == Initial.memoryValueAnswer;
-        }
-        else if (Initial.aufgabeTyp == ExerciseTyp.BEQ)
-        {
-            return _pc.Output == Initial.pcValueAnswer;
-        }
-        else if (Initial.aufgabeTyp == ExerciseTyp.JAL) {
-            return _pc.Output == Initial.pcValueAnswer && _registerFile.Registers[Initial.registerFieldAddressAnswer] == Initial.registerFieldValueAnswer;
-        }
-        else {
-            return false;
-        }
+            ExerciseTyp.REGISTER_FIELD => _registerFile.Registers[Initial.registerFieldAddressAnswer] ==
+                                          Initial.registerFieldValueAnswer,
+            ExerciseTyp.MEMORY => _dataInstructionMemory.Memory[Initial.memoryAddressAnswer] ==
+                                  Initial.memoryValueAnswer,
+            ExerciseTyp.BEQ => _pc.Output == Initial.pcValueAnswer,
+            ExerciseTyp.JAL => _pc.Output == Initial.pcValueAnswer &&
+                               _registerFile.Registers[Initial.registerFieldAddressAnswer] ==
+                               Initial.registerFieldValueAnswer,
+            _ => false
+        };
     }
 
     protected override ProcessorLevelState GetCurrentState()
@@ -302,10 +291,10 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
             RegisterFieldValue = (int[])_registerFile.Registers.Clone(),
 
-            FirstMemoryValue = _dataIntructionMemory.Memory[0],
-            SecondMemoryValue = _dataIntructionMemory.Memory[4],
-            ThirdMemoryValue = _dataIntructionMemory.Memory[8],
-            FourthMemoryValue = _dataIntructionMemory.Memory[12],
+            FirstMemoryValue = _dataInstructionMemory.Memory[0],
+            SecondMemoryValue = _dataInstructionMemory.Memory[4],
+            ThirdMemoryValue = _dataInstructionMemory.Memory[8],
+            FourthMemoryValue = _dataInstructionMemory.Memory[12],
 
             RegisterPCwe = _pc.WriteEnable,
             RegisterOldPCwe = _oldPC.WriteEnable,
@@ -315,9 +304,9 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             RegisterSrcBwe = _srcB.WriteEnable,
             RegisterAluOutWe = _aluOutReg.WriteEnable,
 
-            AluOperation = aluVizualizer.CurrentAluOperation,
+            AluOperation = aluVisualizer.CurrentAluOperation,
 
-            ExtenderOperation = extenderVizualizer.CurrentAluOperation,
+            ExtenderOperation = extenderVisualizer.CurrentAluOperation,
 
             MuXadrPath = adrMuxVisualizer.CurrentChosenMuxPath,
             MuXsrcAPath = srcAmuxVisualizer.CurrentChosenMuxPath,
@@ -331,12 +320,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         // synchronize visualizers and concrete objects
         _pc.WriteEnable = registerPCVisualizer.isWriteEnabled;
         _oldPC.WriteEnable = registerOldPCVisualizer.isWriteEnabled;
-        _instructionReg.WriteEnable = registerIntructionVisualizer.isWriteEnabled;
+        _instructionReg.WriteEnable = registerInstructionVisualizer.isWriteEnabled;
         _dataReg.WriteEnable = registerDataVisualizer.isWriteEnabled;
         _srcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
         _srcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
         _aluOutReg.WriteEnable = registerAluOutVisualizer.isWriteEnabled;
-        _dataIntructionMemory.MemoryWrite = memoryVisualizer.isWriteEnabled;
+        _dataInstructionMemory.MemoryWrite = memoryVisualizer.isWriteEnabled;
         _registerFile.RegisterWriteEnable = registerFileVisualizer.isWriteEnabled;
 
 
@@ -344,11 +333,11 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         // implementation
 
         #region first step (memory)
-        var tmpAddress = CalculateAdressMux();
-        if (_dataIntructionMemory.Memory.ContainsKey(tmpAddress))
+        var tmpAddress = CalculateAddressMux();
+        if (_dataInstructionMemory.Memory.ContainsKey(tmpAddress))
         {
-            _instructionReg.Input = _dataIntructionMemory.Memory[tmpAddress];
-            _dataReg.Input = _dataIntructionMemory.Memory[tmpAddress];
+            _instructionReg.Input = _dataInstructionMemory.Memory[tmpAddress];
+            _dataReg.Input = _dataInstructionMemory.Memory[tmpAddress];
         }
         else
         {
@@ -358,7 +347,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         _oldPC.Input = _pc.Output;
 
-        _dataIntructionMemory.Address = tmpAddress;
+        _dataInstructionMemory.Address = tmpAddress;
         #endregion
 
         #region second step (register file)
@@ -370,9 +359,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         _registerFile.ReadAdress2 = (_instructionReg.Output >> 20) & 0x1F;
 
         _registerFile.ReadRegisters();
-
-        //Debug.LogWarning($"This is tick {_tickCounter}. A1: {registerFile.ReadAdress1}, A2: {registerFile.ReadAdress2}, A3: {(temp >> 7) & 0x1F}. Command: {commandBuilder(temp)}");
-
+        
         // A3: [11:7] (Register Destination / rd)
 
         _srcA.Input = _registerFile.ReadData1;
@@ -381,14 +368,14 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         #region third step (ALU)
         _aluOutReg.Input = CalculateAlu();
-        _dataIntructionMemory.WriteData = _srcB.Output;
+        _dataInstructionMemory.WriteData = _srcB.Output;
         #endregion
 
         #region fourth step (WB)
         
         if (TickCounter - 2 >= 0) {
             _registerFile.WriteAdress = ((TickStateValues[TickCounter - 2].RegisterInstrValue >> 7) & 0x1F);
-            _registerFile.WriteData = TickStateValues[TickCounter - 2].RegisterInstrValue;
+            // _registerFile.WriteData = TickStateValues[TickCounter - 2].RegisterInstrValue;
         }
 
         var tmpResult = CalculateResultMux();
@@ -403,7 +390,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         _srcA.PreClockUpdate();
         _srcB.PreClockUpdate();
         _aluOutReg.PreClockUpdate();
-        _dataIntructionMemory.PreClockUpdate();
+        _dataInstructionMemory.PreClockUpdate();
 
         _pc.Clock();
         _oldPC.Clock();
@@ -412,7 +399,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         _srcA.Clock();
         _srcB.Clock();
         _aluOutReg.Clock();
-        _dataIntructionMemory.Clock();
+        _dataInstructionMemory.Clock();
         _registerFile.Clock();
     }
     protected override void ReleaseInGameInteractable()
@@ -420,22 +407,22 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         memoryVisualizer.UIRegisterPanel.WeButton.interactable = true;
         registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
 
-        SwitchInteractablesAccessability(true);
+        SwitchInteractableAccessibility(true);
 
-        SwitchMuxInteractables(true, adrMuxVisualizer);
-        SwitchMuxInteractables(true, srcAmuxVisualizer);
-        SwitchMuxInteractables(true, srcBmuxVisualizer);
-        SwitchMuxInteractables(true, resultMuxVisualizer);
+        adrMuxVisualizer.SwitchMuxInteractable(true);
+        srcAmuxVisualizer.SwitchMuxInteractable(true);
+        srcBmuxVisualizer.SwitchMuxInteractable(true);
+        resultMuxVisualizer.SwitchMuxInteractable(true);
 
-        aluVizualizer.uiController.FirstOperationButton.interactable = true;
-        aluVizualizer.uiController.SecondOperationButton.interactable = true;
-        aluVizualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVizualizer.uiController.FourthOperationButton.interactable = true;
+        aluVisualizer.uiController.FirstOperationButton.interactable = true;
+        aluVisualizer.uiController.SecondOperationButton.interactable = true;
+        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
+        aluVisualizer.uiController.FourthOperationButton.interactable = true;
 
-        extenderVizualizer.uiController.FirstOperationButton.interactable = true;
-        extenderVizualizer.uiController.SecondOperationButton.interactable = true;
-        extenderVizualizer.uiController.ThirdOperationButton.interactable = true;
-        extenderVizualizer.uiController.FourthOperationButton.interactable = true;
+        extenderVisualizer.uiController.FirstOperationButton.interactable = true;
+        extenderVisualizer.uiController.SecondOperationButton.interactable = true;
+        extenderVisualizer.uiController.ThirdOperationButton.interactable = true;
+        extenderVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -446,8 +433,8 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             {
                 case 0: yield return RunFetchVisualisation(); break;
                 case 1: yield return RunDecodeVisualisation(); break;
-                case 2: yield return RunExecutionVizualization(); break;
-                case 3: yield return RunWriteBackVizualization(); break;
+                case 2: yield return RunExecutionVisualisation(); break;
+                case 3: yield return RunWriteBackVisualisation(); break;
             }
 
             _currentBus++;
@@ -465,12 +452,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         var muxSrcA = CalculateSrcAMux();
         var muxSrcB = CalculateSrcBMux();
         var output = CalculateResultMux();
-        var addressValue = CalculateAdressMux();
+        var addressValue = CalculateAddressMux();
 
         yield return StartCoroutine(DelayedSignal(busController.busSegments[11], addressValue));
 
         // ob Value existiert
-        if (_dataIntructionMemory.Memory.TryGetValue(addressValue, out var value)) {
+        if (_dataInstructionMemory.Memory.TryGetValue(addressValue, out var value)) {
             yield return StartCoroutine(DelayedSignal(busController.busSegments[12], value));
         }
         else
@@ -499,20 +486,20 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         var srcAValue = 0;
         var srcBValue = 0;
-        if (_dataIntructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value))
+        if (_dataInstructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value))
         {
             srcAValue = value;
         }
-        if (_dataIntructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value1)) {
+        if (_dataInstructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value1)) {
             srcBValue = value1;
         }
         yield return StartCoroutine(DelayedSignals(busController.busSegments[13], srcAValue, busController.busSegments[14], srcBValue));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    private IEnumerator RunExecutionVizualization() { // das noch korrigieren
+    private IEnumerator RunExecutionVisualisation() { // das noch korrigieren
         busController.StartBusSignal(busController.busSegments[16], _srcA.Output);
-        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output));
+        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -524,7 +511,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-    private IEnumerator RunWriteBackVizualization() { // das noch korrigieren
+    private IEnumerator RunWriteBackVisualisation() { // das noch korrigieren
         busController.StartBusSignal(busController.busSegments[18], _aluOutReg.Output);
         busController.StartBusSignal(busController.busSegments[5], _aluOutReg.Output);
 
@@ -543,12 +530,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     }
     private int CalculateSrcBMux()
     {
-        return EvaluateMux(srcBmuxVisualizer.CurrentChosenMuxPath, _srcB.Output, Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output), 4);
+        return EvaluateMux(srcBmuxVisualizer.CurrentChosenMuxPath, _srcB.Output, Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output), 4);
     }
     private int CalculateResultMux() { 
         return EvaluateMux(resultMuxVisualizer.CurrentChosenMuxPath, _aluOutReg.Output, _dataReg.Output, CalculateAlu());
     }
-    private int CalculateAdressMux() { 
+    private int CalculateAddressMux() { 
         return EvaluateMux(adrMuxVisualizer.CurrentChosenMuxPath, _pc.Output, CalculateResultMux(), 0);
     }
     
@@ -561,9 +548,9 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         }
         var muxSrcB = EvaluateMux(srcBmuxVisualizer.CurrentChosenMuxPath, 
             _srcB.Output, 
-            Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)extenderTmp), 
+            Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)extenderTmp), 
             4);
-        return Alu.Calculate(muxSrcA, muxSrcB, aluVizualizer.CurrentAluOperation);
+        return Alu.Calculate(muxSrcA, muxSrcB, aluVisualizer.CurrentAluOperation);
     }
 
     private IEnumerator ReverseFetchVisualisation() { // noch zu korrigieren
@@ -577,7 +564,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         yield return StartCoroutine(DelayedSignal(busController.busSegments[9], 4, true));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], _dataIntructionMemory.Address, true));
+        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], _dataInstructionMemory.Address, true));
 
         busController.StartBusSignal(busController.busSegments[10], _oldPC.Input, true);
         busController.StartBusSignal(busController.busSegments[19], _oldPC.Input, true);
@@ -603,7 +590,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
         busController.StartBusSignal(busController.busSegments[16], _srcA.Output, true);
-        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVizualizer.CurrentAluOperation, (uint)_instructionReg.Output), true);
+        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output), true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -652,17 +639,17 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
         _infoPCRegister.Display("PC Register", $"{_pc.Output}");
         _infoOldPCRegister.Display("Old PC Register", $"{_oldPC.Output}");
-        _infoIntructionRegister.Display("Instruction Register", RiscVDecoder.CommandBuilder((uint)_instructionReg.Output));
+        _infoInstructionRegister.Display("Instruction Register", RiscVDecoder.CommandBuilder((uint)_instructionReg.Output));
         _infoDataRegister.Display("Data Register", $"{_dataReg.Output}");
         _infoSrcARegister.Display("SrcA Register", $"{_srcA.Output}");
         _infoSrcBRegister.Display("SrcB Register", $"{_srcB.Output}");
         _infoAluOutRegister.Display("ALU Out Register", $"{_aluOutReg.Output}");
 
         memoryVisualizer.UIRegisterPanel.Display(
-            RiscVDecoder.CommandBuilder((uint)_dataIntructionMemory.Memory[0]),
-            RiscVDecoder.CommandBuilder((uint)_dataIntructionMemory.Memory[4]),
-            RiscVDecoder.CommandBuilder((uint)_dataIntructionMemory.Memory[8]),
-            RiscVDecoder.CommandBuilder((uint)_dataIntructionMemory.Memory[12])
+            RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[0]),
+            RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[4]),
+            RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[8]),
+            RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[12])
         );
         registerFileVisualizer.UIRegisterPanel.Display(_registerFile.Registers);
 
@@ -670,33 +657,33 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         // ==============================  WE SECTION  =====================================
         registerPCVisualizer.ForceUpdateWriteEnableVisualization(_pc.WriteEnable);
         registerOldPCVisualizer.ForceUpdateWriteEnableVisualization(_oldPC.WriteEnable);
-        registerIntructionVisualizer.ForceUpdateWriteEnableVisualization(_instructionReg.WriteEnable);
+        registerInstructionVisualizer.ForceUpdateWriteEnableVisualization(_instructionReg.WriteEnable);
         registerDataVisualizer.ForceUpdateWriteEnableVisualization(_dataReg.WriteEnable);
         registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
         registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);
         registerAluOutVisualizer.ForceUpdateWriteEnableVisualization(_aluOutReg.WriteEnable);
 
         registerFileVisualizer.ForceUpdateWriteEnableVisualization(_registerFile.RegisterWriteEnable);
-        memoryVisualizer.ForceUpdateWriteEnableVisualization(_dataIntructionMemory.MemoryWrite);
+        memoryVisualizer.ForceUpdateWriteEnableVisualization(_dataInstructionMemory.MemoryWrite);
     }
 
 
     private void UpdateSidePanel() {
         var containsKey = _pc.Output % 4 == 0 
                           && _pc.Output is <= 12 and >= 0
-                          && _dataIntructionMemory.Memory.ContainsKey(_pc.Output)
-                          && _dataIntructionMemory.Memory[_pc.Output] > 1000000;
+                          && _dataInstructionMemory.Memory.ContainsKey(_pc.Output)
+                          && _dataInstructionMemory.Memory[_pc.Output] > MIN_VALID_INSTRUCTION;
         if (containsKey)
         {
             sidePanelInformer.SetStateInfo((int)StateName.FETCH);
         }
-        else if (_instructionReg.Output > 1000000)
+        else if (_instructionReg.Output > MIN_VALID_INSTRUCTION)
         {
             sidePanelInformer.SetStateInfo((int)StateName.DECODE);
         }
         else if (TickCounter - 4 >= 0)
         {
-            if (TickStateValues[TickCounter - 3].RegisterInstrValue < 1000000) return;
+            if (TickStateValues[TickCounter - 3].RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
             var opcode = TickStateValues[TickCounter - 3].RegisterInstrValue & 0x7F;
 
             if (opcode == 0x03)
@@ -708,7 +695,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         {
             var s = TickStateValues[TickCounter - 2];
 
-            if (s.RegisterInstrValue < 1000000) return;
+            if (s.RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
             var opcode = s.RegisterInstrValue & 0x7F;
 
             switch (opcode)
@@ -732,7 +719,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         else if (TickCounter - 2 >= 0) {
             var s = TickStateValues[TickCounter - 1];
 
-            if (s.RegisterInstrValue < 1000000) return;
+            if (s.RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
             var opcode = s.RegisterInstrValue & 0x7F;
 
             switch(opcode)
