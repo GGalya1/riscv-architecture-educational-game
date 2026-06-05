@@ -170,20 +170,4 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
         _currentBus--;
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
-
-    #region
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-    }
-    #endregion
 }

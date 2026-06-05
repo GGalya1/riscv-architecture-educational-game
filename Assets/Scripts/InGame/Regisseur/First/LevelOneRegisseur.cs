@@ -224,27 +224,4 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         busController.StartBusSignal(firstBusToStart, 4, true);
         busController.StartBusSignal(secondBusToStart, 2, true);
     }
-
-    #region
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-
-        multiplexerVisualizer.UIController.FirstWayButton.interactable = false;
-        multiplexerVisualizer.UIController.SecondWayButton.interactable = false;
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        multiplexerVisualizer.UIController.FirstWayButton.interactable = true;
-        multiplexerVisualizer.UIController.SecondWayButton.interactable = true;
-    }
-    #endregion
 }

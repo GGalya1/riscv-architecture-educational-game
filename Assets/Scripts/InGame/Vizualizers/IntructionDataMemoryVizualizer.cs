@@ -47,6 +47,12 @@ public class InstructionDataMemoryVisualizer: BaseVisualizer
             Debug.LogError($"InstrMemoryControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
+
+    public override void SetInteractable(bool value)
+    {
+        UIRegisterPanel.WeButton.interactable = value;
+    }
+
     private void SwitchWriteEnableVisualization()
     {
         if (writeEnableIndicator == null) return;

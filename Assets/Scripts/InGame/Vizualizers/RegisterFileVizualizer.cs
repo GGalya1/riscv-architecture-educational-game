@@ -32,6 +32,10 @@ public class RegisterFileVisualizer : BaseVisualizer
         UIRegisterPanel.WeButton.onClick.AddListener(SwitchWriteEnableVisualization);
     }
 
+    public override void SetInteractable(bool value)
+    {
+        UIRegisterPanel.WeButton.interactable = value;
+    }
 
     private void SwitchWriteEnableVisualization()
     {

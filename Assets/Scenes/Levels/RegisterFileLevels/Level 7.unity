@@ -1135,6 +1135,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTargetDescription: Schreibe in Register 3 die Summe von r7 und r6.
+  managedInteractable:
+  - {fileID: 970035351}
+  - {fileID: 2070813589}
+  - {fileID: 1846687519}
+  - {fileID: 9100954751381668847}
+  - {fileID: 1560145823}
   correctAnswer: 0
   nextClick: {fileID: 8933483285275860231}
   prevClick: {fileID: 8933483285275860230}

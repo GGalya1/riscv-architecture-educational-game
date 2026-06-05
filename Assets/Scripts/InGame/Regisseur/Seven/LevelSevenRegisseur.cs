@@ -102,20 +102,6 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         registerFileVisualizer.TriggerBlink();
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
     protected override bool CheckWinCondition()
     {
         return (Output.Output == RightAnswerValue);
@@ -162,20 +148,6 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         SrcB.Clock();
         Output.Clock();
         RegisterFile.Clock();
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()

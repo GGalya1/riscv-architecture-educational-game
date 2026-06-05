@@ -41,6 +41,14 @@ public class AluVisualiser : BaseVisualizer
         }
     }
 
+    public override void SetInteractable(bool value)
+    {
+        uiController.FirstOperationButton.interactable = value;
+        uiController.SecondOperationButton.interactable = value;
+        uiController.ThirdOperationButton.interactable = value;
+        uiController.FourthOperationButton.interactable = value;
+    }
+
     public override void ResetVisualisation(){
         if (operationBanner.activeSelf) {
             operationBanner.SetActive(false);

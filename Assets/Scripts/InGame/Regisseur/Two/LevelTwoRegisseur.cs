@@ -126,26 +126,4 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     #endregion
-
-    #region
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
-    }
-    #endregion
 }

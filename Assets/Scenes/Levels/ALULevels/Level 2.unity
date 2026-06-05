@@ -1344,6 +1344,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTargetDescription: 'Ziel: \r\nSchreibe in Register 1 den Wert 8'
+  managedInteractable:
+  - {fileID: 1319270238}
+  - {fileID: 15427224}
   correctAnswer: 0
   nextClick: {fileID: 640675038}
   prevClick: {fileID: 1547987794}

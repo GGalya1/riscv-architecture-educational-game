@@ -29,4 +29,9 @@ public class BusSignal : BaseVisualizer
             Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }
     }
+
+    public override void SetInteractable(bool value)
+    {
+        // nothing to do here
+    }
 }

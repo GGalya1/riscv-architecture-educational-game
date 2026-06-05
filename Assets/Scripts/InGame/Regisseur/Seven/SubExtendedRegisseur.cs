@@ -122,30 +122,6 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
         registerFileVisualizer.TriggerBlink();
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerImmediateVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = false;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = false;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = false;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = false;
-
-        muxVisualizer.UIController.FirstWayButton.interactable = false;
-        muxVisualizer.UIController.SecondWayButton.interactable = false;
-        muxVisualizer.UIController.ThirdWayButton.interactable = false;
-    }
-
     protected override bool CheckWinCondition()
     {
         return RegisterFile.Registers[0] == 256;
@@ -220,30 +196,6 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
         A3.Clock();
         Wd3.Clock();
         RegisterFile.Clock();
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerImmediateVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = true;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = true;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = true;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = true;
-
-        muxVisualizer.UIController.FirstWayButton.interactable = true;
-        muxVisualizer.UIController.SecondWayButton.interactable = true;
-        muxVisualizer.UIController.ThirdWayButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()

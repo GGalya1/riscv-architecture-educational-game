@@ -116,21 +116,6 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
     protected override bool CheckWinCondition()
     {
         return RegisterFile.Registers[0] == 42;
@@ -196,21 +181,6 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
         A3.Clock();
         Wd3.Clock();
         RegisterFile.Clock();
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerA3Visualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerWd3Visualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()

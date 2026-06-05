@@ -13,6 +13,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     [Header("Level Content Configuration")]
     [TextArea(3, 10)]
     [SerializeField] protected string levelTargetDescription;
+    
+    [Header("Interactable Components")]
+    [SerializeField] private BaseVisualizer[] managedInteractable;
 
     [FormerlySerializedAs("_correctAnswer")]
     [Tooltip("Correct answer for this level")]
@@ -75,9 +78,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     protected abstract void BlinkClockedComponents();
 
     /// <summary> Blocks all interactive elements to avoid confusion during signal visualization (WE-buttons etc.). </summary>
-    protected abstract void BlockInGameInteractable();
+    //protected abstract void BlockInGameInteractable();
 
-    protected abstract void ReleaseInGameInteractable();
+    //protected abstract void ReleaseInGameInteractable();
     #endregion
 
     /// <summary> 
@@ -235,6 +238,13 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
         crossIndicator.SetActive(false);
     }
     protected abstract bool CheckWinCondition();
+    
+    protected void BlockInGameInteractable() {
+        foreach (var v in managedInteractable) v.SetInteractable(false);
+    }
+    protected void ReleaseInGameInteractable() {
+        foreach (var v in managedInteractable) v.SetInteractable(true);
+    }
 
     #region HISTORY METHODS
     private void SaveCurrentStateAt(int idx)

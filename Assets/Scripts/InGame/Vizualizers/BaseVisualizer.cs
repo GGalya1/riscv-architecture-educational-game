@@ -125,6 +125,8 @@ public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
     public abstract void ResetVisualisation();
     protected abstract void InitializePanelController();
 
+    public abstract void SetInteractable(bool value);
+
     // --- PRIVATE/PROTECTED METHODS ---
 
     private void PrepareHiddenState()

@@ -229,28 +229,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         numberBlinker.Trigger();
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        memoryVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = false;
 
-        SwitchInteractableAccessibility(false);
-
-        adrMuxVisualizer.SwitchMuxInteractable(false);
-        srcAmuxVisualizer.SwitchMuxInteractable(false);
-        srcBmuxVisualizer.SwitchMuxInteractable(false);
-        resultMuxVisualizer.SwitchMuxInteractable(false);
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = false;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = false;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = false;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
     private void SwitchInteractableAccessibility(bool trigger) {
         registerPCVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
         registerOldPCVisualizer.UIRegisterPanel.WeButton.interactable = trigger;
@@ -401,28 +380,6 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         _aluOutReg.Clock();
         _dataInstructionMemory.Clock();
         _registerFile.Clock();
-    }
-    protected override void ReleaseInGameInteractable()
-    {
-        memoryVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerFileVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        SwitchInteractableAccessibility(true);
-
-        adrMuxVisualizer.SwitchMuxInteractable(true);
-        srcAmuxVisualizer.SwitchMuxInteractable(true);
-        srcBmuxVisualizer.SwitchMuxInteractable(true);
-        resultMuxVisualizer.SwitchMuxInteractable(true);
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = true;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = true;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = true;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator RunBusVisualizations()

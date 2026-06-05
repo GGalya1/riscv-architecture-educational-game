@@ -1508,6 +1508,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTargetDescription: 'Ziel: \r\nExtende alle Werte aus dem Speicher korrekt
     und lege in Register 3.'
+  managedInteractable:
+  - {fileID: 970035351}
+  - {fileID: 659021389}
+  - {fileID: 1753783360}
+  - {fileID: 1846687519}
+  - {fileID: 1307351389}
+  - {fileID: 608457877}
   correctAnswer: 0
   nextClick: {fileID: 8933483285275860231}
   prevClick: {fileID: 8933483285275860230}

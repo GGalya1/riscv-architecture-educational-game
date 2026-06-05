@@ -67,17 +67,6 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
         registerOutputVisualizer.TriggerBlink();
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = false;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = false;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = false;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
     protected override bool CheckWinCondition()
     {
         return _output.Output == RightAnswerValue;
@@ -111,17 +100,6 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
 
         _srcA.Clock();
         _output.Clock();
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = true;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = true;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = true;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = true;
     }
 
     protected override IEnumerator ReverseBusVisualizations()

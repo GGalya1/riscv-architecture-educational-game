@@ -99,11 +99,12 @@ public class MultiplexerVisualizer: BaseVisualizer
         rnd.SetPropertyBlock(_propBlock);
     }
     
-    public void SwitchMuxInteractable(bool trigger)
-    {
-        UIController.FirstWayButton.interactable = trigger;
-        UIController.SecondWayButton.interactable = trigger;
-        UIController.ThirdWayButton.interactable = trigger;
+    public override void SetInteractable(bool value) {
+        UIController.FirstWayButton.interactable = value;
+        UIController.SecondWayButton.interactable = value;
+
+        if (UIController.ThirdWayButton != null)
+            UIController.ThirdWayButton.interactable = value;
     }
     #endregion
 }

@@ -310,39 +310,4 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
         registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(SrcB.WriteEnable);
         registerOutputVisualizer.ForceUpdateWriteEnableVisualization(DataIntructionMemory.MemoryWrite);
     }
-
-    #region
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-
-        multiplexerVisualizer.UIController.FirstWayButton.interactable = false;
-        multiplexerVisualizer.UIController.SecondWayButton.interactable = false;
-
-
-        aluVizualizer.uiController.FirstOperationButton.interactable = false;
-        aluVizualizer.uiController.SecondOperationButton.interactable = false;
-        aluVizualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVizualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        multiplexerVisualizer.UIController.FirstWayButton.interactable = true;
-        multiplexerVisualizer.UIController.SecondWayButton.interactable = true;
-
-
-        aluVizualizer.uiController.FirstOperationButton.interactable = true;
-        aluVizualizer.uiController.SecondOperationButton.interactable = true;
-        aluVizualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVizualizer.uiController.FourthOperationButton.interactable = true;
-    }
-    #endregion
 }

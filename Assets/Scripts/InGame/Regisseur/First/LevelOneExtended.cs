@@ -59,16 +59,6 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
         }
     }
 
-    protected override void BlockInGameInteractable()
-    {
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        upperMuxVisualizer.SwitchMuxInteractable(false);
-        middleMuxVisualizer.SwitchMuxInteractable(false);
-        downMuxVisualizer.SwitchMuxInteractable(false);
-        outputMuxVisualizer.SwitchMuxInteractable(false);
-    }
-
     protected override bool CheckWinCondition()
     {
         return _output.Output == RightAnswerValue;
@@ -97,16 +87,6 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 
         _output.PreClockUpdate();
         _output.Clock();
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        upperMuxVisualizer.SwitchMuxInteractable(true);
-        middleMuxVisualizer.SwitchMuxInteractable(true);
-        downMuxVisualizer.SwitchMuxInteractable(true);
-        outputMuxVisualizer.SwitchMuxInteractable(true);
     }
 
     protected override IEnumerator ReverseBusVisualizations()

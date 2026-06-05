@@ -52,6 +52,12 @@ public class RegisterVisualizer: BaseVisualizer
         writeEnableIndicator.SetActive(!isWriteEnabled);
         HideData();
     }
+    
+    public override void SetInteractable(bool value)
+    {
+        UIRegisterPanel.WeButton.interactable = value;
+    }
+    
     public void ForceUpdateWriteEnableVisualization(bool flag)
     {
         if (writeEnableIndicator == null) return;

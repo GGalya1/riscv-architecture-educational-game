@@ -1841,26 +1841,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75768301be46cda49a10c68ab1744582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelTargetDescription: 'Ziel: \r\nSchreibe in Register 3 den Wert 2'
-  _correctAnswer: 2
-  _nextClick: {fileID: 640675038}
-  _prevClick: {fileID: 1547987794}
-  _currentTickText: {fileID: 1612478091}
-  _maxTickNumber: 3
-  _checkSolutionButton: {fileID: 503888151}
-  _levelManager: {fileID: 2086751669}
-  _levelTargetText: {fileID: 377749765}
-  _threeStarCondition: 0
-  _twoStarCondition: 1
-  _oneStarCondition: 2
-  _crossIndicator: {fileID: 1640349074}
-  _crossDisplayDuration: 0.3
-  falledTries: 0
-  _busController: {fileID: 1109257074}
-  _multiplexerVisualizer: {fileID: 802006894}
-  _registerSrcAVisualizer: {fileID: 1319270238}
-  _registerSrcBVisualizer: {fileID: 373000919}
-  _registerOutputVisualizer: {fileID: 1397563056}
+  levelTargetDescription: 'Ziel: \r\nSchreibe in Register 3 den Wert 2'
+  managedInteractable:
+  - {fileID: 1319270238}
+  - {fileID: 373000919}
+  - {fileID: 1397563056}
+  - {fileID: 802006894}
+  correctAnswer: 2
+  nextClick: {fileID: 640675038}
+  prevClick: {fileID: 1547987794}
+  currentTickText: {fileID: 1612478091}
+  maxTickNumber: 3
+  checkSolutionButton: {fileID: 503888151}
+  levelManager: {fileID: 2086751669}
+  levelTargetText: {fileID: 377749765}
+  threeStarCondition: 0
+  twoStarCondition: 1
+  oneStarCondition: 2
+  crossIndicator: {fileID: 1640349074}
+  crossDisplayDuration: 0.3
+  fallenTries: 0
+  busController: {fileID: 1109257074}
+  isProcessing: 0
+  multiplexerVisualizer: {fileID: 802006894}
+  registerSrcAVisualizer: {fileID: 1319270238}
+  registerSrcBVisualizer: {fileID: 373000919}
+  registerOutputVisualizer: {fileID: 1397563056}
 --- !u!4 &1109257073
 Transform:
   m_ObjectHideFlags: 0

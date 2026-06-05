@@ -245,43 +245,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         memoryVisualizer.TriggerBlink();
         blinkerNumber.Trigger();
     }
-
-    protected override void BlockInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = false;
-        memoryVisualizer.UIRegisterPanel.WeButton.interactable = false;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = false;
-        aluVisualizer.uiController.SecondOperationButton.interactable = false;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = false;
-        aluVisualizer.uiController.FourthOperationButton.interactable = false;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = false;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = false;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = false;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = false;
-    }
-
-    protected override void ReleaseInGameInteractable()
-    {
-        registerSrcAVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerSrcBVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        registerOutputVisualizer.UIRegisterPanel.WeButton.interactable = true;
-        memoryVisualizer.UIRegisterPanel.WeButton.interactable = true;
-
-        aluVisualizer.uiController.FirstOperationButton.interactable = true;
-        aluVisualizer.uiController.SecondOperationButton.interactable = true;
-        aluVisualizer.uiController.ThirdOperationButton.interactable = true;
-        aluVisualizer.uiController.FourthOperationButton.interactable = true;
-
-        extenderVisualizer.uiController.FirstOperationButton.interactable = true;
-        extenderVisualizer.uiController.SecondOperationButton.interactable = true;
-        extenderVisualizer.uiController.ThirdOperationButton.interactable = true;
-        extenderVisualizer.uiController.FourthOperationButton.interactable = true;
-    }
-
+    
     protected override bool CheckWinCondition()
     {
         if (TickStateValues == null) 
