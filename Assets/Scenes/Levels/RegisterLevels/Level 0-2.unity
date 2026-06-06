@@ -1246,6 +1246,7 @@ MonoBehaviour:
   speedSlider: {fileID: 1538264957}
   spherePrefab: {fileID: 6425462522399718016, guid: 1d0544c75d85507478621a5dee2e0bd8, type: 3}
   movementSpeed: 5
+  poolPreWarmCount: 2
   busSegments:
   - {fileID: 1226422104}
   - {fileID: 785921907}

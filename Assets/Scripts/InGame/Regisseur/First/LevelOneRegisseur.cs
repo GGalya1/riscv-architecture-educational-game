@@ -141,18 +141,6 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
 
     }
 
-    /*protected override bool IsStateEqual(object state) {
-        if (!(state is LevelOneState s)) return false;
-
-        return (s.RegisterAValue == srcA.Output) &&
-                (s.RegisterBValue == srcB.Output) &&
-                (s.OutputRegisterValue == output.Output) &&
-                (s.CurrentChosenMuxPath == _multiplexerVisualizer.CurrentChosenMuxPath) &&
-                (s.RegisterAWE == srcA.WriteEnable) &&
-                (s.RegisterBWE == srcB.WriteEnable) &&
-                (s.OutputRegisterWE == output.WriteEnable);
-    }*/
-
     protected override bool CheckWinCondition() { 
         return (_output.Output == RightAnswerValue);
     }
@@ -166,7 +154,17 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
 
             if(multiplexerVisualizer.CurrentChosenMuxPath != -1)
             {
-                yield return StartCoroutine(DelayedBusSignal(busController.busSegments[2])); // ???
+                yield return new WaitUntil(() => busController.NoActiveSignals);
+
+                // sending the third signal
+                var propagationVal = multiplexerVisualizer.CurrentChosenMuxPath switch
+                {
+                    0 => _srcA.Output,
+                    1 => _srcB.Output,
+                    _ => 0
+                };
+
+                busController.StartBusSignal(busController.busSegments[2], propagationVal);
             }
 
             _currentBus++;
@@ -183,12 +181,14 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         {
             if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[0], busController.busSegments[1]));
+                busController.StartBusSignal(busController.busSegments[0], 4, true);
+                busController.StartBusSignal(busController.busSegments[1], 2, true);
             }
             else {
                 busController.StartBusSignal(busController.busSegments[2], _output.Input, true);
 
-                yield return StartCoroutine(DelayedBusSignals(busController.busSegments[0], busController.busSegments[1]));
+                busController.StartBusSignal(busController.busSegments[0], 4, true);
+                busController.StartBusSignal(busController.busSegments[1], 2, true);
             }
             
             _currentBus--;
@@ -196,32 +196,5 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-    }
-    private IEnumerator DelayedBusSignal(LineRenderer busToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        // sending the third signal
-        var propagationVal = 0;
-        if (multiplexerVisualizer.CurrentChosenMuxPath == 0)
-        {
-            propagationVal = _srcA.Output;
-        }
-        else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
-        {
-            propagationVal = _srcB.Output;
-        }
-        else {
-            Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
-        }
-
-        busController.StartBusSignal(busToStart, propagationVal);
-    }
-    IEnumerator DelayedBusSignals(LineRenderer firstBusToStart, LineRenderer secondBusToStart)
-    {
-        yield return new WaitUntil(() => busController.NoActiveSignals);
-
-        busController.StartBusSignal(firstBusToStart, 4, true);
-        busController.StartBusSignal(secondBusToStart, 2, true);
     }
 }

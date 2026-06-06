@@ -11,24 +11,36 @@ public class BusController : MonoBehaviour
     [Header("Motion settings")]
     public GameObject spherePrefab;      // Sphere prefab (aka signal)
     public float movementSpeed = 7f;     // Velocity of sphere
+    
+    [Header("Pool settings")] 
+    [SerializeField] private int poolPreWarmCount = 5;
 
     [Header("All bus segments")]
     // This is where we store references to all LineRenderers in the scene.
     // These are assigned via the Inspector.
     public LineRenderer[] busSegments;
-
-    // A dictionary to store the path for each bus so it doesn't have to be calculated every time
-    private readonly Dictionary<LineRenderer, Vector3[]> _busPaths = new Dictionary<LineRenderer, Vector3[]>();
-    private readonly Dictionary<LineRenderer, Vector3[]> _reverseBusPaths = new Dictionary<LineRenderer, Vector3[]>();
-
-    private readonly List<BusSignal> _activeSignals = new List<BusSignal>();
+    
+    private BusSignal _spherePrefabSignal;
+    
+    private readonly Stack<BusSignal> _pool = new();
+    private readonly List<BusSignal> _activeSignals = new();
     public bool NoActiveSignals => _activeSignals.Count == 0;
 
+
+    // A dictionary to store the path for each bus so it doesn't have to be calculated every time
+    private readonly Dictionary<LineRenderer, Vector3[]> _busPaths = new();
+    private readonly Dictionary<LineRenderer, Vector3[]> _reverseBusPaths = new();
+
+    private void Awake()
+    {
+        _spherePrefabSignal = spherePrefab.GetComponent<BusSignal>();
+    }
+    
     private void Start()
     {
         InitializePaths();
-
-        if (spherePrefab != null) spherePrefab.SetActive(false);
+        PrewarmPool();
+        spherePrefab.SetActive(false);
 
         if (speedSlider != null)
         {
@@ -41,64 +53,49 @@ public class BusController : MonoBehaviour
 
         Debug.Log($"The controller has loaded {_busPaths.Count} bus segments.");
     }
+    
+    private void OnDestroy()
+    {
+        // all objects in pool need to be removed manual
+        foreach (var signal in _activeSignals)
+            if (signal != null) Destroy(signal.gameObject);
+ 
+        foreach (var signal in _pool)
+            if (signal != null) Destroy(signal.gameObject);
+    }
 
+    
+    public void StartBusSignal(LineRenderer targetBus, int value, bool reversedPath = false)
+        => StartBusSignalInternal(targetBus, value, reversedPath);
+
+    #region  Internal
+    
     /// <summary>
     /// A public method for triggering a signal on a specific bus.
     /// You will call this method from other scripts (for example, when clicking on the CPU block).
     /// </summary>
     /// <param name="targetBus">LineRenderer, through which the signal should be sent.</param>
-    /// /// <param name="reversedPath">bool, says if the path must be animated in reverse direction</param>
-    public void StartBusSignal(LineRenderer targetBus, bool reversedPath = false)
+    /// <param name="reversedPath">bool, says if the path must be animated in reverse direction</param>
+    /// <param name="value">int, which signal carry</param>
+    private void StartBusSignalInternal(LineRenderer targetBus, int value, bool reversedPath = false)
     {
         var pathPoints = GetPathPoints(targetBus, reversedPath);
         if (pathPoints == null || pathPoints.Length < 2) return;
 
         // Create a sphere
-        var currentSphere = Instantiate(spherePrefab);
-        currentSphere.SetActive(true);
-        
-        currentSphere.transform.position = pathPoints[0];
+        var signal = GetSignal(pathPoints[0]);
 
-        // Retrieving the BusSignal component
-        var signal = currentSphere.GetComponent<BusSignal>();
-        
-        // 2. Important: Adjust the speed and add it to the monitoring list
-        if (signal != null)
-        {
-            _activeSignals.Add(signal);
-        }
-
-        StartCoroutine(MoveSphereAlongPath(signal, pathPoints));
-    }
-
-    public void StartBusSignal(LineRenderer targetBus, int value, bool reversedPath = false)
-    {
-        var pathPoints = GetPathPoints(targetBus, reversedPath);
-        if (pathPoints == null || pathPoints.Length < 2) return;
-
-        // Create a sphere
-        var currentSphere = Instantiate(spherePrefab);
-        currentSphere.SetActive(true);
-
-        currentSphere.transform.position = pathPoints[0];
-
-        // Retrieving the BusSignal component
-        var signal = currentSphere.GetComponent<BusSignal>();
         signal.UIRegisterPanel.Display("Signal", $"{value}");
 
         // 2. Important: Adjust the speed and add it to the monitoring list
-        if (signal != null)
-        {
-            _activeSignals.Add(signal);
-        }
-
+        _activeSignals.Add(signal);
         StartCoroutine(MoveSphereAlongPath(signal, pathPoints));
     }
-
+    
     // A coroutine to move a ball along a given array of points
     private IEnumerator MoveSphereAlongPath(BusSignal signal, Vector3[] pathPoints)
     {
-        if (signal == null) yield break;
+        // if (signal == null) yield break;
 
         for (var i = 1; i < pathPoints.Length; i++)
         {
@@ -119,9 +116,7 @@ public class BusController : MonoBehaviour
         }
 
         // 4. Remove from the list before destruction
-        _activeSignals.Remove(signal);
-        Destroy(signal.UIRegisterPanel.gameObject);
-        Destroy(signal.gameObject);
+        ReturnSignal(signal);
     }
 
     private void OnSliderValueChanged(float value)
@@ -187,8 +182,39 @@ public class BusController : MonoBehaviour
 
     private Vector3[] GetPathPoints(LineRenderer targetBus, bool reversed)
     {
-        if (targetBus == null) return null;
-        var dict = reversed ? _reverseBusPaths : _busPaths;
-        return dict.GetValueOrDefault(targetBus);
+        // if (targetBus == null) return null;
+        return (reversed ? _reverseBusPaths : _busPaths).GetValueOrDefault(targetBus);
     }
+    #endregion
+
+    #region Pool
+    private void PrewarmPool()
+    {
+        for (var i = 0; i < poolPreWarmCount; i++)
+        {
+            var signal = Instantiate(_spherePrefabSignal);
+            signal.gameObject.SetActive(false);
+            _pool.Push(signal);
+        }
+    }
+    
+    private BusSignal GetSignal(Vector3 startPosition)
+    {
+        var signal = _pool.Count > 0
+            ? _pool.Pop()
+            : Instantiate(_spherePrefabSignal);
+ 
+        signal.transform.position = startPosition;
+        signal.gameObject.SetActive(true);
+        return signal;
+    }
+    
+    private void ReturnSignal(BusSignal signal)
+    {
+        _activeSignals.Remove(signal);
+        signal.ResetVisualisation(); // kill DOTWeen + ui panel
+        signal.gameObject.SetActive(false);
+        _pool.Push(signal);
+    }
+    #endregion
 }

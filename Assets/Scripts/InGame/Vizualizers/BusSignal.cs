@@ -18,7 +18,9 @@ public class BusSignal : BaseVisualizer
 
     public override void ResetVisualisation()
     {
-        throw new System.NotImplementedException();
+        KillPanelTweens();
+        UIRegisterPanel.Display("", "N/A");
+        PrepareHiddenState();
     }
 
     protected override void InitializePanelController()
