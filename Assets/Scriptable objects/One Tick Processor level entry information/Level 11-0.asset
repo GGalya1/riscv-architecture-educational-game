@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5745a4e36bb6c8e45841be2c75420794, type: 3}
+  m_Name: Level 11-0
+  m_EditorClassIdentifier: 
+  levelTarget: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 4 korrekt.
+  firstMemoWord: 16
+  secondMemoWord: 4391699
+  thirdMemoWord: 524288
+  fourthMemoWord: 32768
+  pcRegisterInitialValue: 4
+  aufgabeTyp: 0
+  registerFieldAddressAnswer: 6
+  registerFieldValueAnswer: 12
+  memoryAddressAnswer: 0
+  memoryValueAnswer: 0
+  pcValueAnswer: 0
+  customDialogueGraph: {fileID: 11400000, guid: 305a667cafd06024091baa654191a013, type: 2}
+  nextSceneInitial: {fileID: 11400000, guid: f6adf0ea88ca4c743937feff79f7b44d, type: 2}

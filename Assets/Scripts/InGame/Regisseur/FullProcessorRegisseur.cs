@@ -61,7 +61,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     [FormerlySerializedAs("_srcBMUXVisualizer")] [SerializeField] private MultiplexerVisualizer srcBmuxVisualizer;
     [FormerlySerializedAs("_resultMUXVisualizer")] [SerializeField] private MultiplexerVisualizer resultMuxVisualizer;
 
-    [FormerlySerializedAs("aluVisualizer")] [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVisualizer;
     [FormerlySerializedAs("extenderVizualizer")] [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVisualizer;
 
     [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private InstructionDataMemoryVisualizer memoryVisualizer;
@@ -103,7 +103,6 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
 
     private int _currentBus; // [0, 10]
-    private const int MIN_VALID_INSTRUCTION = 1000000;
 
     protected void Awake()
     {
@@ -618,18 +617,18 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         var containsKey = _pc.Output % 4 == 0 
                           && _pc.Output is <= 12 and >= 0
                           && _dataInstructionMemory.Memory.ContainsKey(_pc.Output)
-                          && _dataInstructionMemory.Memory[_pc.Output] > MIN_VALID_INSTRUCTION;
+                          && _dataInstructionMemory.Memory[_pc.Output] > GameConstants.MinValidInstruction;
         if (containsKey)
         {
             sidePanelInformer.SetStateInfo((int)StateName.FETCH);
         }
-        else if (_instructionReg.Output > MIN_VALID_INSTRUCTION)
+        else if (_instructionReg.Output > GameConstants.MinValidInstruction)
         {
             sidePanelInformer.SetStateInfo((int)StateName.DECODE);
         }
         else if (TickCounter - 4 >= 0)
         {
-            if (TickStateValues[TickCounter - 3].RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
+            if (TickStateValues[TickCounter - 3].RegisterInstrValue < GameConstants.MinValidInstruction) return;
             var opcode = TickStateValues[TickCounter - 3].RegisterInstrValue & 0x7F;
 
             if (opcode == 0x03)
@@ -641,7 +640,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         {
             var s = TickStateValues[TickCounter - 2];
 
-            if (s.RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
+            if (s.RegisterInstrValue < GameConstants.MinValidInstruction) return;
             var opcode = s.RegisterInstrValue & 0x7F;
 
             switch (opcode)
@@ -665,7 +664,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         else if (TickCounter - 2 >= 0) {
             var s = TickStateValues[TickCounter - 1];
 
-            if (s.RegisterInstrValue < MIN_VALID_INSTRUCTION) return;
+            if (s.RegisterInstrValue < GameConstants.MinValidInstruction) return;
             var opcode = s.RegisterInstrValue & 0x7F;
 
             switch(opcode)

@@ -30,7 +30,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
     [FormerlySerializedAs("_registerA3Visualizer")] [SerializeField] protected RegisterVisualizer registerA3Visualizer;
     [FormerlySerializedAs("_registerWD3Visualizer")] [SerializeField] protected RegisterVisualizer registerWd3Visualizer;
 
-    [FormerlySerializedAs("aluVisualizer")] [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVisualizer;
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVisualizer;
 
     [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
     [FormerlySerializedAs("extenderVizualizer")] [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVisualizer;
@@ -172,7 +172,7 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
         if (_srcA.Output is > 0 and < 16)
             a = _registerFile.Registers[_srcA.Output];
         var ext = Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_immValue.Output);
-        var muxVal = EvaluateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
+        var muxVal = EvaluateMux(muxVisualizer.CurrentChosenMuxPath, 0, ext, -1);
 
         _wd3.Input = Alu.Calculate(a, muxVal, aluVisualizer.CurrentAluOperation);
 
