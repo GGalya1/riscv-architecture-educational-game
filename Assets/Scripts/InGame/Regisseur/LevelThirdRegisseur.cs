@@ -139,22 +139,6 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 
     protected override void HandleClockUpdate()
     {
-        var path = multiplexerVisualizer.CurrentChosenMuxPath;
-        int[] inputs = { SrcA.Output, SrcB.Output };
-
-        if (path == -1)
-        {
-            Debug.LogError("Multiplexer path not selected (-1). Data will be lost.");
-        }
-        else if (path is >= 0 and <= 1)
-        {
-            Multiplexer.SelectNto1(inputs, path);
-        }
-        else
-        {
-            Debug.LogError($"Multiplexer path {path} is an invalid value!");
-        }
-
         // synchronize visualizers and concrete objects
         SrcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
         SrcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;

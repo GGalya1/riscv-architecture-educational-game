@@ -111,10 +111,8 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
 
             busController.StartBusSignal(busController.busSegments[2], _srcA.Input, true);
 
-            var prevVal = TickStateValues[TickCounter] is var s ? s.RegisterAValue : 0;
-
             yield return StartCoroutine(DelayedSignals(
-                busController.busSegments[0], prevVal,
+                busController.busSegments[0], TickStateValues[TickCounter].RegisterAValue ,
                 busController.busSegments[1], 4, true, true
             ));
             

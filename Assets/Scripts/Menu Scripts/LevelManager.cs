@@ -90,7 +90,8 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void LoadNextLevel()
     {
-        if (SceneManager.GetActiveScene().buildIndex == GameConstants.FullProcessorSceneIndex) {
+        if (SceneManager.GetActiveScene().buildIndex == GameConstants.FullProcessorSceneIndex ||
+            SceneManager.GetActiveScene().buildIndex == GameConstants.OneTickProcessorSceneIndex) {
             var nextData = OnRequestNextLevelData?.Invoke();
 
             if (nextData != null)
