@@ -90,14 +90,14 @@ public class LevelManager : MonoBehaviour
     /// </summary>
     public void LoadNextLevel()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 20) {
+        if (SceneManager.GetActiveScene().buildIndex == GameConstants.FullProcessorSceneIndex) {
             var nextData = OnRequestNextLevelData?.Invoke();
 
             if (nextData != null)
             {
                 FullProcessorRegisseur.Initial = (ProcessorInitialState)nextData;
 
-                StartCoroutine(LoadWithTransition(20));
+                StartCoroutine(LoadWithTransition(GameConstants.FullProcessorSceneIndex));
             }
             else
             {
@@ -132,11 +132,13 @@ public class LevelManager : MonoBehaviour
 
     private IEnumerator LoadWithTransition(int targetIndex)
     {
+        /*
         if (loadingOverlay == null)
         {
             SceneManager.LoadScene(targetIndex);
             yield break;
         }
+        */
 
         // FadeIn
         loadingOverlay.blocksRaycasts = true;

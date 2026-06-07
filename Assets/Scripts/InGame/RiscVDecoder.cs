@@ -2,7 +2,7 @@
     {
         public static string CommandBuilder(uint val)
     {
-        if (val < 1000000) {
+        if (val < GameConstants.MinValidInstruction) {
             return $"{val}";
         }
 
