@@ -95,10 +95,10 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
 
     protected override void ApplyState(SubExtendedSevenLevelState s)
     {
-        _srcA = new Register(s.RegisterSrcAValue);
-        _immValue = new Register(s.RegisterImmValue);
-        _a3 = new Register(s.RegisterA3Value);
-        _wd3 = new Register(s.RegisterWd3Value);
+        _srcA.Reset(s.RegisterSrcAValue);
+        _immValue.Reset(s.RegisterImmValue);
+        _a3.Reset(s.RegisterA3Value);
+        _wd3.Reset(s.RegisterWd3Value);
 
         _registerFile.InitializeRegisters(s.RegisterFieldValue);
 

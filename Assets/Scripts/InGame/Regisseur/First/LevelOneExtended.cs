@@ -44,7 +44,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 
     protected override void ApplyState(ExtendedFirstLevelState s) // "s" for state
     {
-        _output = new Register(s.RegisterOutputValue);
+        _output.Reset(s.RegisterOutputValue);
         
         ApplyMuxState(s.MuXup, upperMuxVisualizer);
         ApplyMuxState(s.MuXmiddle, middleMuxVisualizer);

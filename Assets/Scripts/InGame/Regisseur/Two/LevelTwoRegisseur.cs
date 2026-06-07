@@ -42,10 +42,8 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
 
     protected override void ApplyState(LevelTwoState s)
     {
-        _srcA = new Register(s.RegisterAValue)
-        {
-            WriteEnable = s.RegisterAwe
-        };
+        _srcA.Reset(s.RegisterAValue);
+        _srcA.WriteEnable = s.RegisterAwe;
 
         aluVisualizer.ChooseAluOperation(s.AluOperation);
     }

@@ -83,8 +83,8 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 
     protected override void ApplyState(LevelThreeState s)
     {
-        SrcA = new Register(s.RegisterPCValue);
-        SrcB = new Register(s.RegisterInstrValue);
+        SrcA.Reset(s.RegisterPCValue);
+        SrcB.Reset(s.RegisterInstrValue);
         DataInstructionMemory = new DataInstMemory
         {
             Memory =

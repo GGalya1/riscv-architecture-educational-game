@@ -212,9 +212,9 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
 
     protected override void ApplyState(LevelFiveState s)
     {
-        _srcA = new Register(s.RegisterPCValue);
-        _srcB = new Register(s.RegisterInstrValue);
-        _output = new Register(s.RegisterOutputValue);
+        _srcA.Reset(s.RegisterPCValue);
+        _srcB.Reset(s.RegisterInstrValue);
+        _output.Reset(s.RegisterOutputValue);
 
         _dataInstructionMemory = new DataInstMemory
         {

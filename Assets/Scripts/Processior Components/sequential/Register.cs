@@ -72,4 +72,9 @@ public class Register: ISequentialLogic
         //WriteEnable = false;
     }
     #endregion
+    
+    public void Reset(int value) {
+        Output = value;
+        _nextValue = value;
+    }
 }

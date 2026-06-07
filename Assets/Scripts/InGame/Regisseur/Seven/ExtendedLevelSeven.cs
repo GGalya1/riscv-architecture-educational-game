@@ -90,10 +90,10 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 
     protected override void ApplyState(ExtendedSevenLevelState s)
     {
-        _srcA = new Register(s.RegisterSrcAValue);
-        _srcB = new Register(s.RegisterSrcBValue);
-        _a3 = new Register(s.RegisterA3Value);
-        _wd3 = new Register(s.RegisterWd3Value);
+        _srcA.Reset(s.RegisterSrcAValue);
+        _srcB.Reset(s.RegisterSrcBValue);
+        _a3.Reset(s.RegisterA3Value);
+        _wd3.Reset(s.RegisterWd3Value);
 
         _registerFile.InitializeRegisters(s.RegisterFieldValue);
 

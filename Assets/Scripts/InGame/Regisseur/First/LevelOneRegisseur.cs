@@ -83,9 +83,9 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
     }
     protected override void ApplyState(LevelOneState s)
     {
-        _srcA = new Register(s.RegisterAValue);
-        _srcB = new Register(s.RegisterBValue);
-        _output = new Register(s.OutputRegisterValue);
+        _srcA.Reset(s.RegisterAValue);
+        _srcB.Reset(s.RegisterBValue);
+        _output.Reset(s.OutputRegisterValue);
         _srcA.WriteEnable = s.RegisterAwe;
         _srcB.WriteEnable = s.RegisterBwe;
         _output.WriteEnable = s.OutputRegisterWe;

@@ -52,8 +52,8 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
 
     protected override void ApplyState(LevelFiveExtendedState s)
     {
-        _srcA = new Register(s.RegisterValue);
-        _output = new Register(s.RegisterOutputValue);
+        _srcA.Reset(s.RegisterValue);
+        _output.Reset(s.RegisterOutputValue);
 
         _srcA.WriteEnable = s.RegisterWe;
         _output.WriteEnable = s.RegisterOutputWe;

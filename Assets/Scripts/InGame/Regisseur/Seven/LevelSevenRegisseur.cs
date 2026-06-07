@@ -82,9 +82,9 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
 
     protected override void ApplyState(LevelSevenState s)
     {
-        _srcA = new Register(s.RegisterAValue);
-        _srcB = new Register(s.RegisterBValue);
-        _output = new Register(s.RegisterOutputValue);
+        _srcA.Reset(s.RegisterAValue);
+        _srcB.Reset(s.RegisterBValue);
+        _output.Reset(s.RegisterOutputValue);
 
         _srcA.WriteEnable = s.RegisterAwe;
         _srcB.WriteEnable = s.RegisterBwe;

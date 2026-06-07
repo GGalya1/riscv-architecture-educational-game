@@ -174,13 +174,13 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
     protected override void ApplyState(ProcessorLevelState s)
     {
-        _pc = new Register(s.RegisterPCValue);
-        _oldPC = new Register(s.RegisterOldPCValue);
-        _instructionReg = new Register(s.RegisterInstrValue);
-        _dataReg = new Register(s.RegisterDataValue);
-        _srcA = new Register(s.RegisterScrAValue);
-        _srcB = new Register(s.RegisterSrcBValue);
-        _aluOutReg = new Register(s.RegisterAluOutValue);
+        _pc.Reset(s.RegisterPCValue);
+        _oldPC.Reset(s.RegisterOldPCValue);
+        _instructionReg.Reset(s.RegisterInstrValue);
+        _dataReg.Reset(s.RegisterDataValue);
+        _srcA.Reset(s.RegisterScrAValue);
+        _srcB.Reset(s.RegisterSrcBValue);
+        _aluOutReg.Reset(s.RegisterAluOutValue);
         
         ApplyMuxState(s.MuXadrPath, adrMuxVisualizer);
         ApplyMuxState(s.MuXsrcAPath, srcAmuxVisualizer);

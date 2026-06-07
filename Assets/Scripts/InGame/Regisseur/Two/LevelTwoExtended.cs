@@ -61,20 +61,15 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
 
     protected override void ApplyState(LevelTwoExtendedState s)
     {
-        _srcA = new Register(s.RegisterAValue)
-        {
-            WriteEnable = s.RegisterAwe
-        };
+        _srcA.Reset(s.RegisterAValue);
+        _srcA.WriteEnable = s.RegisterAwe;
 
-        _srcB = new Register(s.RegisterBValue)
-        {
-            WriteEnable = s.RegisterBwe
-        };
 
-        _output = new Register(s.OutputValue)
-        {
-            WriteEnable = s.OutputWe
-        };
+        _srcB.Reset(s.RegisterBValue);
+        _srcB.WriteEnable = s.RegisterBwe;
+
+        _output.Reset(s.OutputValue);
+        _output.WriteEnable = s.OutputWe;
 
         aluVisualizer.ChooseAluOperation(s.AluOperation);
     }
