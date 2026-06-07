@@ -18,8 +18,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private float transitionDuration = 1f;
     private bool _isLoadingOverlayNotNull;
 
-    private const string UNLOCKED_LEVEL_KEY = "UnlockedLevelIndex";
-
     private void Awake()
     {
         SetFrameRate();
@@ -66,7 +64,7 @@ public class MainMenu : MonoBehaviour
         if (levelButtons == null || levelButtons.Length == 0) return;
 
         // Default to 1 if the key doesn't exist
-        var unlockedLevels = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+        var unlockedLevels = PlayerPrefs.GetInt(GameConstants.UnlockedLevelKey, 1);
 
         // One loop to rule them all: set interactable state based on index
         for (var i = 0; i < levelButtons.Length; i++)
@@ -80,7 +78,7 @@ public class MainMenu : MonoBehaviour
         // int totalScenes = SceneManager.sceneCountInBuildSettings - 1;
         const int totalScenes = 25;
 
-        PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, totalScenes);
+        PlayerPrefs.SetInt(GameConstants.UnlockedLevelKey, totalScenes);
         PlayerPrefs.Save();
 
         UpdateLevelButtons();

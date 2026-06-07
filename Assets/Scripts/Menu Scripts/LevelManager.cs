@@ -36,8 +36,6 @@ public class LevelManager : MonoBehaviour
     // for transition between processor levels
     public static Func<object> OnRequestNextLevelData;
 
-    private const string UNLOCKED_LEVEL_KEY = "UnlockedLevelIndex";
-
     public void Awake()
     {
         // Subscribe to dialogue events to toggle UI visibility
@@ -47,11 +45,9 @@ public class LevelManager : MonoBehaviour
 
         InitializeResultsPanel();
 
-        if (loadingOverlay != null)
-        {
-            loadingOverlay.alpha = 1f;
-            loadingOverlay.blocksRaycasts = true;
-        }
+        if (loadingOverlay == null) return;
+        loadingOverlay.alpha = 1f;
+        loadingOverlay.blocksRaycasts = true;
     }
 
     private void Start()
@@ -114,10 +110,10 @@ public class LevelManager : MonoBehaviour
         var nextLevelIndex = SceneManager.GetActiveScene().buildIndex + 1;
 
         // Save progress if this is a new level
-        var savedProgress = PlayerPrefs.GetInt(UNLOCKED_LEVEL_KEY, 1);
+        var savedProgress = PlayerPrefs.GetInt(GameConstants.UnlockedLevelKey, 1);
         if (nextLevelIndex > savedProgress)
         {
-            PlayerPrefs.SetInt(UNLOCKED_LEVEL_KEY, nextLevelIndex);
+            PlayerPrefs.SetInt(GameConstants.UnlockedLevelKey, nextLevelIndex);
             PlayerPrefs.Save();
         }
 

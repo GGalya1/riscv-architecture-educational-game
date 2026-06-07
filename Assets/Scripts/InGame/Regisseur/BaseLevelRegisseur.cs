@@ -185,11 +185,11 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
         {
             Debug.Log("Level is solved!");
             var nextLevelToUnlockIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            var highestUnlockedIndex = PlayerPrefs.GetInt("UnlockedLevelIndex", 1);
+            var highestUnlockedIndex = PlayerPrefs.GetInt(GameConstants.UnlockedLevelKey, 1);
 
             if (nextLevelToUnlockIndex > highestUnlockedIndex)
             {
-                PlayerPrefs.SetInt("UnlockedLevelIndex", nextLevelToUnlockIndex);
+                PlayerPrefs.SetInt(GameConstants.UnlockedLevelKey, nextLevelToUnlockIndex);
                 PlayerPrefs.Save(); // Saving data to disk
                 Debug.Log($"New level unlocked: Scene Index {nextLevelToUnlockIndex}");
             }
