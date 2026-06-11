@@ -2958,6 +2958,18 @@ MonoBehaviour:
   - {fileID: 1073986273}
   - {fileID: 1097249878}
   - {fileID: 2039291897}
+  buses:
+    constAToMiddleMux: {fileID: 1226422104}
+    constBToMiddleMux: {fileID: 387293446}
+    middleMuxToDownMux: {fileID: 101616089}
+    constCToDownMux: {fileID: 1099493944}
+    constDToDownMux: {fileID: 1527047993}
+    constEToUpperMux: {fileID: 1373751892}
+    constFToUpperMux: {fileID: 692993602}
+    upperMuxToOutputMux: {fileID: 1528682110}
+    downMuxToOutputMux: {fileID: 1719315176}
+    constGToOutputMux: {fileID: 785921907}
+    outputMuxToRegister: {fileID: 791487473}
 --- !u!1001 &1169925849
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6176,7 +6188,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -6228,7 +6240,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1

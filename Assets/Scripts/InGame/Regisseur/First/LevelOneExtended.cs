@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,24 +13,93 @@ public struct ExtendedFirstLevelState
     public int MuXoutput;
 }
 
+[Serializable]
+public class LevelOneExtendedBusSegments
+{
+    [Header("Middle MUX inputs (constants 8 and 12)")] [Tooltip("Constant 8 -> Middle MUX input [0]")]
+    public LineRenderer constAToMiddleMux;
+
+    [Tooltip("Constant 12 -> Middle MUX input [1]")]
+    public LineRenderer constBToMiddleMux;
+
+    [Header("Down MUX inputs")] [Tooltip("Middle MUX output -> Down MUX input [0]")]
+    public LineRenderer middleMuxToDownMux;
+
+    [Tooltip("Constant -8 -> Down MUX input [1]")]
+    public LineRenderer constCToDownMux;
+
+    [Tooltip("Constant -12 -> Down MUX input [2]")]
+    public LineRenderer constDToDownMux;
+
+    [Header("Upper MUX inputs (constants -4 and 0)")] [Tooltip("Constant -4 -> Upper MUX input [0]")]
+    public LineRenderer constEToUpperMux;
+
+    [Tooltip("Constant 0 -> Upper MUX input [1]")]
+    public LineRenderer constFToUpperMux;
+
+    [Header("Output MUX inputs")] [Tooltip("Upper MUX output -> Output MUX input [0]")]
+    public LineRenderer upperMuxToOutputMux;
+
+    [Tooltip("Down MUX output -> Output MUX input [2]")]
+    public LineRenderer downMuxToOutputMux;
+
+    [Tooltip("Constant 4 -> Output MUX input [1]")]
+    public LineRenderer constGToOutputMux;
+
+    [Header("Output")] [Tooltip("Output MUX -> Output register")]
+    public LineRenderer outputMuxToRegister;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(constAToMiddleMux);
+        c.RegisterSegment(constBToMiddleMux);
+        c.RegisterSegment(middleMuxToDownMux);
+        c.RegisterSegment(constCToDownMux);
+        c.RegisterSegment(constDToDownMux);
+        c.RegisterSegment(constEToUpperMux);
+        c.RegisterSegment(constFToUpperMux);
+        c.RegisterSegment(upperMuxToOutputMux);
+        c.RegisterSegment(downMuxToOutputMux);
+        c.RegisterSegment(constGToOutputMux);
+        c.RegisterSegment(outputMuxToRegister);
+    }
+}
+
 public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 {
-    [FormerlySerializedAs("_registerOutputVisualizer")]
-    [Header("MUXes specific components")]
-    [SerializeField] private RegisterVisualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_upperMUXVisualizer")] [SerializeField] private MultiplexerVisualizer upperMuxVisualizer;
-    [FormerlySerializedAs("_middleMUXVisualizer")] [SerializeField] private MultiplexerVisualizer middleMuxVisualizer;
-    [FormerlySerializedAs("_downMUXVisualizer")] [SerializeField] private MultiplexerVisualizer downMuxVisualizer;
-    [FormerlySerializedAs("_outputMUXVisualizer")] [SerializeField] private MultiplexerVisualizer outputMuxVisualizer;
+    [FormerlySerializedAs("_registerOutputVisualizer")] [Header("MUXes specific components")] [SerializeField]
+    private RegisterVisualizer registerOutputVisualizer;
 
-    [FormerlySerializedAs("_numberBlinkers")] [SerializeField] private Blinker[] numberBlinkers;
+    [FormerlySerializedAs("_upperMUXVisualizer")] [SerializeField]
+    private MultiplexerVisualizer upperMuxVisualizer;
 
-    protected override int RightAnswerValue => 12;
+    [FormerlySerializedAs("_middleMUXVisualizer")] [SerializeField]
+    private MultiplexerVisualizer middleMuxVisualizer;
 
-    private Register _output;
-    private InfoPanelUI _infoOutputRegister;
+    [FormerlySerializedAs("_downMUXVisualizer")] [SerializeField]
+    private MultiplexerVisualizer downMuxVisualizer;
+
+    [FormerlySerializedAs("_outputMUXVisualizer")] [SerializeField]
+    private MultiplexerVisualizer outputMuxVisualizer;
+
+    [FormerlySerializedAs("_numberBlinkers")] [SerializeField]
+    private Blinker[] numberBlinkers;
+
+    [Header("Bus Segments")] [SerializeField]
+    private LevelOneExtendedBusSegments buses;
 
     private int _currentBus; // [0, 2]
+    private InfoPanelUI _infoOutputRegister;
+
+    private Register _output;
+
+    protected override int RightAnswerValue => 12;
+    
+     protected override void Start()
+        {
+            base.Start();
+            buses.RegisterAll(busController);
+        }
 
     protected override void OnLevelStart()
     {
@@ -45,7 +115,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
     protected override void ApplyState(ExtendedFirstLevelState s) // "s" for state
     {
         _output.Reset(s.RegisterOutputValue);
-        
+
         ApplyMuxState(s.MuXup, upperMuxVisualizer);
         ApplyMuxState(s.MuXmiddle, middleMuxVisualizer);
         ApplyMuxState(s.MuXdown, downMuxVisualizer);
@@ -54,9 +124,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 
     protected override void BlinkClockedComponents()
     {
-        foreach (var b in numberBlinkers) {
-            b.Trigger();
-        }
+        foreach (var b in numberBlinkers) b.Trigger();
     }
 
     protected override bool CheckWinCondition()
@@ -73,7 +141,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             MuXup = upperMuxVisualizer.CurrentChosenMuxPath,
             MuXmiddle = middleMuxVisualizer.CurrentChosenMuxPath,
             MuXdown = downMuxVisualizer.CurrentChosenMuxPath,
-            MuXoutput = outputMuxVisualizer.CurrentChosenMuxPath,
+            MuXoutput = outputMuxVisualizer.CurrentChosenMuxPath
         };
     }
 
@@ -97,24 +165,24 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             var left = middleMuxVisualizer.CurrentChosenMuxPath == 0 ? 8 : 12;
             var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
-            busController.StartBusSignal(busController.busSegments[10], _output.Input, true);
+            busController.StartBusSignal(buses.outputMuxToRegister, _output.Input, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[7], up, true);
-            busController.StartBusSignal(busController.busSegments[8], down, true);
-            busController.StartBusSignal(busController.busSegments[9], 4, true);
+            busController.StartBusSignal(buses.upperMuxToOutputMux, up, true);
+            busController.StartBusSignal(buses.downMuxToOutputMux, down, true);
+            busController.StartBusSignal(buses.constGToOutputMux, 4, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[2], left, true);
-            busController.StartBusSignal(busController.busSegments[3], -8, true);
-            busController.StartBusSignal(busController.busSegments[4], -12, true);
+            busController.StartBusSignal(buses.middleMuxToDownMux, left, true);
+            busController.StartBusSignal(buses.constCToDownMux, -8, true);
+            busController.StartBusSignal(buses.constDToDownMux, -12, true);
 
-            busController.StartBusSignal(busController.busSegments[5], -4, true);
-            busController.StartBusSignal(busController.busSegments[6], 0, true);
+            busController.StartBusSignal(buses.constEToUpperMux, -4, true);
+            busController.StartBusSignal(buses.constFToUpperMux, 0, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[0], 8, true);
-            busController.StartBusSignal(busController.busSegments[1], 12, true);
+            busController.StartBusSignal(buses.constAToMiddleMux, 8, true);
+            busController.StartBusSignal(buses.constBToMiddleMux, 12, true);
 
             _currentBus--;
         }
@@ -131,27 +199,27 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
             var output = EvaluateMux(outputMuxVisualizer.CurrentChosenMuxPath, up, 4, down);
 
-            busController.StartBusSignal(busController.busSegments[0], 8);
-            busController.StartBusSignal(busController.busSegments[1], 12);
+            busController.StartBusSignal(buses.constAToMiddleMux, 8);
+            busController.StartBusSignal(buses.constBToMiddleMux, 12);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[2], left);
-            busController.StartBusSignal(busController.busSegments[3], -8);
-            busController.StartBusSignal(busController.busSegments[4], -12);
+            busController.StartBusSignal(buses.middleMuxToDownMux, left);
+            busController.StartBusSignal(buses.constCToDownMux, -8);
+            busController.StartBusSignal(buses.constDToDownMux, -12);
 
-            busController.StartBusSignal(busController.busSegments[5], -4);
-            busController.StartBusSignal(busController.busSegments[6], 0);
-
-            yield return new WaitUntil(() => busController.NoActiveSignals);
-
-            busController.StartBusSignal(busController.busSegments[7], up);
-            busController.StartBusSignal(busController.busSegments[8], down);
-            busController.StartBusSignal(busController.busSegments[9], 4);
+            busController.StartBusSignal(buses.constEToUpperMux, -4);
+            busController.StartBusSignal(buses.constFToUpperMux, 0);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[10], output);
+            busController.StartBusSignal(buses.upperMuxToOutputMux, up);
+            busController.StartBusSignal(buses.downMuxToOutputMux, down);
+            busController.StartBusSignal(buses.constGToOutputMux, 4);
+
+            yield return new WaitUntil(() => busController.NoActiveSignals);
+
+            busController.StartBusSignal(buses.outputMuxToRegister, output);
 
             _currentBus++;
         }

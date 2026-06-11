@@ -1,5 +1,6 @@
-using UnityEngine;
+using System;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public struct LevelOneState
@@ -15,29 +16,57 @@ public struct LevelOneState
     public int CurrentChosenMuxPath;
 }
 
+[Serializable]
+public class LevelOneBusSegments
+{
+    [Tooltip("SrcA register -> MUX input [0]")]
+    public LineRenderer srcAToMux;
+
+    [Tooltip("SrcB register -> MUX input [1]")]
+    public LineRenderer srcBToMux;
+
+    [Tooltip("MUX output -> Output register")]
+    public LineRenderer muxToOutput;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(srcAToMux);
+        c.RegisterSegment(srcBToMux);
+        c.RegisterSegment(muxToOutput);
+    }
+}
+
 public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
 {
-    [FormerlySerializedAs("_multiplexerVisualizer")]
-    [Header("Level 1 Specific Components")]
-    [SerializeField] private MultiplexerVisualizer multiplexerVisualizer;
-    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
+    [FormerlySerializedAs("_multiplexerVisualizer")] [Header("Level 1 Specific Components")] [SerializeField]
+    private MultiplexerVisualizer multiplexerVisualizer;
 
-    #region CACHED UI REFERENCES
-    private InfoPanelUI _infoSrcARegister;
-    private InfoPanelUI _infoSrcBRegister;
-    private InfoPanelUI _infoOutputRegister;
-    #endregion
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField]
+    private RegisterVisualizer registerSrcAVisualizer;
 
-    // Intern components for computations
-    private Register _srcA;
-    private Register _srcB;
-    private Register _output;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField]
+    private RegisterVisualizer registerSrcBVisualizer;
+
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField]
+    private RegisterVisualizer registerOutputVisualizer;
+
+    [Header("Bus Segments")] [SerializeField]
+    private LevelOneBusSegments buses;
 
     // protected override int RightAnswerValue => 4;
 
     private int _currentBus; // [0, 1]
+    private Register _output;
+
+    // Intern components for computations
+    private Register _srcA;
+    private Register _srcB;
+
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -50,11 +79,11 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         {
             WriteEnable = true
         };
-        _output = new Register()
+        _output = new Register
         {
             WriteEnable = true
         };
-        
+
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
@@ -68,6 +97,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         registerSrcBVisualizer.TriggerBlink();
         registerOutputVisualizer.TriggerBlink();
     }
+
     protected override LevelOneState GetCurrentState()
     {
         return new LevelOneState
@@ -81,6 +111,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
             OutputRegisterWe = _output.WriteEnable
         };
     }
+
     protected override void ApplyState(LevelOneState s)
     {
         _srcA.Reset(s.RegisterAValue);
@@ -89,9 +120,10 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         _srcA.WriteEnable = s.RegisterAwe;
         _srcB.WriteEnable = s.RegisterBwe;
         _output.WriteEnable = s.OutputRegisterWe;
-        
+
         ApplyMuxState(s.CurrentChosenMuxPath, multiplexerVisualizer);
     }
+
     protected override void UpdateVisualizers()
     {
         _infoSrcARegister.Display("Register 1", $"{_srcA.Output}");
@@ -103,12 +135,12 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         registerOutputVisualizer.ForceUpdateWriteEnableVisualization(_output.WriteEnable);
     }
 
-    protected override void HandleClockUpdate() {
-        
+    protected override void HandleClockUpdate()
+    {
         var path = multiplexerVisualizer.CurrentChosenMuxPath;
         int[] inputs = { _srcA.Output, _srcB.Output };
         var res = 0;
-        
+
         switch (path)
         {
             case -1:
@@ -137,21 +169,21 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         _srcA.Clock();
         _srcB.Clock();
         _output.Clock();
-
     }
 
-    protected override bool CheckWinCondition() { 
-        return (_output.Output == RightAnswerValue);
+    protected override bool CheckWinCondition()
+    {
+        return _output.Output == RightAnswerValue;
     }
 
     protected override IEnumerator RunBusVisualizations()
     {
         if (_currentBus == 0)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
+            busController.StartBusSignal(buses.srcAToMux, _srcA.Output);
+            busController.StartBusSignal(buses.srcBToMux, _srcB.Output);
 
-            if(multiplexerVisualizer.CurrentChosenMuxPath != -1)
+            if (multiplexerVisualizer.CurrentChosenMuxPath != -1)
             {
                 yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -163,12 +195,12 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
                     _ => 0
                 };
 
-                busController.StartBusSignal(busController.busSegments[2], propagationVal);
+                busController.StartBusSignal(buses.muxToOutput, propagationVal);
             }
 
             _currentBus++;
-
         }
+
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
         //_busController.ResetFastForward();
@@ -180,20 +212,28 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         {
             if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                busController.StartBusSignal(busController.busSegments[0], 4, true);
-                busController.StartBusSignal(busController.busSegments[1], 2, true);
+                busController.StartBusSignal(buses.srcAToMux, 4, true);
+                busController.StartBusSignal(buses.srcBToMux, 2, true);
             }
-            else {
-                busController.StartBusSignal(busController.busSegments[2], _output.Input, true);
+            else
+            {
+                busController.StartBusSignal(buses.muxToOutput, _output.Input, true);
 
-                busController.StartBusSignal(busController.busSegments[0], 4, true);
-                busController.StartBusSignal(busController.busSegments[1], 2, true);
+                busController.StartBusSignal(buses.srcAToMux, 4, true);
+                busController.StartBusSignal(buses.srcBToMux, 2, true);
             }
-            
+
             _currentBus--;
         }
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
-
     }
+
+    #region CACHED UI REFERENCES
+
+    private InfoPanelUI _infoSrcARegister;
+    private InfoPanelUI _infoSrcBRegister;
+    private InfoPanelUI _infoOutputRegister;
+
+    #endregion
 }

@@ -1867,6 +1867,10 @@ MonoBehaviour:
   registerSrcAVisualizer: {fileID: 1319270238}
   registerSrcBVisualizer: {fileID: 373000919}
   registerOutputVisualizer: {fileID: 1397563056}
+  buses:
+    srcAToMux: {fileID: 1226422104}
+    srcBToMux: {fileID: 1719315176}
+    muxToOutput: {fileID: 785921907}
 --- !u!4 &1109257073
 Transform:
   m_ObjectHideFlags: 0
@@ -3283,7 +3287,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -3335,7 +3339,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
