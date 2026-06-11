@@ -1,8 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-
 
 public struct LevelFiveState
 {
@@ -24,48 +24,96 @@ public struct LevelFiveState
     public int ExtenderOperation;
 }
 
+[Serializable]
+public class LevelFiveBusSegments
+{
+    [Header("Fetch")] [Tooltip("PC -> Memory address")]
+    public LineRenderer pcToMemAddr;
+
+    [Tooltip("PC -> BTA adder input A")] public LineRenderer pcToBtaAdder;
+
+    [Tooltip("Constant 4 -> PC+4 adder input B")]
+    public LineRenderer constFourToAdder;
+
+    [Tooltip("Memory read data -> Instruction register")]
+    public LineRenderer memDataToInstrReg;
+
+    [Tooltip("PC+4 adder result -> SrcB register")]
+    public LineRenderer adderToSrcB;
+
+    [Header("Decode")] [Tooltip("Instruction register output -> Extend unit")]
+    public LineRenderer instrRegToExtend;
+
+    [Tooltip("Extend unit output -> downstream MUX/register")]
+    public LineRenderer extendToMux;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(pcToMemAddr);
+        c.RegisterSegment(pcToBtaAdder);
+        c.RegisterSegment(constFourToAdder);
+        c.RegisterSegment(memDataToInstrReg);
+        c.RegisterSegment(adderToSrcB);
+        c.RegisterSegment(instrRegToExtend);
+        c.RegisterSegment(extendToMux);
+    }
+}
+
 public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
 {
-    [FormerlySerializedAs("_registerSrcAVisualizer")]
-    [Header("Level 5 Specific Components")]
-    [SerializeField] private RegisterVisualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] private RegisterVisualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] private RegisterVisualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField] private InstructionDataMemoryVisualizer memoryVisualizer;
-    [FormerlySerializedAs("aluVisualizer")] [FormerlySerializedAs("_aluVizualizer")] [SerializeField] private AluVisualiser aluVisualizer;
-    [FormerlySerializedAs("extenderVizualizer")] [FormerlySerializedAs("_extenderVizualizer")] [SerializeField] private ExtenderVisualizer extenderVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [Header("Level 5 Specific Components")] [SerializeField]
+    private RegisterVisualizer registerSrcAVisualizer;
 
-    [FormerlySerializedAs("_blinkerNumber")] [SerializeField] private Blinker blinkerNumber;
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField]
+    private RegisterVisualizer registerSrcBVisualizer;
 
-    #region CACHED UI REFERENCES
-    private InfoPanelUI _infoSrcARegister;
-    private InfoPanelUI _infoSrcBRegister;
-    private InfoPanelUI _infoOutputRegister;
-    #endregion
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField]
+    private RegisterVisualizer registerOutputVisualizer;
+
+    [FormerlySerializedAs("_memoryVisualizer")] [SerializeField]
+    private InstructionDataMemoryVisualizer memoryVisualizer;
+
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField]
+    private AluVisualiser aluVisualizer;
+
+    [FormerlySerializedAs("extenderVizualizer")] [FormerlySerializedAs("_extenderVizualizer")] [SerializeField]
+    private ExtenderVisualizer extenderVisualizer;
+
+    [FormerlySerializedAs("_blinkerNumber")] [SerializeField]
+    private Blinker blinkerNumber;
+
+    [Header("Bus Segments")] [SerializeField]
+    private LevelFiveBusSegments buses;
+
+
+    private int _currentBus; // [0, 6]
+    private DataInstMemory _dataInstructionMemory;
+    private Register _output;
 
     // Intern components for computations
     private Register _srcA;
     private Register _srcB;
-    private Register _output;
-    private DataInstMemory _dataInstructionMemory;
 
     protected override int RightAnswerValue => 66;
 
-
-    private int _currentBus; // [0, 6]
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
         // Initialization of logical components
-        _srcA = new Register()
+        _srcA = new Register
         {
             WriteEnable = true
         };
-        _srcB = new Register()
+        _srcB = new Register
         {
             WriteEnable = true
         };
-        _output = new Register()
+        _output = new Register
         {
             WriteEnable = true
         };
@@ -75,41 +123,42 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
             MemoryWrite = true
         };
 
-        _dataInstructionMemory.LoadWord(0, 1048576239);                   // J-Typ (1000)
-        _dataInstructionMemory.LoadWord(4, 4314211);                      // B-Typ (16)
-        _dataInstructionMemory.LoadWord(8, 7603235);                      // S-Typ (8)
-        _dataInstructionMemory.LoadWord(12, 4301059);                     // I-Typ (4)
+        _dataInstructionMemory.LoadWord(0, 1048576239); // J-Typ (1000)
+        _dataInstructionMemory.LoadWord(4, 4314211); // B-Typ (16)
+        _dataInstructionMemory.LoadWord(8, 7603235); // S-Typ (8)
+        _dataInstructionMemory.LoadWord(12, 4301059); // I-Typ (4)
 
         // Caching of UI panels for visualizers
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        memoryVisualizer.UIRegisterPanel.Display($"{_dataInstructionMemory.Memory[0]}", $"{_dataInstructionMemory.Memory[4]}", $"{_dataInstructionMemory.Memory[8]}", $"{_dataInstructionMemory.Memory[12]}");
+        memoryVisualizer.UIRegisterPanel.Display($"{_dataInstructionMemory.Memory[0]}",
+            $"{_dataInstructionMemory.Memory[4]}", $"{_dataInstructionMemory.Memory[8]}",
+            $"{_dataInstructionMemory.Memory[12]}");
         UpdateVisualizers();
     }
 
-    protected override IEnumerator RunBusVisualizations() 
+    protected override IEnumerator RunBusVisualizations()
     {
         if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[4], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[5], 4);
+            busController.StartBusSignal(buses.pcToMemAddr, _srcA.Output);
+            busController.StartBusSignal(buses.pcToBtaAdder, _srcA.Output);
+            busController.StartBusSignal(buses.constFourToAdder, 4);
 
             if (_dataInstructionMemory.Memory.TryGetValue(_srcA.Output, out var value))
-            {
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], value, busController.busSegments[6], Alu.Calculate(_srcA.Output, 4, aluVisualizer.CurrentAluOperation)));
-            }
+                yield return StartCoroutine(DelayedSignals(buses.memDataToInstrReg, value, buses.adderToSrcB,
+                    Alu.Calculate(_srcA.Output, 4, aluVisualizer.CurrentAluOperation)));
             else
-            {
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], 0, busController.busSegments[6], Alu.Calculate(_srcA.Output, 4, aluVisualizer.CurrentAluOperation)));
-            }
+                yield return StartCoroutine(DelayedSignals(buses.memDataToInstrReg, 0, buses.adderToSrcB,
+                    Alu.Calculate(_srcA.Output, 4, aluVisualizer.CurrentAluOperation)));
 
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[2], _srcB.Output));
+            yield return StartCoroutine(DelayedSignal(buses.instrRegToExtend, _srcB.Output));
 
 
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[3], Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_srcB.Output)));
+            yield return StartCoroutine(DelayedSignal(buses.extendToMux,
+                Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_srcB.Output)));
 
             _currentBus++;
         }
@@ -121,19 +170,20 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
     {
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[3], _output.Input, true);
+            busController.StartBusSignal(buses.extendToMux, _output.Input, true);
 
             if (TickStateValues[TickCounter] is var s)
             {
-                yield return StartCoroutine(DelayedSignal(busController.busSegments[2], s.RegisterInstrValue, true));
+                yield return StartCoroutine(DelayedSignal(buses.instrRegToExtend, s.RegisterInstrValue, true));
 
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[1], _srcB.Input, busController.busSegments[6], _srcA.Input, true, true));
+                yield return StartCoroutine(DelayedSignals(buses.memDataToInstrReg, _srcB.Input, buses.adderToSrcB,
+                    _srcA.Input, true, true));
 
                 yield return new WaitUntil(() => busController.NoActiveSignals);
 
-                busController.StartBusSignal(busController.busSegments[0], _srcA.Output, true);
-                busController.StartBusSignal(busController.busSegments[4], _srcA.Output, true);
-                busController.StartBusSignal(busController.busSegments[5], 4, true);
+                busController.StartBusSignal(buses.pcToMemAddr, _srcA.Output, true);
+                busController.StartBusSignal(buses.pcToBtaAdder, _srcA.Output, true);
+                busController.StartBusSignal(buses.constFourToAdder, 4, true);
             }
 
             _currentBus--;
@@ -142,8 +192,8 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
 
-    protected override void HandleClockUpdate() {
-        
+    protected override void HandleClockUpdate()
+    {
         // synchronize visualizers and concrete objects
         _srcA.WriteEnable = registerSrcAVisualizer.isWriteEnabled;
         _srcB.WriteEnable = registerSrcBVisualizer.isWriteEnabled;
@@ -180,14 +230,14 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         _dataInstructionMemory.PreClockUpdate();
 
 
-        
         _srcA.Clock();
         _srcB.Clock();
         _output.Clock();
         _dataInstructionMemory.Clock();
     }
 
-    protected override LevelFiveState GetCurrentState() {
+    protected override LevelFiveState GetCurrentState()
+    {
         return new LevelFiveState
         {
             RegisterPCValue = _srcA.Output,
@@ -206,8 +256,8 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
 
             AluOperation = aluVisualizer.CurrentAluOperation,
 
-            ExtenderOperation = extenderVisualizer.CurrentAluOperation,
-};
+            ExtenderOperation = extenderVisualizer.CurrentAluOperation
+        };
     }
 
     protected override void ApplyState(LevelFiveState s)
@@ -244,11 +294,10 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         memoryVisualizer.TriggerBlink();
         blinkerNumber.Trigger();
     }
-    
+
     protected override bool CheckWinCondition()
     {
-        if (TickStateValues == null) 
-        { return false; }
+        if (TickStateValues == null) return false;
 
         var val1 = (uint)TickStateValues[2].RegisterOutputValue;
         var val2 = (uint)TickStateValues[3].RegisterOutputValue;
@@ -270,13 +319,21 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);
         registerOutputVisualizer.ForceUpdateWriteEnableVisualization(_output.WriteEnable);
 
-        
+
         memoryVisualizer.UIRegisterPanel.Display(
             RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[0]),
             RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[4]),
             RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[8]),
             RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[12])
         );
-        memoryVisualizer.ForceUpdateWriteEnableVisualization (_dataInstructionMemory.MemoryWrite);
+        memoryVisualizer.ForceUpdateWriteEnableVisualization(_dataInstructionMemory.MemoryWrite);
     }
+
+    #region CACHED UI REFERENCES
+
+    private InfoPanelUI _infoSrcARegister;
+    private InfoPanelUI _infoSrcBRegister;
+    private InfoPanelUI _infoOutputRegister;
+
+    #endregion
 }
