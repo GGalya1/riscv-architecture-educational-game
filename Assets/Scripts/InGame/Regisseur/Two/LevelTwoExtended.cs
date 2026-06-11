@@ -13,6 +13,24 @@ public struct LevelTwoExtendedState
     public int AluOperation;
 }
 
+[System.Serializable]
+public class LevelTwoExtendedBusSegments
+{
+    [Tooltip("SrcA register -> ALU input A")]
+    public LineRenderer srcAToAlu;
+    [Tooltip("SrcB register → ALU input B")]
+    public LineRenderer srcBToAlu;
+    [Tooltip("ALU result → Output register")]
+    public LineRenderer aluToOutput;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(srcAToAlu);
+        c.RegisterSegment(srcBToAlu);
+        c.RegisterSegment(aluToOutput);
+    }
+}
+
 public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
 {
     [FormerlySerializedAs("_aluVizualizer")]
@@ -36,7 +54,16 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
     private Register _output;
 
     private int _currentBus; // [0, 1]
+    
+    [Header("Bus Segments")] [SerializeField]
+    private LevelTwoExtendedBusSegments buses;
 
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
+    
     protected override void OnLevelStart()
     {
         _srcA = new Register(srcAValue)
@@ -121,12 +148,12 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
     {
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[2], _output.Input, true);
+            busController.StartBusSignal(buses.aluToOutput, _output.Input, true);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output, true);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output, true);
+            busController.StartBusSignal(buses.srcAToAlu, _srcA.Output, true);
+            busController.StartBusSignal(buses.srcBToAlu, _srcB.Output, true);
 
             _currentBus--;
         }
@@ -137,12 +164,12 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
     {
         if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
+            busController.StartBusSignal(buses.srcAToAlu, _srcA.Output);
+            busController.StartBusSignal(buses.srcBToAlu, _srcB.Output);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[2], Alu.Calculate(_srcA.Output, _srcB.Output, aluVisualizer.CurrentAluOperation));
+            busController.StartBusSignal(buses.aluToOutput, Alu.Calculate(_srcA.Output, _srcB.Output, aluVisualizer.CurrentAluOperation));
 
             _currentBus++;
         }

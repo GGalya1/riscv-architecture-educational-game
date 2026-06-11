@@ -1112,6 +1112,10 @@ MonoBehaviour:
   registerOutputVisualizer: {fileID: 1806081793}
   srcAValue: 7
   srcBValue: 7
+  buses:
+    srcAToAlu: {fileID: 1226422104}
+    srcBToAlu: {fileID: 1052664004}
+    aluToOutput: {fileID: 1719315176}
 --- !u!1001 &1170121049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2414,7 +2418,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -2466,7 +2470,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1

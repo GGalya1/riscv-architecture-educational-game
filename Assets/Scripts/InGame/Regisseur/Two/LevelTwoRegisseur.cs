@@ -9,6 +9,24 @@ public struct LevelTwoState
     public int AluOperation;
 }
 
+[System.Serializable]
+public class LevelTwoBusSegments
+{
+    [Tooltip("PC register output -> ALU input A")]
+    public LineRenderer pcToAdder;
+    [Tooltip("Constant 4 -> ALU input B")]
+    public LineRenderer constFourToAdder;
+    [Tooltip("ALU/adder result -> PC register input")]
+    public LineRenderer adderToPC;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(pcToAdder);
+        c.RegisterSegment(constFourToAdder);
+        c.RegisterSegment(adderToPC);
+    }
+}
+
 public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
 {
     [FormerlySerializedAs("_aluVizualizer")]
@@ -26,6 +44,15 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
     protected override int RightAnswerValue => 8;
 
     private int _currentBus; // [0, 1]
+    
+    [Header("Bus Segments")] [SerializeField]
+    private LevelTwoBusSegments buses;
+    
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -91,11 +118,11 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
     {
         if (_currentBus is >= 0 and < 5)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], 4);
+            busController.StartBusSignal(buses.pcToAdder, _srcA.Output);
+            busController.StartBusSignal(buses.constFourToAdder, 4);
 
             yield return StartCoroutine(DelayedSignal(
-                busController.busSegments[2],
+                buses.adderToPC,
                 Alu.Calculate(_srcA.Output, 4, aluVisualizer.CurrentAluOperation)
             ));
 
@@ -109,11 +136,11 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
         if (_currentBus is >= 1 and <= 5)
         {
 
-            busController.StartBusSignal(busController.busSegments[2], _srcA.Input, true);
+            busController.StartBusSignal(buses.adderToPC, _srcA.Input, true);
 
             yield return StartCoroutine(DelayedSignals(
-                busController.busSegments[0], TickStateValues[TickCounter].RegisterAValue ,
-                busController.busSegments[1], 4, true, true
+                buses.pcToAdder, TickStateValues[TickCounter].RegisterAValue ,
+                buses.constFourToAdder, 4, true, true
             ));
             
             _currentBus--;
