@@ -2298,10 +2298,18 @@ MonoBehaviour:
   registerSrcAVisualizer: {fileID: 1846687519}
   registerSrcBVisualizer: {fileID: 970035351}
   registerOutputVisualizer: {fileID: 1107274110}
-  aluVizualizer: {fileID: 1705709730}
+  aluVisualizer: {fileID: 1705709730}
   srcAValue: 5
   srcBValue: 7
   numberBlinker: {fileID: 1425758661}
+  buses:
+    pcToMemAddr: {fileID: 203119610}
+    pcToAdrMux: {fileID: 917754483}
+    memDataToSrcB: {fileID: 1215245610}
+    srcBToExt: {fileID: 934957545}
+    muxToAdder: {fileID: 1226422104}
+    constFourToAdder: {fileID: 1719315176}
+    adderToSrcA: {fileID: 785921907}
 --- !u!4 &1205019386 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3df2c57622a56cb429def358f054ea57, type: 3}
@@ -3441,7 +3449,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -3493,7 +3501,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1

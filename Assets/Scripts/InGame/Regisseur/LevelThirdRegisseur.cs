@@ -21,6 +21,41 @@ public struct LevelThreeState
     public int AluOperation;
 }
 
+[System.Serializable]
+public class LevelThirdBusSegments
+{
+    [Header("PC fanout")]
+    [Tooltip("PC (SrcA) -> Memory address input")]
+    public LineRenderer pcToMemAddr;
+    [Tooltip("PC (SrcA) -> ADR MUX / BTA path")]
+    public LineRenderer pcToAdrMux;
+
+    [Header("Memory")]
+    [Tooltip("Memory read data -> SrcB register")]
+    public LineRenderer memDataToSrcB;
+    [Tooltip("SrcB register output (instruction) -> downstream")]
+    public LineRenderer srcBToExt;
+
+    [Header("PC+4 adder")]
+    [Tooltip("MUX-selected value -> PC+4 adder input A")]
+    public LineRenderer muxToAdder;
+    [Tooltip("Constant 4 -> PC+4 adder input B")]
+    public LineRenderer constFourToAdder;
+    [Tooltip("PC+4 adder result -> SrcA register input")]
+    public LineRenderer adderToSrcA;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(pcToMemAddr);
+        c.RegisterSegment(pcToAdrMux);
+        c.RegisterSegment(memDataToSrcB);
+        c.RegisterSegment(srcBToExt);
+        c.RegisterSegment(muxToAdder);
+        c.RegisterSegment(constFourToAdder);
+        c.RegisterSegment(adderToSrcA);
+    }
+}
+
 public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 {
     [FormerlySerializedAs("_multiplexerVisualizer")]
@@ -51,6 +86,15 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 
    
     protected int CurrentBus; // [0, 5]
+    
+    [Header("Bus Segments")]
+    [SerializeField] protected LevelThirdBusSegments buses;
+    
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -184,7 +228,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
     {
         if (CurrentBus >= 1 && CurrentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[5], SrcA.Input, true);
+            busController.StartBusSignal(buses.adderToSrcA, SrcA.Input, true);
 
 
                 var upperBusSignal = 0;
@@ -194,15 +238,15 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
                 else if (multiplexerVisualizer.CurrentChosenMuxPath == 1) {
                     upperBusSignal = TickStateValues[TickCounter].RegisterInstrValue;
                 }
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], upperBusSignal, busController.busSegments[4], 4, true, true));
+                yield return StartCoroutine(DelayedSignals(buses.adderToSrcA, upperBusSignal, buses.constFourToAdder, 4, true, true));
 
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[6], TickStateValues[TickCounter].RegisterPCValue, busController.busSegments[2], TickStateValues[TickCounter].RegisterInstrValue, true, true));
+                yield return StartCoroutine(DelayedSignals(buses.pcToAdrMux, TickStateValues[TickCounter].RegisterPCValue, buses.srcBToExt, TickStateValues[TickCounter].RegisterInstrValue, true, true));
             
 
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[1], SrcB.Input, true));
+            yield return StartCoroutine(DelayedSignal(buses.memDataToSrcB, SrcB.Input, true));
 
 
-                yield return StartCoroutine(DelayedSignal(busController.busSegments[0], TickStateValues[TickCounter].RegisterPCValue, true));
+                yield return StartCoroutine(DelayedSignal(buses.pcToMemAddr, TickStateValues[TickCounter].RegisterPCValue, true));
             
             
 
@@ -216,26 +260,26 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
     {
         if (CurrentBus >= 0 && CurrentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], SrcA.Output);
-            busController.StartBusSignal(busController.busSegments[6], SrcA.Output);
+            busController.StartBusSignal(buses.pcToMemAddr, SrcA.Output);
+            busController.StartBusSignal(buses.pcToAdrMux, SrcA.Output);
 
             // should be by a short divisor
             if (DataInstructionMemory.Memory.TryGetValue(SrcA.Output, out var value))
             {
-                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], value));
+                yield return StartCoroutine(DelayedSignal(buses.memDataToSrcB, value));
             }
             else {
-                yield return StartCoroutine(DelayedSignal(busController.busSegments[1], 0));
+                yield return StartCoroutine(DelayedSignal(buses.memDataToSrcB, 0));
             }
 
 
             // should follow the first one with a short division
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[2], SrcB.Output));
+            yield return StartCoroutine(DelayedSignal(buses.srcBToExt, SrcB.Output));
 
             var propagationVal = 0;
             if (multiplexerVisualizer.CurrentChosenMuxPath == -1)
             {
-                yield return StartCoroutine(DelayedSignal(busController.busSegments[4], 0));
+                yield return StartCoroutine(DelayedSignal(buses.constFourToAdder, 0));
             }
             else {
                 
@@ -252,12 +296,12 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
                     Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
                 }
 
-                yield return StartCoroutine(DelayedSignals(busController.busSegments[3], propagationVal, busController.busSegments[4], 4));
+                yield return StartCoroutine(DelayedSignals(buses.muxToAdder, propagationVal, buses.constFourToAdder, 4));
             }
 
 
             // from ALU to first register
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[5], Alu.Calculate(propagationVal, 4, aluVisualizer.CurrentAluOperation)));
+            yield return StartCoroutine(DelayedSignal(buses.adderToSrcA, Alu.Calculate(propagationVal, 4, aluVisualizer.CurrentAluOperation)));
 
             CurrentBus++;
         }
