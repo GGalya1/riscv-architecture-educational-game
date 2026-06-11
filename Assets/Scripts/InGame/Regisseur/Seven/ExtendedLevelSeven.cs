@@ -19,6 +19,41 @@ public struct ExtendedSevenLevelState
     public int AluOperation;
 }
 
+[System.Serializable]
+public class ExtendedLevelSevenBusSegments
+{
+    [Header("Decode - addresses")]
+    [Tooltip("SrcA register (rs1 address) -> Register File A1")]
+    public LineRenderer srcAToRegFileA1;
+    [Tooltip("SrcB register (rs2 address) -> Register File A2")]
+    public LineRenderer srcBToRegFileA2;
+    [Tooltip("A3 register (rd/destination address) -> Register File A3")]
+    public LineRenderer a3ToRegFileA3;
+
+    [Header("Execute")]
+    [Tooltip("Register File RD1 -> ALU input A")]
+    public LineRenderer rd1ToAlu;
+    [Tooltip("Register File RD2 -> ALU input B")]
+    public LineRenderer rd2ToAlu;
+
+    [Header("Write Back")]
+    [Tooltip("ALU result -> WD3 register")]
+    public LineRenderer aluToWd3Reg;
+    [Tooltip("WD3 register -> Register File WD3")]
+    public LineRenderer wd3RegToRegFile;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(srcAToRegFileA1);
+        c.RegisterSegment(srcBToRegFileA2);
+        c.RegisterSegment(a3ToRegFileA3);
+        c.RegisterSegment(rd1ToAlu);
+        c.RegisterSegment(rd2ToAlu);
+        c.RegisterSegment(aluToWd3Reg);
+        c.RegisterSegment(wd3RegToRegFile);
+    }
+}
+
 public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
@@ -49,6 +84,15 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 
 
     private int _currentBus; // [0, 10]
+    
+    [Header("Bus Segments")]
+    [SerializeField] private ExtendedLevelSevenBusSegments buses;
+    
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -187,11 +231,11 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
     {
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[6], _wd3.Input, true);
+            busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Input, true);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[5], _wd3.Input, true);
+            busController.StartBusSignal(buses.aluToWd3Reg, _wd3.Input, true);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -203,14 +247,14 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
             if (_srcB.Output > 0 & _srcB.Output < 16)
                 b = _registerFile.Registers[_srcB.Output];
 
-            busController.StartBusSignal(busController.busSegments[3], a, true);
-            busController.StartBusSignal(busController.busSegments[4], b, true);
+            busController.StartBusSignal(buses.rd1ToAlu, a, true);
+            busController.StartBusSignal(buses.rd2ToAlu, b, true);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output, true);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output, true);
-            busController.StartBusSignal(busController.busSegments[2], _a3.Output, true);
+            busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output, true);
+            busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output, true);
+            busController.StartBusSignal(buses.a3ToRegFileA3, _a3.Output, true);
 
             _currentBus--;
         }
@@ -222,9 +266,9 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
     {
         if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
-            busController.StartBusSignal(busController.busSegments[2], _a3.Output);
+            busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output);
+            busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output);
+            busController.StartBusSignal(buses.a3ToRegFileA3, _a3.Output);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
@@ -237,16 +281,16 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
                 b = _registerFile.Registers[_srcB.Output];
             
 
-            busController.StartBusSignal(busController.busSegments[3], a);
-            busController.StartBusSignal(busController.busSegments[4], b);
+            busController.StartBusSignal(buses.rd1ToAlu, a);
+            busController.StartBusSignal(buses.rd2ToAlu, b);
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[5], Alu.Calculate(a, b, aluVisualizer.CurrentAluOperation));
+            busController.StartBusSignal(buses.aluToWd3Reg, Alu.Calculate(a, b, aluVisualizer.CurrentAluOperation));
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[6], _wd3.Output);
+            busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Output);
 
             _currentBus++;
         }

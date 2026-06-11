@@ -23,6 +23,47 @@ public struct SubExtendedSevenLevelState
     public int MuxPath;
 }
 
+[System.Serializable]
+public class SubExtendedBusSegments
+{
+    [Header("Decode - addresses")]
+    [Tooltip("SrcA register (rs1 address) -> Register File A1")]
+    public LineRenderer srcAToRegFileA1;
+    [Tooltip("A3 register (rd/destination address) -> Register File A3")]
+    public LineRenderer a3ToRegFileA3;
+    [Tooltip("ImmValue register -> Extend unit")]
+    public LineRenderer immToExtend;
+
+    [Header("Execute")]
+    [Tooltip("Register File RD1 -> ALU input A (SrcA)")]
+    public LineRenderer rd1ToAlu;
+    [Tooltip("Constant 0 -> SrcB MUX input [0] (R-type path)")]
+    public LineRenderer zeroToSrcBMux;
+    [Tooltip("Extend unit output -> SrcB MUX input [1] (I-type path)")]
+    public LineRenderer extToSrcBMux;
+    [Tooltip("SrcB MUX output -> ALU input B")]
+    public LineRenderer srcBMuxToAlu;
+
+    [Header("Write Back")]
+    [Tooltip("ALU result -> WD3 register")]
+    public LineRenderer aluToWd3Reg;
+    [Tooltip("WD3 register -> Register File WD3")]
+    public LineRenderer wd3RegToRegFile;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(srcAToRegFileA1);
+        c.RegisterSegment(a3ToRegFileA3);
+        c.RegisterSegment(immToExtend);
+        c.RegisterSegment(rd1ToAlu);
+        c.RegisterSegment(zeroToSrcBMux);
+        c.RegisterSegment(extToSrcBMux);
+        c.RegisterSegment(srcBMuxToAlu);
+        c.RegisterSegment(aluToWd3Reg);
+        c.RegisterSegment(wd3RegToRegFile);
+    }
+}
+
 public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelState>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
@@ -53,6 +94,15 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
     private RegisterFile _registerFile;
 
     private int _currentBus;
+    
+    [Header("Bus Segments")]
+    [SerializeField] private SubExtendedBusSegments buses;
+    
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -203,26 +253,26 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
     {
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[8], _wd3.Input, true);
+            busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Input, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[7], _wd3.Input, true);
+            busController.StartBusSignal(buses.aluToWd3Reg, _wd3.Input, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
             var ext = Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_immValue.Output);
             var mux = EvaluateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
 
-            busController.StartBusSignal(busController.busSegments[3], _registerFile.Registers[_srcA.Output], true);
-            busController.StartBusSignal(busController.busSegments[6], mux, true);
+            busController.StartBusSignal(buses.rd1ToAlu, _registerFile.Registers[_srcA.Output], true);
+            busController.StartBusSignal(buses.srcBMuxToAlu, mux, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[4], 0, true);
-            busController.StartBusSignal(busController.busSegments[5], ext, true);
+            busController.StartBusSignal(buses.zeroToSrcBMux, 0, true);
+            busController.StartBusSignal(buses.extToSrcBMux, ext, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _a3.Output);
-            busController.StartBusSignal(busController.busSegments[2], _immValue.Output);
+            busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output);
+            busController.StartBusSignal(buses.a3ToRegFileA3, _a3.Output);
+            busController.StartBusSignal(buses.immToExtend, _immValue.Output);
 
             _currentBus--;
         }
@@ -234,9 +284,9 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
     {
         if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _a3.Output);
-            busController.StartBusSignal(busController.busSegments[2], _immValue.Output);
+            busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output);
+            busController.StartBusSignal(buses.a3ToRegFileA3, _a3.Output);
+            busController.StartBusSignal(buses.immToExtend, _immValue.Output);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
             var a = 0;
@@ -246,19 +296,19 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
             var ext = Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_immValue.Output);
             var mux = EvaluateMux(0, ext, -1, muxVisualizer.CurrentChosenMuxPath);
 
-            busController.StartBusSignal(busController.busSegments[4], 0);
-            busController.StartBusSignal(busController.busSegments[5], ext);
+            busController.StartBusSignal(buses.zeroToSrcBMux, 0);
+            busController.StartBusSignal(buses.extToSrcBMux, ext);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[3], a);
-            busController.StartBusSignal(busController.busSegments[6], mux);
+            busController.StartBusSignal(buses.rd1ToAlu, a);
+            busController.StartBusSignal(buses.srcBMuxToAlu, mux);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[7], Alu.Calculate(a, mux, aluVisualizer.CurrentAluOperation));
+            busController.StartBusSignal(buses.aluToWd3Reg, Alu.Calculate(a, mux, aluVisualizer.CurrentAluOperation));
 
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[8], _wd3.Output);
+            busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Output);
 
             _currentBus++;
         }

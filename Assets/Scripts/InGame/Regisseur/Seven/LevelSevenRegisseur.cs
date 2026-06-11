@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,33 +17,70 @@ public struct LevelSevenState
     public int AluOperation;
 }
 
+[Serializable]
+public class LevelSevenBusSegments
+{
+    [Tooltip("SrcA register (rs1 address) -> Register File A1")]
+    public LineRenderer srcAToRegFileA1;
+
+    [Tooltip("SrcB register (rs2 address) -> Register File A2")]
+    public LineRenderer srcBToRegFileA2;
+
+    [Tooltip("Register File RD1 -> ALU input A")]
+    public LineRenderer rd1ToAlu;
+
+    [Tooltip("Register File RD2 -> ALU input B")]
+    public LineRenderer rd2ToAlu;
+
+    [Tooltip("ALU result -> Output register")]
+    public LineRenderer aluToOutput;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(srcAToRegFileA1);
+        c.RegisterSegment(srcBToRegFileA2);
+        c.RegisterSegment(rd1ToAlu);
+        c.RegisterSegment(rd2ToAlu);
+        c.RegisterSegment(aluToOutput);
+    }
+}
+
 public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
 {
-    [FormerlySerializedAs("_registerSrcAVisualizer")]
-    [Header("Level 7 Specific Components")]
-    [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
-    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcBVisualizer;
-    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField] protected RegisterVisualizer registerOutputVisualizer;
-    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField] protected RegisterFileVisualizer registerFileVisualizer;
-    [FormerlySerializedAs("_aluVizualizer")] [SerializeField] protected AluVisualiser aluVisualizer;
+    [FormerlySerializedAs("_registerSrcAVisualizer")] [Header("Level 7 Specific Components")] [SerializeField]
+    protected RegisterVisualizer registerSrcAVisualizer;
 
-    #region CACHED UI REFERENCES
+    [FormerlySerializedAs("_registerSrcBVisualizer")] [SerializeField]
+    protected RegisterVisualizer registerSrcBVisualizer;
 
-    private InfoPanelUI _infoSrcARegister;
-    private InfoPanelUI _infoSrcBRegister;
-    private InfoPanelUI _infoOutputRegister;
-    #endregion
+    [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField]
+    protected RegisterVisualizer registerOutputVisualizer;
+
+    [FormerlySerializedAs("_registerFileVisualizer")] [SerializeField]
+    protected RegisterFileVisualizer registerFileVisualizer;
+
+    [FormerlySerializedAs("_aluVizualizer")] [SerializeField]
+    protected AluVisualiser aluVisualizer;
+
+    [Header("Bus Segments")] [SerializeField]
+    private LevelSevenBusSegments buses;
+
+
+    private int _currentBus; // [0, 2]
+    private Register _output;
+    private RegisterFile _registerFile;
 
     // Intern components for computations
     private Register _srcA;
     private Register _srcB;
-    private Register _output;
-    private RegisterFile _registerFile;
 
     protected override int RightAnswerValue => 42;
 
-
-    private int _currentBus; // [0, 2]
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
@@ -55,7 +93,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         {
             WriteEnable = true
         };
-        _output = new Register()
+        _output = new Register
         {
             WriteEnable = true
         };
@@ -64,17 +102,20 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         {
             RegisterWriteEnable = true
         };
-        _registerFile.InitializeRegisters(new [] { 0, 1, 39, 43, 5, 6, 2,
-                                                     40, 1, 39, 13, 56, 64, 20,
-                                                     50, 51, 0, 12, 53, 65, 29,
-                                                     60, 61, 0, 1, 54, 0, 28,
-                                                     70, 30, 31, 0});
+        _registerFile.InitializeRegisters(new[]
+        {
+            0, 1, 39, 43, 5, 6, 2,
+            40, 1, 39, 13, 56, 64, 20,
+            50, 51, 0, 12, 53, 65, 29,
+            60, 61, 0, 1, 54, 0, 28,
+            70, 30, 31, 0
+        });
 
         // Caching of UI panels for visualizers
         _infoSrcARegister = registerSrcAVisualizer.UIRegisterPanel;
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
-        
+
 
         UpdateVisualizers();
         UpdateRegisterFileVisualisation();
@@ -105,7 +146,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
 
     protected override bool CheckWinCondition()
     {
-        return (_output.Output == RightAnswerValue);
+        return _output.Output == RightAnswerValue;
     }
 
     protected override LevelSevenState GetCurrentState()
@@ -121,7 +162,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
             RegisterOutputWe = _output.WriteEnable,
             RegisterFileWe = _registerFile.RegisterWriteEnable,
 
-            AluOperation = aluVisualizer.CurrentAluOperation,
+            AluOperation = aluVisualizer.CurrentAluOperation
         };
     }
 
@@ -136,7 +177,8 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         // implementation
         _registerFile.ReadAdress1 = _srcA.Output;
         _registerFile.ReadAdress2 = _srcB.Output;
-        _output.Input = Alu.Calculate(_registerFile.ReadData1, _registerFile.ReadData2, aluVisualizer.CurrentAluOperation);
+        _output.Input = Alu.Calculate(_registerFile.ReadData1, _registerFile.ReadData2,
+            aluVisualizer.CurrentAluOperation);
 
         _srcA.PreClockUpdate();
         _srcB.PreClockUpdate();
@@ -155,18 +197,21 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
     {
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[4], _output.Input, true);
+            busController.StartBusSignal(buses.aluToOutput, _output.Input, true);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
 
-                busController.StartBusSignal(busController.busSegments[2], _registerFile.Registers[TickStateValues[TickCounter].RegisterAValue], true);
-                busController.StartBusSignal(busController.busSegments[3], _registerFile.Registers[TickStateValues[TickCounter].RegisterBValue], true);
-                yield return new WaitUntil(() => busController.NoActiveSignals);
+            busController.StartBusSignal(buses.rd1ToAlu,
+                _registerFile.Registers[TickStateValues[TickCounter].RegisterAValue], true);
+            busController.StartBusSignal(buses.rd2ToAlu,
+                _registerFile.Registers[TickStateValues[TickCounter].RegisterBValue], true);
+            yield return new WaitUntil(() => busController.NoActiveSignals);
 
-                busController.StartBusSignal(busController.busSegments[0], TickStateValues[TickCounter].RegisterAValue, true);
-                busController.StartBusSignal(busController.busSegments[1], TickStateValues[TickCounter].RegisterBValue, true);
-            
-            
+            busController.StartBusSignal(buses.srcAToRegFileA1, TickStateValues[TickCounter].RegisterAValue,
+                true);
+            busController.StartBusSignal(buses.srcBToRegFileA2, TickStateValues[TickCounter].RegisterBValue,
+                true);
+
 
             _currentBus--;
         }
@@ -178,15 +223,16 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
     {
         if (_currentBus >= 0 && _currentBus < maxTickNumber)
         {
-            busController.StartBusSignal(busController.busSegments[0], _srcA.Output);
-            busController.StartBusSignal(busController.busSegments[1], _srcB.Output);
+            busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output);
+            busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[2], _registerFile.ReadData1);
-            busController.StartBusSignal(busController.busSegments[3], _registerFile.ReadData2);
+            busController.StartBusSignal(buses.rd1ToAlu, _registerFile.ReadData1);
+            busController.StartBusSignal(buses.rd2ToAlu, _registerFile.ReadData2);
             yield return new WaitUntil(() => busController.NoActiveSignals);
 
-            busController.StartBusSignal(busController.busSegments[4], Alu.Calculate(_registerFile.ReadData1, _registerFile.ReadData2, aluVisualizer.CurrentAluOperation));
+            busController.StartBusSignal(buses.aluToOutput,
+                Alu.Calculate(_registerFile.ReadData1, _registerFile.ReadData2, aluVisualizer.CurrentAluOperation));
 
             _currentBus++;
         }
@@ -206,7 +252,16 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         registerFileVisualizer.ForceUpdateWriteEnableVisualization(_registerFile.RegisterWriteEnable);
     }
 
-    private void UpdateRegisterFileVisualisation() {
+    private void UpdateRegisterFileVisualisation()
+    {
         registerFileVisualizer.UIRegisterPanel.Display(_registerFile.Registers);
     }
+
+    #region CACHED UI REFERENCES
+
+    private InfoPanelUI _infoSrcARegister;
+    private InfoPanelUI _infoSrcBRegister;
+    private InfoPanelUI _infoOutputRegister;
+
+    #endregion
 }
