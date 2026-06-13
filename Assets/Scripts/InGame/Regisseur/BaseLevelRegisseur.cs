@@ -62,6 +62,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     [Header("Bus Visualisation")]
     [SerializeField] protected BusController busController;
     [FormerlySerializedAs("_isProcessing")] public bool isProcessing;
+    
+    // --- SIGNAL ANIMATION
+    protected WaitUntil WaitNoSignals;
 
 
     #region ABSTRACT METHODS (Unique to each level)

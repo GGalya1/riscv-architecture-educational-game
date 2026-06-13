@@ -205,6 +205,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
     protected override void OnLevelStart()
     {
@@ -483,7 +484,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     #region vizualization helpers
@@ -518,7 +519,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         
         yield return StartCoroutine(DelayedSignal(buses.resultMuxToPC, output));
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     private IEnumerator RunDecodeVisualisation()
     {
@@ -538,34 +539,34 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         }
         yield return StartCoroutine(DelayedSignals(buses.rd1ToSrcAMux, srcAValue, buses.rd2ToSrcBMux, srcBValue));
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     private IEnumerator RunExecutionVisualisation() { // das noch korrigieren
         busController.StartBusSignal(buses.srcAMuxToSrcAReg, _srcA.Output);
         busController.StartBusSignal(buses.extToSrcBMux, Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output));
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.srcAMuxToAlu, CalculateSrcAMux());
         busController.StartBusSignal(buses.srcBMuxToAlu, CalculateSrcBMux());
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
         busController.StartBusSignal(buses.aluCombToAluOutReg, CalculateAlu());
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     private IEnumerator RunWriteBackVisualisation() { // das noch korrigieren
         busController.StartBusSignal(buses.aluOutToResultMux, _aluOutReg.Output);
         busController.StartBusSignal(buses.aluOutToDataMem, _aluOutReg.Output);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         var res = CalculateResultMux();
         busController.StartBusSignal(buses.resultMuxToPC, res);
         busController.StartBusSignal(buses.resultMuxToRegFile, res);
         busController.StartBusSignal(buses.resultMuxFanOut, res);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     
     private int CalculateSrcAMux() { 
@@ -613,7 +614,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         busController.StartBusSignal(buses.pcToOldPcReg, _oldPC.Input, true);
         busController.StartBusSignal(buses.pcToPcAdder, _oldPC.Input, true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     private IEnumerator ReverseDecodeVisualisation()
     {
@@ -624,23 +625,23 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         // _busController.StartBusSignal(_busController.busSegments[2], instructionReg.Output);
         busController.StartBusSignal(buses.instrToExtend, _instructionReg.Output, true);
         
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     } 
     private IEnumerator ReverseExecutionVisualisation() // das noch korrigieren
     {
         busController.StartBusSignal(buses.aluCombToAluOutReg, CalculateAlu(), true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.srcAMuxToSrcAReg, _srcA.Output, true);
         busController.StartBusSignal(buses.extToSrcBMux, Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output), true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.srcAMuxToAlu, CalculateSrcAMux(), true);
         busController.StartBusSignal(buses.srcBMuxToAlu, CalculateSrcBMux(), true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     private IEnumerator ReverseWriteBackVisualisation() // das noch korrigieren
     {
@@ -649,12 +650,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         busController.StartBusSignal(buses.resultMuxToRegFile, res, true);
         busController.StartBusSignal(buses.resultMuxFanOut, res, true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.aluOutToResultMux, _aluOutReg.Output, true);
         busController.StartBusSignal(buses.aluOutToDataMem, _aluOutReg.Output, true);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     #endregion
 
@@ -673,7 +674,7 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

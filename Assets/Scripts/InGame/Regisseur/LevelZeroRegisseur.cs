@@ -63,6 +63,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -174,7 +175,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
         else if (_currentBus == 1) busController.StartBusSignal(buses.srcBToOutput, _srcB.Output);
 
         _currentBus++;
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -184,7 +185,7 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
         else if (_currentBus == 1) busController.StartBusSignal(buses.srcAToSrcB, _srcB.Input, true);
 
         _currentBus--;
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     #region CACHED UI REFERENCES

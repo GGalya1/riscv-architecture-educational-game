@@ -62,6 +62,7 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
     
     protected override void OnLevelStart()
@@ -150,14 +151,15 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
         {
             busController.StartBusSignal(buses.aluToOutput, _output.Input, true);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.srcAToAlu, _srcA.Output, true);
             busController.StartBusSignal(buses.srcBToAlu, _srcB.Output, true);
 
             _currentBus--;
         }
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -167,13 +169,14 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
             busController.StartBusSignal(buses.srcAToAlu, _srcA.Output);
             busController.StartBusSignal(buses.srcBToAlu, _srcB.Output);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.aluToOutput, Alu.Calculate(_srcA.Output, _srcB.Output, aluVisualizer.CurrentAluOperation));
 
             _currentBus++;
         }
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

@@ -52,6 +52,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -128,7 +129,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
 
             _currentBus++;
         }
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -145,7 +146,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
             
             _currentBus--;
         }
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
     #endregion
 }

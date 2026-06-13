@@ -92,6 +92,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -233,11 +234,11 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
         {
             busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Input, true);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.aluToWd3Reg, _wd3.Input, true);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             var a = 0;
             var b = 0;
@@ -250,7 +251,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
             busController.StartBusSignal(buses.rd1ToAlu, a, true);
             busController.StartBusSignal(buses.rd2ToAlu, b, true);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output, true);
             busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output, true);
@@ -259,7 +260,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -270,7 +271,7 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
             busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output);
             busController.StartBusSignal(buses.a3ToRegFileA3, _a3.Output);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             var a = 0;
             var b = 0;
@@ -284,18 +285,18 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
             busController.StartBusSignal(buses.rd1ToAlu, a);
             busController.StartBusSignal(buses.rd2ToAlu, b);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.aluToWd3Reg, Alu.Calculate(a, b, aluVisualizer.CurrentAluOperation));
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.wd3RegToRegFile, _wd3.Output);
 
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

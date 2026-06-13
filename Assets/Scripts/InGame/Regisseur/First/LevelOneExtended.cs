@@ -99,6 +99,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
         {
             base.Start();
             buses.RegisterAll(busController);
+            WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
         }
 
     protected override void OnLevelStart()
@@ -166,12 +167,12 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             var down = EvaluateMux(downMuxVisualizer.CurrentChosenMuxPath, left, -8, -12);
 
             busController.StartBusSignal(buses.outputMuxToRegister, _output.Input, true);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.upperMuxToOutputMux, up, true);
             busController.StartBusSignal(buses.downMuxToOutputMux, down, true);
             busController.StartBusSignal(buses.constGToOutputMux, 4, true);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.middleMuxToDownMux, left, true);
             busController.StartBusSignal(buses.constCToDownMux, -8, true);
@@ -179,7 +180,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 
             busController.StartBusSignal(buses.constEToUpperMux, -4, true);
             busController.StartBusSignal(buses.constFToUpperMux, 0, true);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.constAToMiddleMux, 8, true);
             busController.StartBusSignal(buses.constBToMiddleMux, 12, true);
@@ -187,7 +188,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -202,7 +203,7 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             busController.StartBusSignal(buses.constAToMiddleMux, 8);
             busController.StartBusSignal(buses.constBToMiddleMux, 12);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.middleMuxToDownMux, left);
             busController.StartBusSignal(buses.constCToDownMux, -8);
@@ -211,20 +212,20 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
             busController.StartBusSignal(buses.constEToUpperMux, -4);
             busController.StartBusSignal(buses.constFToUpperMux, 0);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.upperMuxToOutputMux, up);
             busController.StartBusSignal(buses.downMuxToOutputMux, down);
             busController.StartBusSignal(buses.constGToOutputMux, 4);
 
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.outputMuxToRegister, output);
 
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

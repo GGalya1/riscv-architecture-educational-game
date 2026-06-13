@@ -100,6 +100,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -163,7 +164,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -179,7 +180,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
                 yield return StartCoroutine(DelayedSignals(buses.memDataToInstrReg, _srcB.Input, buses.adderToSrcB,
                     _srcA.Input, true, true));
 
-                yield return new WaitUntil(() => busController.NoActiveSignals);
+                yield return WaitNoSignals;
 
                 busController.StartBusSignal(buses.pcToMemAddr, _srcA.Output, true);
                 busController.StartBusSignal(buses.pcToBtaAdder, _srcA.Output, true);
@@ -189,7 +190,7 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void HandleClockUpdate()

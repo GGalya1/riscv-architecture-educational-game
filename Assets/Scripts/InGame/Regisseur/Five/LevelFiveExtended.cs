@@ -59,6 +59,7 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -134,7 +135,7 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
     {
         busController.StartBusSignal(buses.srcAToExtend, _srcA.Output, true);
         busController.StartBusSignal(buses.extendToOutput, _output.Input, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -142,7 +143,7 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
         busController.StartBusSignal(buses.srcAToExtend, _srcA.Output);
         busController.StartBusSignal(buses.extendToOutput, _output.Output);
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

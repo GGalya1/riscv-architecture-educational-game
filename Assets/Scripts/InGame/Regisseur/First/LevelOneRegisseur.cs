@@ -66,6 +66,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -185,7 +186,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
 
             if (multiplexerVisualizer.CurrentChosenMuxPath != -1)
             {
-                yield return new WaitUntil(() => busController.NoActiveSignals);
+                yield return WaitNoSignals;
 
                 // sending the third signal
                 var propagationVal = multiplexerVisualizer.CurrentChosenMuxPath switch
@@ -201,7 +202,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         //_busController.ResetFastForward();
     }
@@ -226,7 +227,7 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     #region CACHED UI REFERENCES

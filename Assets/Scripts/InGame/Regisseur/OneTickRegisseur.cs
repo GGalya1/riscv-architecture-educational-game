@@ -205,6 +205,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -378,14 +379,14 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
         busController.StartBusSignal(buses.pcToInstrMem, _pc.Output);
         busController.StartBusSignal(buses.pcToPCPlus4, _pc.Output);
         busController.StartBusSignal(buses.pcToBta, _pc.Output);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // ID: instruction fans out to register file and extend
         busController.StartBusSignal(buses.instrToA1, sig.Rs1);
         busController.StartBusSignal(buses.instrToA2, sig.Rs2);
         busController.StartBusSignal(buses.instrToA3, sig.Rd);
         busController.StartBusSignal(buses.instrToExtend, sig.Instr);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // EX part 1: register file and extend outputs
         busController.StartBusSignal(buses.rd1ToAluSrcA, sig.Rd1);
@@ -393,26 +394,26 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
         busController.StartBusSignal(buses.rd2ToDataMemWd, sig.Rd2);
         busController.StartBusSignal(buses.immExtToSrcBMux, sig.ImmExt);
         busController.StartBusSignal(buses.immExtToBta, sig.ImmExt);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // EX part 2: mux/adder outputs
         busController.StartBusSignal(buses.srcBMuxToAlu, sig.SrcB);
         busController.StartBusSignal(buses.pcPlus4ToPcMux, sig.PcPlus4);
         busController.StartBusSignal(buses.btaToPcMux, sig.Bta);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // MEM: ALU result drives data memory
         busController.StartBusSignal(buses.aluResToDataMemAddr, sig.AluResult);
         busController.StartBusSignal(buses.aluResToResultMux, sig.AluResult);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.readDataToResultMux, sig.ReadData);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // WB: results flow back to register file and PC
         busController.StartBusSignal(buses.resultToRegFileWd3, sig.Result);
         busController.StartBusSignal(buses.pcNextToPc, sig.PcNext);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -439,21 +440,21 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
         // WB reversed
         busController.StartBusSignal(buses.pcNextToPc, sig.PcNext, true);
         busController.StartBusSignal(buses.resultToRegFileWd3, sig.Result, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // MEM reversed
         busController.StartBusSignal(buses.readDataToResultMux, sig.ReadData, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         busController.StartBusSignal(buses.aluResToDataMemAddr, sig.AluResult, true);
         busController.StartBusSignal(buses.aluResToResultMux, sig.AluResult, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // EX part 2 reversed
         busController.StartBusSignal(buses.srcBMuxToAlu, sig.SrcB, true);
         busController.StartBusSignal(buses.pcPlus4ToPcMux, sig.PcPlus4, true);
         busController.StartBusSignal(buses.btaToPcMux, sig.Bta, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // EX part 1 reversed
         busController.StartBusSignal(buses.rd1ToAluSrcA, sig.Rd1, true);
@@ -461,20 +462,20 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
         busController.StartBusSignal(buses.rd2ToDataMemWd, sig.Rd2, true);
         busController.StartBusSignal(buses.immExtToSrcBMux, sig.ImmExt, true);
         busController.StartBusSignal(buses.immExtToBta, sig.ImmExt, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // ID reversed
         busController.StartBusSignal(buses.instrToA1, sig.Rs1, true);
         busController.StartBusSignal(buses.instrToA2, sig.Rs2, true);
         busController.StartBusSignal(buses.instrToA3, sig.Rd, true);
         busController.StartBusSignal(buses.instrToExtend, sig.Instr, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
 
         // IF reversed
         busController.StartBusSignal(buses.pcToInstrMem, s.RegisterPCValue, true);
         busController.StartBusSignal(buses.pcToPCPlus4, s.RegisterPCValue, true);
         busController.StartBusSignal(buses.pcToBta, s.RegisterPCValue, true);
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override bool CheckWinCondition()

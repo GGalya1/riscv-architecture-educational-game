@@ -80,6 +80,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -198,14 +199,14 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         if (_currentBus >= 1 && _currentBus <= maxTickNumber)
         {
             busController.StartBusSignal(buses.aluToOutput, _output.Input, true);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
 
             busController.StartBusSignal(buses.rd1ToAlu,
                 _registerFile.Registers[TickStateValues[TickCounter].RegisterAValue], true);
             busController.StartBusSignal(buses.rd2ToAlu,
                 _registerFile.Registers[TickStateValues[TickCounter].RegisterBValue], true);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.srcAToRegFileA1, TickStateValues[TickCounter].RegisterAValue,
                 true);
@@ -216,7 +217,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -225,11 +226,11 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
         {
             busController.StartBusSignal(buses.srcAToRegFileA1, _srcA.Output);
             busController.StartBusSignal(buses.srcBToRegFileA2, _srcB.Output);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.rd1ToAlu, _registerFile.ReadData1);
             busController.StartBusSignal(buses.rd2ToAlu, _registerFile.ReadData2);
-            yield return new WaitUntil(() => busController.NoActiveSignals);
+            yield return WaitNoSignals;
 
             busController.StartBusSignal(buses.aluToOutput,
                 Alu.Calculate(_registerFile.ReadData1, _registerFile.ReadData2, aluVisualizer.CurrentAluOperation));
@@ -237,7 +238,7 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

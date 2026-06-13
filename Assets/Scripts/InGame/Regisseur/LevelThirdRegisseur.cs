@@ -100,6 +100,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
     {
         base.Start();
         buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -256,7 +257,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
             _currentBus--;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator RunBusVisualizations()
@@ -302,7 +303,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
             _currentBus++;
         }
 
-        yield return new WaitUntil(() => busController.NoActiveSignals);
+        yield return WaitNoSignals;
     }
 
     protected override void UpdateVisualizers()

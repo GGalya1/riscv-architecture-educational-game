@@ -67,13 +67,12 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
 
     private Register _srcA;
     private Register _srcB;
-    private WaitUntil _waitNoSignals;
 
     protected override void Start()
     {
         base.Start();
         buses.RegisterAll(busController);
-        _waitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected override void OnLevelStart()
@@ -197,7 +196,7 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
             _currentBus++;
         }
 
-        yield return _waitNoSignals;
+        yield return WaitNoSignals;
     }
 
     protected override IEnumerator ReverseBusVisualizations()
@@ -230,7 +229,7 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
             _currentBus--;
         }
 
-        yield return _waitNoSignals;
+        yield return WaitNoSignals;
     }
 
     protected override LevelThreeState GetCurrentState()
