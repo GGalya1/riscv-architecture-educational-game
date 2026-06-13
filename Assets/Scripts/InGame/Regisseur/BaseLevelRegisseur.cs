@@ -186,13 +186,13 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     {
         if (CheckWinCondition())
         {
-            Debug.Log("Level is solved!");
+            CustomLog.LogEditor("Level is solved!");
             var nextLevelToUnlockIndex = SceneManager.GetActiveScene().buildIndex + 1;
             var highestUnlockedIndex = PlayerPrefs.GetInt(GameConstants.UnlockedLevelKey, 1);
 
             if (nextLevelToUnlockIndex > highestUnlockedIndex)
             {
-                Debug.Log($"New level unlocked: Scene Index {nextLevelToUnlockIndex}");
+                CustomLog.LogEditor($"New level unlocked: Scene Index {nextLevelToUnlockIndex}");
             }
 
             var earnedStars = CalculateStars(fallenTries);
@@ -202,7 +202,7 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
         else
         {
             fallenTries++;
-            Debug.LogError("Level is not solved! Failed tries: " + fallenTries);
+            CustomLog.LogEditorError("Level is not solved! Failed tries: " + fallenTries);
 
             StartCoroutine(ShowIncorrectIndicator());
         }

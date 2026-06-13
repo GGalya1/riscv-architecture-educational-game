@@ -196,7 +196,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
         switch (p)
         {
             case -1:
-                Debug.LogError("MUX path is -1. No value will be propagated");
+                CustomLog.LogEditorError("MUX path is -1. No value will be propagated");
                 _srcA.Input = 0;
                 break;
             case 0:
@@ -206,7 +206,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
                 _srcA.Input = Alu.Calculate(_srcB.Output, 4, aluVisualizer.CurrentAluOperation);
                 break;
             default:
-                Debug.LogError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
+                CustomLog.LogEditorError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
                 _srcA.Input = 0;
                 break;
         }
@@ -284,7 +284,7 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
                 else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                     propagationVal = _srcB.Output;
                 else
-                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
+                    CustomLog.LogEditorError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
 
                 yield return StartCoroutine(DelayedSignals(buses.muxToAdder, propagationVal, buses.constFourToAdder,
                     4));

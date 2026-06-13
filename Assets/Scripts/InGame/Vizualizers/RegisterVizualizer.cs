@@ -74,7 +74,7 @@ public class RegisterVisualizer: BaseVisualizer
         UIRegisterPanel = panelInstance.GetComponent<RegisterControlPanel>();
         if (UIRegisterPanel == null)
         {
-            Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }
     }
 

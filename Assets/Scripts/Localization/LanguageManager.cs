@@ -71,7 +71,7 @@ public class LanguageManager : MonoBehaviour
                 yield break;
             }
         }
-        Debug.LogWarning($"[LanguageManager] Locale '{code}' not found.");
+        CustomLog.LogEditorWarning($"[LanguageManager] Locale '{code}' not found.");
     }
 
     private void LoadSavedLocale()

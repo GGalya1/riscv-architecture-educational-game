@@ -44,7 +44,7 @@ public class InstructionDataMemoryVisualizer: BaseVisualizer
         UIRegisterPanel = panelInstance.GetComponent<InstrMemoryControlPanel>();
         if (UIRegisterPanel == null)
         {
-            Debug.LogError($"InstrMemoryControlPanel component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"InstrMemoryControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 

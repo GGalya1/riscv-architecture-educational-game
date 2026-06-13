@@ -99,7 +99,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("No more processor sub-levels. Loading Main Menu.");
+                CustomLog.LogEditor("No more processor sub-levels. Loading Main Menu.");
                 StartCoroutine(LoadWithTransition(0));
             }
             return;
@@ -122,7 +122,7 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("All levels completed! Loading Main Menu (Index 0).");
+            CustomLog.LogEditor("All levels completed! Loading Main Menu (Index 0).");
             //SceneManager.LoadScene(0);
             StartCoroutine(LoadWithTransition(0));
         }

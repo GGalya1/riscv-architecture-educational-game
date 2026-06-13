@@ -58,7 +58,7 @@ public class RegisterFileVisualizer : BaseVisualizer
         UIRegisterPanel = panelInstance.GetComponent<RegisterFieldPanelUI>();
         if (UIRegisterPanel == null)
         {
-            Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }
     }
 

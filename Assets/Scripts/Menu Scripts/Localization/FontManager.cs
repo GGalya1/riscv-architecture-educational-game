@@ -56,7 +56,7 @@ public class FontManager : MonoBehaviour
 
             if (op.Result == null)
             {
-                Debug.LogWarning($"[FontManager] Font not found: {group.tableCollectionName}/{group.entryName}");
+                CustomLog.LogEditorWarning($"[FontManager] Font not found: {group.tableCollectionName}/{group.entryName}");
                 continue;
             }
 

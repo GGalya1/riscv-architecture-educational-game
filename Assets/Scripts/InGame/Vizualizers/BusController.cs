@@ -50,10 +50,10 @@ public class BusController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Slider is null !");
+            CustomLog.LogEditorError("Slider is null !");
         }
 
-        Debug.Log($"The controller has loaded {_busPaths.Count} bus segments.");
+        CustomLog.LogEditor($"The controller has loaded {_busPaths.Count} bus segments.");
     }
 
     private void OnDestroy()
@@ -78,7 +78,7 @@ public class BusController : MonoBehaviour
     {
         if (lr == null)
         {
-            Debug.LogWarning("null LineRenderer passed - skipping.");
+            CustomLog.LogEditorWarning("null LineRenderer passed - skipping.");
             return;
         }
 
@@ -91,7 +91,7 @@ public class BusController : MonoBehaviour
 
         if (count < 2)
         {
-            Debug.LogWarning($" '{lr.gameObject.name}' has fewer than 2 vertices - skipping.");
+            CustomLog.LogEditorWarning($" '{lr.gameObject.name}' has fewer than 2 vertices - skipping.");
             return;
         }
 
@@ -175,7 +175,7 @@ public class BusController : MonoBehaviour
             // Check for null (if there are empty slots in the inspector)
             if (lr == null)
             {
-                Debug.LogWarning("An empty LineRenderer slot was found in the busSegments array. Skipping it.");
+                CustomLog.LogEditorWarning("An empty LineRenderer slot was found in the busSegments array. Skipping it.");
                 continue;
             }
 
@@ -185,7 +185,7 @@ public class BusController : MonoBehaviour
             var pointCount = lr.positionCount;
             if (pointCount < 2)
             {
-                Debug.LogWarning($"The '{lr.gameObject.name}' bus has fewer than 2 vertices and will not be loaded.");
+                CustomLog.LogEditorWarning($"The '{lr.gameObject.name}' bus has fewer than 2 vertices and will not be loaded.");
                 continue;
             }
 

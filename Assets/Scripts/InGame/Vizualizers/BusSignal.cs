@@ -28,7 +28,7 @@ public class BusSignal : BaseVisualizer
         UIRegisterPanel = panelInstance.GetComponent<InfoPanelUI>();
         if (UIRegisterPanel == null)
         {
-            Debug.LogError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"InfoPanelUI component not found on the prefab for {gameObject.name}!");
         }
     }
 

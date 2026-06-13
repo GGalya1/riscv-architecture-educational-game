@@ -57,7 +57,7 @@ public class MultiplexerVisualizer: BaseVisualizer
         UIController = panelInstance.GetComponent<MultiplexerControlPanel>();
         if (UIController == null)
         {
-            Debug.LogError($"MultiplexerControlPanel component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"MultiplexerControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 

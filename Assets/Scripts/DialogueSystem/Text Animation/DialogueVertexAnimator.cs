@@ -233,7 +233,7 @@ public class DialogueVertexAnimator
         }
         if (animStartCommands.Count != animEndCommands.Count)
         {
-            Debug.LogError("Unequal number of start and end animation commands. Start Commands: " + animStartCommands.Count + " End Commands: " + animEndCommands.Count);
+            CustomLog.LogEditorError("Unequal number of start and end animation commands. Start Commands: " + animStartCommands.Count + " End Commands: " + animEndCommands.Count);
         }
         else
         {

@@ -117,7 +117,7 @@ public class DialogueUtility : MonoBehaviour
         }
         catch (ArgumentException)
         {
-            Debug.LogError("Invalid Text Animation Type: " + stringVal);
+            CustomLog.LogEditorError("Invalid Text Animation Type: " + stringVal);
             result = TextAnimationType.NONE;
         }
         return result;

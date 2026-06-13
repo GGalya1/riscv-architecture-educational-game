@@ -6,7 +6,7 @@ public static class Multiplexer
 
     public static int SelectNto1(int[] inputs, int control) {
         // if(control < 0 || control >= inputs.Length) 
-        //    Debug.LogError($"Multiplexer Error: {control} is not in range of inputs for MUL_N.");
+        //    CustomLog.LogEditorError($"Multiplexer Error: {control} is not in range of inputs for MUL_N.");
         return inputs[control];
     }
 }

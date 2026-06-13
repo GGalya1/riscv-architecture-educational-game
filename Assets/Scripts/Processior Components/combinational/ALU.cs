@@ -21,7 +21,7 @@ public static class Alu
                 break;
 
             default:
-                Debug.LogError($"ALU Error: Unknown operation code {operation}.");
+                CustomLog.LogEditorError($"ALU Error: Unknown operation code {operation}.");
                 break;
         }
 

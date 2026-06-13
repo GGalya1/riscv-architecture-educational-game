@@ -58,7 +58,7 @@ public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
         _staticCamera = Camera.main;
         if (_staticCamera == null)
         {
-            Debug.LogError($"Main camera not found by {gameObject.name}!");
+            CustomLog.LogEditorError($"Main camera not found by {gameObject.name}!");
         }
 
         // 3. Creating and initializing the UI panel

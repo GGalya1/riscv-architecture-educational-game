@@ -37,7 +37,7 @@ public class AluVisualiser : BaseVisualizer
         uiController = panelInstance.GetComponent<AluControlPanel>();
         if (uiController == null)
         {
-            Debug.LogError($"ALUControlPanel component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"ALUControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 

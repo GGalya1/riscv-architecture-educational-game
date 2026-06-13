@@ -123,7 +123,7 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
         var p = multiplexerVisualizer.CurrentChosenMuxPath;
         if (p == -1)
         {
-            Debug.LogError("MUX path is -1. No value will be propagated");
+            CustomLog.LogEditorError("MUX path is -1. No value will be propagated");
             _srcA.Input = 0;
         }
         else if (p == 0)
@@ -136,7 +136,7 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
         }
         else
         {
-            Debug.LogError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
+            CustomLog.LogEditorError($"MUX path is incorrect! Expected [-1, 1] but got {p}");
             _srcA.Input = 0;
         }
 
@@ -182,7 +182,7 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
                 else if (multiplexerVisualizer.CurrentChosenMuxPath == 1)
                     propagationVal = _srcB.Output;
                 else
-                    Debug.LogError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
+                    CustomLog.LogEditorError($"Unexpected MUX path {multiplexerVisualizer.CurrentChosenMuxPath}");
 
                 yield return StartCoroutine(DelayedSignals(buses.muxToAdder, propagationVal, buses.constFourToAdder,
                     4));

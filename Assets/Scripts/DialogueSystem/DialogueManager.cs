@@ -83,7 +83,7 @@ public class DialogueManager : MonoBehaviour
                 targetIndex = _currentNode.thirdOption;
                 break;
             default:
-                Debug.LogWarning($"[DialogueManager] Uncommon path selected! selectedPath: {branchIndex}");
+                CustomLog.LogEditorWarning($"[DialogueManager] Uncommon path selected! selectedPath: {branchIndex}");
                 return;
         }
 
@@ -94,7 +94,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"[DialogueManager] Target index {targetIndex} is out of bounds. Ending dialogue.");
+            CustomLog.LogEditorWarning($"[DialogueManager] Target index {targetIndex} is out of bounds. Ending dialogue.");
             EndDialogue();
         }
     }
@@ -108,7 +108,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (graph == null || graph.nodes == null || graph.nodes.Count == 0)
         {
-            Debug.LogError($"[DialogueManager] Cannot start dialogue: Graph is null or empty!");
+            CustomLog.LogEditorError($"[DialogueManager] Cannot start dialogue: Graph is null or empty!");
             return;
         }
 
@@ -127,7 +127,7 @@ public class DialogueManager : MonoBehaviour
     }
     private void EndDialogue()
     {
-        Debug.Log("[DialogueManager] Dialogue sequence finished.");
+        CustomLog.LogEditor("[DialogueManager] Dialogue sequence finished.");
         OnDialogueEnd?.Invoke();
         ui.StopAnimatingText();
     }

@@ -145,13 +145,13 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
         switch (path)
         {
             case -1:
-                Debug.LogError("Multiplexer path not selected (-1). Data will be lost.");
+                CustomLog.LogEditorError("Multiplexer path not selected (-1). Data will be lost.");
                 break;
             case >= 0 and <= 1:
                 res = Multiplexer.SelectNto1(inputs, path);
                 break;
             default:
-                Debug.LogError($"Multiplexer path {path} is an invalid value!");
+                CustomLog.LogEditorError($"Multiplexer path {path} is an invalid value!");
                 break;
         }
 

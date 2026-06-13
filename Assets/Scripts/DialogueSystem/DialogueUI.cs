@@ -65,7 +65,7 @@ public class DialogueUI : MonoBehaviour
         var commands = DialogueUtility.ProcessInputString(node.dialogueText, out var cleanText);
 
         _textRoutine = StartCoroutine(_vertexAnimator.AnimateTextIn(commands, cleanText, null, () => {
-            Debug.Log("Printing complete!");
+            CustomLog.LogEditor("Printing complete!");
         }));
 
 
@@ -80,7 +80,7 @@ public class DialogueUI : MonoBehaviour
         var emotionIndex = (int)node.emotionIndex;
         if (emotionIndex < 0 || emotionIndex >= currentEmotion.emotions.Count)
         {
-            Debug.LogError($"Index of emotion {node.emotionIndex} is out of bounds !");
+            CustomLog.LogEditorError($"Index of emotion {node.emotionIndex} is out of bounds !");
             return;
         }
 

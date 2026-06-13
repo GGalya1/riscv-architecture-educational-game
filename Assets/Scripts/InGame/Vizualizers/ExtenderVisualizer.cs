@@ -23,7 +23,7 @@ public class ExtenderVisualizer : AluVisualiser
         uiController = panelInstance.GetComponent<AluControlPanel>();
         if (uiController == null)
         {
-            Debug.LogError($"ExtenderControlPanel component not found on the prefab for {gameObject.name}!");
+            CustomLog.LogEditorError($"ExtenderControlPanel component not found on the prefab for {gameObject.name}!");
         }
     }
 
@@ -45,7 +45,7 @@ public class ExtenderVisualizer : AluVisualiser
                 symbol = "J"; // J-Type (jump)
                 break;
             default:
-                Debug.LogWarning($"Extender operation is not valid and is equal {operationType}. Displaying '?'");
+                CustomLog.LogEditorWarning($"Extender operation is not valid and is equal {operationType}. Displaying '?'");
                 symbol = "?";
                 break;
         }

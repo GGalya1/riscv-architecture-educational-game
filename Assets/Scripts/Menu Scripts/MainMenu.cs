@@ -83,7 +83,7 @@ public class MainMenu : MonoBehaviour
 
         UpdateLevelButtons();
 
-        Debug.Log("[MainMenu] All levels unlocked!");
+        CustomLog.LogEditor("[MainMenu] All levels unlocked!");
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"[MainMenu] Attempted to load invalid level index: {levelID}");
+            CustomLog.LogEditorError($"[MainMenu] Attempted to load invalid level index: {levelID}");
         }
     }
 
@@ -108,7 +108,7 @@ public class MainMenu : MonoBehaviour
     /// Closes the application.
     /// </summary>
     public void Quit() {
-        Debug.Log("[MainMenu] Quit requested.");
+        CustomLog.LogEditor("[MainMenu] Quit requested.");
         Application.Quit();
     }
 
