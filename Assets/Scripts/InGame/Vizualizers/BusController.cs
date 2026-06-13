@@ -15,10 +15,10 @@ public class BusController : MonoBehaviour
     [Header("Pool settings")] [SerializeField]
     private int poolPreWarmCount = 5;
 
-    [Header("All bus segments")]
+    //[Header("All bus segments")]
     // This is where we store references to all LineRenderers in the scene.
     // These are assigned via the Inspector.
-    public LineRenderer[] busSegments;
+    //public LineRenderer[] busSegments;
 
     private readonly List<BusSignal> _activeSignals = new();
 
@@ -35,7 +35,7 @@ public class BusController : MonoBehaviour
     private void Awake()
     {
         _spherePrefabSignal = spherePrefab.GetComponent<BusSignal>();
-        InitializePaths();
+        //InitializePaths();
     }
 
     private void Start()
@@ -168,7 +168,7 @@ public class BusController : MonoBehaviour
         movementSpeed = value;
     }
 
-    private void InitializePaths()
+    /*private void InitializePaths()
     {
         foreach (var lr in busSegments)
         {
@@ -220,7 +220,7 @@ public class BusController : MonoBehaviour
             // We store an array of inverse global coordinates
             _reverseBusPaths.Add(lr, reversedWorldPoints);
         }
-    }
+    }*/
 
     private Vector3[] GetPathPoints(LineRenderer targetBus, bool reversed)
     {

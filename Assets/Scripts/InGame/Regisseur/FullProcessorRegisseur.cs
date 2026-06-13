@@ -37,6 +37,96 @@ public struct ProcessorLevelState
     public int MuXresultPath;
 }
 
+[System.Serializable]
+public class FullProcessorBusSegments
+{
+    [Header("IF - Instruction Fetch")]
+    [Tooltip("PC -> ADR MUX input (selects instruction memory address)")]
+    public LineRenderer pcToAdrMux;
+    [Tooltip("PC -> OldPC register (saves PC for BTA stage)")]
+    public LineRenderer pcToOldPcReg;
+    [Tooltip("PC -> PC+4 adder input A")]
+    public LineRenderer pcToPcAdder;
+    [Tooltip("Constant 4 -> PC+4 adder input B")]
+    public LineRenderer constFourToPcAdder;
+    [Tooltip("ADR MUX output -> Memory address input")]
+    public LineRenderer adrMuxToMem;
+    [Tooltip("Memory read data -> Instruction Register")]
+    public LineRenderer memToInstrReg;
+    [Tooltip("SrcA MUX output -> SrcA register  /  SrcA register -> SrcA MUX")]
+    public LineRenderer srcAMuxToSrcAReg;
+    [Tooltip("SrcB MUX output -> SrcB register  /  SrcB register -> SrcB MUX")]
+    public LineRenderer srcBMuxToSrcBReg;
+    [Tooltip("ALU result -> AluOut register")]
+    public LineRenderer aluToAluOutReg;
+    [Tooltip("Result MUX output -> PC register input")]
+    public LineRenderer resultMuxToPC;
+
+    [Header("ID - Instruction Decode")]
+    [Tooltip("Instruction Register -> Register File A1 (rs1)")]
+    public LineRenderer instrToRegFileA1;
+    [Tooltip("Instruction Register -> Register File A2 (rs2)")]
+    public LineRenderer instrToRegFileA2;
+    [Tooltip("Instruction Register -> Extend unit")]
+    public LineRenderer instrToExtend;
+    [Tooltip("Register File RD1 -> SrcA MUX input")]
+    public LineRenderer rd1ToSrcAMux;
+    [Tooltip("Register File RD2 -> SrcB MUX input")]
+    public LineRenderer rd2ToSrcBMux;
+
+    [Header("EX - Execute")]
+    [Tooltip("Extend unit output -> SrcB MUX input [1]")]
+    public LineRenderer extToSrcBMux;
+    [Tooltip("SrcA MUX output -> ALU input A")]
+    public LineRenderer srcAMuxToAlu;
+    [Tooltip("SrcB MUX output -> ALU input B")]
+    public LineRenderer srcBMuxToAlu;
+    [Tooltip("ALU combinatorial output -> AluOut register")]
+    public LineRenderer aluCombToAluOutReg;
+
+    [Header("MEM - Memory")]
+    [Tooltip("AluOut register -> Result MUX and Data Memory address")]
+    public LineRenderer aluOutToResultMux;
+    [Tooltip("AluOut register -> Data Memory address (A)")]
+    public LineRenderer aluOutToDataMem;
+
+    [Header("WB - Write Back")]
+    [Tooltip("Result MUX -> PC (branch / next-PC)  - shared with IF")]
+    public LineRenderer resultMuxToPcWb;
+    [Tooltip("Result MUX -> Register File WD3")]
+    public LineRenderer resultMuxToRegFile;
+    [Tooltip("Result MUX -> third fanout destination")]
+    public LineRenderer resultMuxFanOut;
+
+    public void RegisterAll(BusController c)
+    {
+        c.RegisterSegment(pcToAdrMux);
+        c.RegisterSegment(pcToOldPcReg);
+        c.RegisterSegment(pcToPcAdder);
+        c.RegisterSegment(constFourToPcAdder);
+        c.RegisterSegment(adrMuxToMem);
+        c.RegisterSegment(memToInstrReg);
+        c.RegisterSegment(srcAMuxToSrcAReg);
+        c.RegisterSegment(srcBMuxToSrcBReg);
+        c.RegisterSegment(aluToAluOutReg);
+        c.RegisterSegment(resultMuxToPC);
+        c.RegisterSegment(instrToRegFileA1);
+        c.RegisterSegment(instrToRegFileA2);
+        c.RegisterSegment(instrToExtend);
+        c.RegisterSegment(rd1ToSrcAMux);
+        c.RegisterSegment(rd2ToSrcBMux);
+        c.RegisterSegment(extToSrcBMux);
+        c.RegisterSegment(srcAMuxToAlu);
+        c.RegisterSegment(srcBMuxToAlu);
+        c.RegisterSegment(aluCombToAluOutReg);
+        c.RegisterSegment(aluOutToResultMux);
+        c.RegisterSegment(aluOutToDataMem);
+        c.RegisterSegment(resultMuxToPcWb);
+        c.RegisterSegment(resultMuxToRegFile);
+        c.RegisterSegment(resultMuxFanOut);
+    }
+}
+
 public enum ExerciseTyp {
     REGISTER_FIELD = 0,
     MEMORY = 1,
@@ -103,10 +193,18 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
 
     private int _currentBus; // [0, 10]
+    
+    [Header("Bus Segments")]
+    [SerializeField] private FullProcessorBusSegments buses;
 
     protected void Awake()
     {
         levelManager.SetLevelDialogue(Initial.customDialogueGraph);
+    }
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
     }
     protected override void OnLevelStart()
     {
@@ -390,44 +488,44 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
     #region vizualization helpers
     private IEnumerator RunFetchVisualisation() {
-        busController.StartBusSignal(busController.busSegments[10], _pc.Output);
-        busController.StartBusSignal(busController.busSegments[19], _pc.Output);
-        busController.StartBusSignal(busController.busSegments[20], _pc.Output);
+        busController.StartBusSignal(buses.pcToAdrMux, _pc.Output);
+        busController.StartBusSignal(buses.pcToOldPcReg, _pc.Output);
+        busController.StartBusSignal(buses.pcToPcAdder, _pc.Output);
 
         var muxSrcA = CalculateSrcAMux();
         var muxSrcB = CalculateSrcBMux();
         var output = CalculateResultMux();
         var addressValue = CalculateAddressMux();
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], addressValue));
+        yield return StartCoroutine(DelayedSignal(buses.adrMuxToMem, addressValue));
 
         // ob Value existiert
         if (_dataInstructionMemory.Memory.TryGetValue(addressValue, out var value)) {
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[12], value));
+            yield return StartCoroutine(DelayedSignal(buses.memToInstrReg, value));
         }
         else
         {
-            yield return StartCoroutine(DelayedSignal(busController.busSegments[12], 0));
+            yield return StartCoroutine(DelayedSignal(buses.memToInstrReg, 0));
         }
 
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[9], 4));
+        yield return StartCoroutine(DelayedSignal(buses.constFourToPcAdder, 4));
         
-        yield return StartCoroutine(DelayedSignals(busController.busSegments[16], muxSrcA, busController.busSegments[15], muxSrcB));
+        yield return StartCoroutine(DelayedSignals(buses.srcAMuxToSrcAReg, muxSrcA, buses.srcBMuxToSrcBReg, muxSrcB));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[6], CalculateAlu()));
+        yield return StartCoroutine(DelayedSignal(buses.aluToAluOutReg, CalculateAlu()));
 
         
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[23], output));
+        yield return StartCoroutine(DelayedSignal(buses.resultMuxToPC, output));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     private IEnumerator RunDecodeVisualisation()
     {
-        busController.StartBusSignal(busController.busSegments[0], _instructionReg.Output);
-        busController.StartBusSignal(busController.busSegments[1], _instructionReg.Output);
+        busController.StartBusSignal(buses.instrToRegFileA1, _instructionReg.Output);
+        busController.StartBusSignal(buses.instrToRegFileA2, _instructionReg.Output);
         // _busController.StartBusSignal(_busController.busSegments[2], instructionReg.Output);
-        busController.StartBusSignal(busController.busSegments[3], _instructionReg.Output);
+        busController.StartBusSignal(buses.instrToExtend, _instructionReg.Output);
 
         var srcAValue = 0;
         var srcBValue = 0;
@@ -438,34 +536,34 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
         if (_dataInstructionMemory.Memory.TryGetValue(_instructionReg.Output, out var value1)) {
             srcBValue = value1;
         }
-        yield return StartCoroutine(DelayedSignals(busController.busSegments[13], srcAValue, busController.busSegments[14], srcBValue));
+        yield return StartCoroutine(DelayedSignals(buses.rd1ToSrcAMux, srcAValue, buses.rd2ToSrcBMux, srcBValue));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     private IEnumerator RunExecutionVisualisation() { // das noch korrigieren
-        busController.StartBusSignal(busController.busSegments[16], _srcA.Output);
-        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output));
+        busController.StartBusSignal(buses.srcAMuxToSrcAReg, _srcA.Output);
+        busController.StartBusSignal(buses.extToSrcBMux, Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output));
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAMux());
-        busController.StartBusSignal(busController.busSegments[7], CalculateSrcBMux());
+        busController.StartBusSignal(buses.srcAMuxToAlu, CalculateSrcAMux());
+        busController.StartBusSignal(buses.srcBMuxToAlu, CalculateSrcBMux());
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
-        busController.StartBusSignal(busController.busSegments[17], CalculateAlu());
+        busController.StartBusSignal(buses.aluCombToAluOutReg, CalculateAlu());
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     private IEnumerator RunWriteBackVisualisation() { // das noch korrigieren
-        busController.StartBusSignal(busController.busSegments[18], _aluOutReg.Output);
-        busController.StartBusSignal(busController.busSegments[5], _aluOutReg.Output);
+        busController.StartBusSignal(buses.aluOutToResultMux, _aluOutReg.Output);
+        busController.StartBusSignal(buses.aluOutToDataMem, _aluOutReg.Output);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
         var res = CalculateResultMux();
-        busController.StartBusSignal(busController.busSegments[23], res);
-        busController.StartBusSignal(busController.busSegments[24], res);
-        busController.StartBusSignal(busController.busSegments[25], res);
+        busController.StartBusSignal(buses.resultMuxToPC, res);
+        busController.StartBusSignal(buses.resultMuxToRegFile, res);
+        busController.StartBusSignal(buses.resultMuxFanOut, res);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
@@ -499,62 +597,62 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     }
 
     private IEnumerator ReverseFetchVisualisation() { // noch zu korrigieren
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[23], _pc.Input, true));
+        yield return StartCoroutine(DelayedSignal(buses.resultMuxToPC, _pc.Input, true));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[6], CalculateAlu(), true));
+        yield return StartCoroutine(DelayedSignal(buses.aluToAluOutReg, CalculateAlu(), true));
 
-        yield return StartCoroutine(DelayedSignals(busController.busSegments[16], _srcA.Output, busController.busSegments[15], _srcB.Output, true, true));
+        yield return StartCoroutine(DelayedSignals(buses.srcAMuxToSrcAReg, _srcA.Output, buses.srcBMuxToSrcBReg, _srcB.Output, true, true));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[12], _instructionReg.Input, true));
+        yield return StartCoroutine(DelayedSignal(buses.memToInstrReg, _instructionReg.Input, true));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[9], 4, true));
+        yield return StartCoroutine(DelayedSignal(buses.constFourToPcAdder, 4, true));
 
-        yield return StartCoroutine(DelayedSignal(busController.busSegments[11], _dataInstructionMemory.Address, true));
+        yield return StartCoroutine(DelayedSignal(buses.adrMuxToMem, _dataInstructionMemory.Address, true));
 
-        busController.StartBusSignal(busController.busSegments[10], _oldPC.Input, true);
-        busController.StartBusSignal(busController.busSegments[19], _oldPC.Input, true);
-        busController.StartBusSignal(busController.busSegments[20], _oldPC.Input, true);
+        busController.StartBusSignal(buses.pcToAdrMux, _oldPC.Input, true);
+        busController.StartBusSignal(buses.pcToOldPcReg, _oldPC.Input, true);
+        busController.StartBusSignal(buses.pcToPcAdder, _oldPC.Input, true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     private IEnumerator ReverseDecodeVisualisation()
     {
-        yield return StartCoroutine(DelayedSignals(busController.busSegments[13], _srcA.Input, busController.busSegments[14], _srcB.Input, true, true));
+        yield return StartCoroutine(DelayedSignals(buses.rd1ToSrcAMux, _srcA.Input, buses.rd2ToSrcBMux, _srcB.Input, true, true));
 
-        busController.StartBusSignal(busController.busSegments[0], _instructionReg.Output, true);
-        busController.StartBusSignal(busController.busSegments[1], _instructionReg.Output, true);
+        busController.StartBusSignal(buses.instrToRegFileA1, _instructionReg.Output, true);
+        busController.StartBusSignal(buses.instrToRegFileA2, _instructionReg.Output, true);
         // _busController.StartBusSignal(_busController.busSegments[2], instructionReg.Output);
-        busController.StartBusSignal(busController.busSegments[3], _instructionReg.Output, true);
+        busController.StartBusSignal(buses.instrToExtend, _instructionReg.Output, true);
         
         yield return new WaitUntil(() => busController.NoActiveSignals);
     } 
     private IEnumerator ReverseExecutionVisualisation() // das noch korrigieren
     {
-        busController.StartBusSignal(busController.busSegments[17], CalculateAlu(), true);
+        busController.StartBusSignal(buses.aluCombToAluOutReg, CalculateAlu(), true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[16], _srcA.Output, true);
-        busController.StartBusSignal(busController.busSegments[8], Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output), true);
+        busController.StartBusSignal(buses.srcAMuxToSrcAReg, _srcA.Output, true);
+        busController.StartBusSignal(buses.extToSrcBMux, Extender.Evaluate(extenderVisualizer.CurrentAluOperation, (uint)_instructionReg.Output), true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[22], CalculateSrcAMux(), true);
-        busController.StartBusSignal(busController.busSegments[7], CalculateSrcBMux(), true);
+        busController.StartBusSignal(buses.srcAMuxToAlu, CalculateSrcAMux(), true);
+        busController.StartBusSignal(buses.srcBMuxToAlu, CalculateSrcBMux(), true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }
     private IEnumerator ReverseWriteBackVisualisation() // das noch korrigieren
     {
         var res = CalculateResultMux();
-        busController.StartBusSignal(busController.busSegments[23], res, true);
-        busController.StartBusSignal(busController.busSegments[24], res, true);
-        busController.StartBusSignal(busController.busSegments[25], res, true);
+        busController.StartBusSignal(buses.resultMuxToPC, res, true);
+        busController.StartBusSignal(buses.resultMuxToRegFile, res, true);
+        busController.StartBusSignal(buses.resultMuxFanOut, res, true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
 
-        busController.StartBusSignal(busController.busSegments[18], _aluOutReg.Output, true);
-        busController.StartBusSignal(busController.busSegments[5], _aluOutReg.Output, true);
+        busController.StartBusSignal(buses.aluOutToResultMux, _aluOutReg.Output, true);
+        busController.StartBusSignal(buses.aluOutToDataMem, _aluOutReg.Output, true);
 
         yield return new WaitUntil(() => busController.NoActiveSignals);
     }

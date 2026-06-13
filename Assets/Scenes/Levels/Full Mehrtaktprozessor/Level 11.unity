@@ -2900,6 +2900,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -6174,6 +6175,31 @@ MonoBehaviour:
   registerFileVisualizer: {fileID: 131028546}
   numberBlinker: {fileID: 1425758661}
   sidePanelInformer: {fileID: 589382569}
+  buses:
+    pcToAdrMux: {fileID: 203119610}
+    pcToOldPcReg: {fileID: 917754483}
+    pcToPcAdder: {fileID: 511993809}
+    constFourToPcAdder: {fileID: 363149245}
+    adrMuxToMem: {fileID: 2024310556}
+    memToInstrReg: {fileID: 934957545}
+    srcAMuxToSrcAReg: {fileID: 0}
+    srcBMuxToSrcBReg: {fileID: 0}
+    aluToAluOutReg: {fileID: 267926130}
+    resultMuxToPC: {fileID: 785921907}
+    instrToRegFileA1: {fileID: 1818292852}
+    instrToRegFileA2: {fileID: 1137282957}
+    instrToExtend: {fileID: 1894523806}
+    rd1ToSrcAMux: {fileID: 640806157}
+    rd2ToSrcBMux: {fileID: 1758749149}
+    extToSrcBMux: {fileID: 1871626020}
+    srcAMuxToAlu: {fileID: 847224417}
+    srcBMuxToAlu: {fileID: 1594724559}
+    aluCombToAluOutReg: {fileID: 1065977393}
+    aluOutToResultMux: {fileID: 267926130}
+    aluOutToDataMem: {fileID: 35569030}
+    resultMuxToPcWb: {fileID: 785921907}
+    resultMuxToRegFile: {fileID: 706986900}
+    resultMuxFanOut: {fileID: 1483639190}
 --- !u!1 &1124232095
 GameObject:
   m_ObjectHideFlags: 0
@@ -10877,7 +10903,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -10929,7 +10955,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
