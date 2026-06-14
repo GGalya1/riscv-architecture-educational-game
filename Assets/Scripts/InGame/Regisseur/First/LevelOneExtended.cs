@@ -230,6 +230,6 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
 
     protected override void UpdateVisualizers()
     {
-        _infoOutputRegister.Display("Register 1", $"{_output.Output}");
+        _infoOutputRegister.Display("Register 1", _output.Output);
     }
 }

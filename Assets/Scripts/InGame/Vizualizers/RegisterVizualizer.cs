@@ -32,7 +32,7 @@ public class RegisterVisualizer: BaseVisualizer
         // Set the initial/default data on the UI panel
         if (UIRegisterPanel != null)
         {
-            UIRegisterPanel.Display("N/A", "0");
+            UIRegisterPanel.Display("N/A", 0);
         }
 
         // Set the initial state for STOP indicator

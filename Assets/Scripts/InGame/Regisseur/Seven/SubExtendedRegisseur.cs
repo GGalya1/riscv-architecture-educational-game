@@ -319,10 +319,10 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
 
     protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register A1", $"{_srcA.Output}");
+        _infoSrcARegister.Display("Register A1", _srcA.Output);
         _infoImmRegister.Display("Register A2", RiscVDecoder.CommandBuilder((uint)_immValue.Output));
-        _infoA3Register.Display("Register A3", $"{_a3.Output}");
-        _infoWd3Register.Display("Register WD3", $"{_wd3.Output}");
+        _infoA3Register.Display("Register A3", _a3.Output);
+        _infoWd3Register.Display("Register WD3", _wd3.Output);
 
         registerFileVisualizer.UIRegisterPanel.Display(_registerFile.Registers);
 

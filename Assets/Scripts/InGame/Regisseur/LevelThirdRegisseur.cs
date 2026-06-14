@@ -303,11 +303,11 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
 
     protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register 1", $"{_srcA.Output}");
-        _infoSrcBRegister.Display("Register 2", $"{_srcB.Output}");
-        registerOutputVisualizer.UIRegisterPanel.Display($"{_dataInstructionMemory.Memory[0]}",
-            $"{_dataInstructionMemory.Memory[4]}", $"{_dataInstructionMemory.Memory[8]}",
-            $"{_dataInstructionMemory.Memory[12]}");
+        _infoSrcARegister.Display("Register 1", _srcA.Output);
+        _infoSrcBRegister.Display("Register 2", _srcB.Output);
+        registerOutputVisualizer.UIRegisterPanel.Display(_dataInstructionMemory.Memory[0],
+            _dataInstructionMemory.Memory[4], _dataInstructionMemory.Memory[8],
+            _dataInstructionMemory.Memory[12]);
 
         registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
         registerSrcBVisualizer.ForceUpdateWriteEnableVisualization(_srcB.WriteEnable);

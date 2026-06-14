@@ -19,11 +19,6 @@ public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
     [SerializeField] private float animDuration = 0.25f;
     [FormerlySerializedAs("_moveDistance")] [SerializeField] private float moveDistance = 0.2f;
 
-    // --- FIELDS FOR CACHED REFERENCES ---
-
-    // Cached main camera, for UI positioning
-    private Camera _staticCamera;
-
     // Cached renderer, if you need to change the model's color (for a simple color change)
     [FormerlySerializedAs("_bigModelRenderer")] [SerializeField] protected Renderer bigModelRenderer;
 
@@ -54,14 +49,7 @@ public abstract class BaseVisualizer : MonoBehaviour, IVisualizer
             _originalColor = bigModelRenderer.sharedMaterial.color;
         }
 
-        // 2. Camera caching
-        _staticCamera = Camera.main;
-        if (_staticCamera == null)
-        {
-            CustomLog.LogEditorError($"Main camera not found by {gameObject.name}!");
-        }
-
-        // 3. Creating and initializing the UI panel
+        // Creating and initializing the UI panel
         _targetLocalPos = panelInstance.transform.localPosition;
         PrepareHiddenState();
 

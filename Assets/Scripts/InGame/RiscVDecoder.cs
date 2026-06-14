@@ -1,10 +1,8 @@
-    public static class RiscVDecoder
+public static class RiscVDecoder
+{
+    public static string CommandBuilder(uint val)
     {
-        public static string CommandBuilder(uint val)
-    {
-        if (val < GameConstants.MinValidInstruction) {
-            return val.ToString();
-        }
+        if (val < GameConstants.MinValidInstruction) return val.ToString();
 
         var opcode = val & 0x7F;
         var rd = (val >> 7) & 0x1F;
@@ -47,17 +45,17 @@
 
         return f3 switch
         {
-            0x0 => $"addi x{rd}, x{rs1}, {imm}",      // Add Immediate
-            0x1 => $"slli x{rd}, x{rs1}, {shamt}",    // Shift Left Logical Imm
-            0x2 => $"slti x{rd}, x{rs1}, {imm}",      // Set Less Than Imm
+            0x0 => $"addi x{rd}, x{rs1}, {imm}", // Add Immediate
+            0x1 => $"slli x{rd}, x{rs1}, {shamt}", // Shift Left Logical Imm
+            0x2 => $"slti x{rd}, x{rs1}, {imm}", // Set Less Than Imm
             0x3 => $"sltiu x{rd}, x{rs1}, {(uint)imm}", // Set Less Than Imm Unsigned
-            0x4 => $"xori x{rd}, x{rs1}, {imm}",      // Xor Immediate
-            0x5 => bit30                              // Shift Right
-                    ? $"srai x{rd}, x{rs1}, {shamt}"  // Arithmetic (saving sign)
-                    : $"srli x{rd}, x{rs1}, {shamt}", // Logical (filling with zeros)
-            0x6 => $"ori x{rd}, x{rs1}, {imm}",       // Or Immediate
-            0x7 => $"andi x{rd}, x{rs1}, {imm}",      // And Immediate
+            0x4 => $"xori x{rd}, x{rs1}, {imm}", // Xor Immediate
+            0x5 => bit30 // Shift Right
+                ? $"srai x{rd}, x{rs1}, {shamt}" // Arithmetic (saving sign)
+                : $"srli x{rd}, x{rs1}, {shamt}", // Logical (filling with zeros)
+            0x6 => $"ori x{rd}, x{rs1}, {imm}", // Or Immediate
+            0x7 => $"andi x{rd}, x{rs1}, {imm}", // And Immediate
             _ => $"unknown_I x{rd}, x{rs1}, {imm}"
         };
     }
-    }
+}

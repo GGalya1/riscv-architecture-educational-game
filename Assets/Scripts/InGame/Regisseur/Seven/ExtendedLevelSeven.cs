@@ -301,10 +301,10 @@ public class ExtendedLevelSeven : BaseLevelRegisseur<ExtendedSevenLevelState>
 
     protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register A1", $"{_srcA.Output}");
-        _infoSrcBRegister.Display("Register A2", $"{_srcB.Output}");
-        _infoA3Register.Display("Register A3", $"{_a3.Output}");
-        _infoWd3Register.Display("Register WD3", $"{_wd3.Output}");
+        _infoSrcARegister.Display("Register A1", _srcA.Output);
+        _infoSrcBRegister.Display("Register A2", _srcB.Output);
+        _infoA3Register.Display("Register A3", _a3.Output);
+        _infoWd3Register.Display("Register WD3", _wd3.Output);
 
 
         registerFileVisualizer.UIRegisterPanel.Display(_registerFile.Registers);

@@ -109,7 +109,7 @@ public class LevelTwoRegisseur : BaseLevelRegisseur<LevelTwoState>
 
     protected override void UpdateVisualizers()
     {
-        _infoSrcARegister.Display("Register 1", $"{_srcA.Output}");
+        _infoSrcARegister.Display("Register 1", _srcA.Output);
 
         registerSrcAVisualizer.ForceUpdateWriteEnableVisualization(_srcA.WriteEnable);
     }

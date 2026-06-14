@@ -34,8 +34,8 @@ public class SidePanelStateInformer : MonoBehaviour
 
     [FormerlySerializedAs("_fadeDuration")] [SerializeField] private float fadeDuration = 0.2f;
 
-    public void SetStateInfo(int idx) {
-        var s = stateList[idx];
+    public void SetStateInfo(StateName state) {
+        var s = stateList[(int)state];
 
         titelText.text = s.titel;
         stateDescription.text = s.stateInfo;

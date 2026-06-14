@@ -676,13 +676,13 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
     {
         UpdateSidePanel();
 
-        _infoPCRegister.Display("PC Register", $"{_pc.Output}");
-        _infoOldPCRegister.Display("Old PC Register", $"{_oldPC.Output}");
+        _infoPCRegister.Display("PC Register", _pc.Output);
+        _infoOldPCRegister.Display("Old PC Register", _oldPC.Output);
         _infoInstructionRegister.Display("Instruction Register", RiscVDecoder.CommandBuilder((uint)_instructionReg.Output));
-        _infoDataRegister.Display("Data Register", $"{_dataReg.Output}");
-        _infoSrcARegister.Display("SrcA Register", $"{_srcA.Output}");
-        _infoSrcBRegister.Display("SrcB Register", $"{_srcB.Output}");
-        _infoAluOutRegister.Display("ALU Out Register", $"{_aluOutReg.Output}");
+        _infoDataRegister.Display("Data Register", _dataReg.Output);
+        _infoSrcARegister.Display("SrcA Register", _srcA.Output);
+        _infoSrcBRegister.Display("SrcB Register", _srcB.Output);
+        _infoAluOutRegister.Display("ALU Out Register", _aluOutReg.Output);
 
         memoryVisualizer.UIRegisterPanel.Display(
             RiscVDecoder.CommandBuilder((uint)_dataInstructionMemory.Memory[0]),
@@ -714,11 +714,11 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
                           && _dataInstructionMemory.Memory[_pc.Output] > GameConstants.MinValidInstruction;
         if (containsKey)
         {
-            sidePanelInformer.SetStateInfo((int)StateName.FETCH);
+            sidePanelInformer.SetStateInfo(StateName.FETCH);
         }
         else if (_instructionReg.Output > GameConstants.MinValidInstruction)
         {
-            sidePanelInformer.SetStateInfo((int)StateName.DECODE);
+            sidePanelInformer.SetStateInfo(StateName.DECODE);
         }
         else if (TickCounter - 2 >= 0) {
             var s = TickStateValues[TickCounter - 1];
@@ -729,21 +729,21 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             switch(opcode)
             {
                 case 0x33:
-                    sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_R);
+                    sidePanelInformer.SetStateInfo(StateName.EXECUTE_R);
                     break;
                 case 0x13:
-                    sidePanelInformer.SetStateInfo((int)StateName.EXECUTE_I);
+                    sidePanelInformer.SetStateInfo(StateName.EXECUTE_I);
                     break;
                 case 0x03:
                 case 0x23:
-                    sidePanelInformer.SetStateInfo((int)StateName.MEM_ADDRESS);
+                    sidePanelInformer.SetStateInfo(StateName.MEM_ADDRESS);
                     break;
                 case 0x63:
-                    sidePanelInformer.SetStateInfo((int)StateName.BEQ);
+                    sidePanelInformer.SetStateInfo(StateName.BEQ);
                     break;
                 case 0x6F:
                 case 0x67:
-                    sidePanelInformer.SetStateInfo((int)StateName.JAL);
+                    sidePanelInformer.SetStateInfo(StateName.JAL);
                     break;
             }
         }
@@ -758,17 +758,17 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
             {
                 case 0x33:
                 case 0x13:
-                    sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
+                    sidePanelInformer.SetStateInfo(StateName.ALU_WB);
                     break;
                 case 0x03:
-                    sidePanelInformer.SetStateInfo((int)StateName.MEM_READ);
+                    sidePanelInformer.SetStateInfo(StateName.MEM_READ);
                     break;
                 case 0x23:
-                    sidePanelInformer.SetStateInfo((int)StateName.MEM_WRITE);
+                    sidePanelInformer.SetStateInfo(StateName.MEM_WRITE);
                     break;
                 case 0x6F:
                 case 0x67:
-                    sidePanelInformer.SetStateInfo((int)StateName.ALU_WB);
+                    sidePanelInformer.SetStateInfo(StateName.ALU_WB);
                     break;
             }
         }
@@ -779,12 +779,12 @@ public class FullProcessorRegisseur : BaseLevelRegisseur<ProcessorLevelState>
 
             if (opcode == 0x03)
             {
-                sidePanelInformer.SetStateInfo((int)StateName.MEM_WB);
+                sidePanelInformer.SetStateInfo(StateName.MEM_WB);
             }
         }
         else
         {
-            sidePanelInformer.SetStateInfo((int)StateName.UNKNOWN);
+            sidePanelInformer.SetStateInfo(StateName.UNKNOWN);
         }
     }
 

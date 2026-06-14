@@ -129,7 +129,7 @@ public class BusController : MonoBehaviour
         // Create a sphere
         var signal = GetSignal(pathPoints[0]);
 
-        signal.UIRegisterPanel.Display("Signal", $"{value}");
+        signal.UIRegisterPanel.Display("Signal", value);
 
         // Important: Adjust the speed and add it to the monitoring list
         _activeSignals.Add(signal);

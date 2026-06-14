@@ -496,7 +496,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
 
     protected override void UpdateVisualizers()
     {
-        _infoPCRegister.Display("PC Register", $"{_pc.Output}");
+        _infoPCRegister.Display("PC Register", _pc.Output);
         registerPCVisualizer.ForceUpdateWriteEnableVisualization(_pc.WriteEnable);
 
         instructionMemoryVisualizer.UIRegisterPanel.Display(
