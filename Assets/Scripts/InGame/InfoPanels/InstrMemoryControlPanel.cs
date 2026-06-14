@@ -13,11 +13,11 @@ public class InstrMemoryControlPanel: InfoPanelUI
     [FormerlySerializedAs("thirdAddresValue")] public TextMeshProUGUI thirdAddressValue;
     [FormerlySerializedAs("fourthAddresValue")] public TextMeshProUGUI fourthAddressValue;
 
-    public void Display(string firstVal, string secondVal, string thirdVal, string fourthVal)
+    public void Display(int firstVal, int secondVal, int thirdVal, int fourthVal)
     {
-        firstAddressValue.text = firstVal;
-        secondAddressValue.text = secondVal;
-        thirdAddressValue.text = thirdVal;
-        fourthAddressValue.text = fourthVal;
+        firstAddressValue.SetText("{0}", firstVal);
+        secondAddressValue.SetText("{0}", secondVal);
+        thirdAddressValue.SetText("{0}", thirdVal);
+        fourthAddressValue.SetText("{0}", fourthVal);
     }
 }
