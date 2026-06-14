@@ -3,20 +3,19 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 /// <summary>
-/// Orchestrates the dialogue flow by connecting data (DialogueGraph) with the interface (DialogueUI).
-/// Manages node transitions, branching logic, and dialogue events.
+///     Orchestrates the dialogue flow by connecting data (DialogueGraph) with the interface (DialogueUI).
+///     Manages node transitions, branching logic, and dialogue events.
 /// </summary>
-public class DialogueManager : MonoBehaviour 
+public class DialogueManager : MonoBehaviour
 {
-    [FormerlySerializedAs("_ui")]
-    [Header("References")]
-    [SerializeField] private DialogueUI ui;
-    [FormerlySerializedAs("_activeGraph")] [SerializeField] private DialogueGraph activeGraph;
-    [FormerlySerializedAs("_hintGraph")] [SerializeField] private DialogueGraph hintGraph;
+    [FormerlySerializedAs("_ui")] [Header("References")] [SerializeField]
+    private DialogueUI ui;
 
-    public event Action OnDialogueEnd;
-    public event Action OnDialogueBegin;
-    public event Action OnHintEnabled;
+    [FormerlySerializedAs("_activeGraph")] [SerializeField]
+    private DialogueGraph activeGraph;
+
+    [FormerlySerializedAs("_hintGraph")] [SerializeField]
+    private DialogueGraph hintGraph;
 
     private DialogueNode _currentNode;
     private int _currentNodeIndex;
@@ -24,21 +23,31 @@ public class DialogueManager : MonoBehaviour
     public void Start()
     {
         // Automatically start the dialogue if a graph is assigned
-        if (activeGraph != null)
-        {
-            StartDialogue(activeGraph);
-        }
-    
+        if (activeGraph != null) StartDialogue(activeGraph);
+
 
         // Subscribe to UI events
         ui.OnNextRequested += HandleNextQuote;
         ui.OnSpecificPathRequested += HandleBranching;
     }
-    
+
+
+    private void OnDestroy()
+    {
+        if (ui == null) return;
+        ui.OnNextRequested -= HandleNextQuote;
+        ui.OnSpecificPathRequested -= HandleBranching;
+    }
+
+    public event Action OnDialogueEnd;
+    public event Action OnDialogueBegin;
+    public event Action OnHintEnabled;
+
     /// <summary>
-    /// Switches the active conversation to the hint graph.
+    ///     Switches the active conversation to the hint graph.
     /// </summary>
-    public void SetupHintDialogue() {
+    public void SetupHintDialogue()
+    {
         if (hintGraph == null) return;
 
         OnHintEnabled?.Invoke();
@@ -46,25 +55,20 @@ public class DialogueManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Advances the dialogue to the next sequential node.
+    ///     Advances the dialogue to the next sequential node.
     /// </summary>
     private void HandleNextQuote()
     {
         _currentNodeIndex++;
 
         if (_currentNodeIndex < activeGraph.nodes.Count)
-        {
             SetNode(_currentNodeIndex);
-
-        }
         else
-        {
             EndDialogue();
-        }
     }
 
     /// <summary>
-    /// Jumps to a specific node index based on the player's choice.
+    ///     Jumps to a specific node index based on the player's choice.
     /// </summary>
     /// <param name="branchIndex">The ID of the chosen answer (1, 2, or 3).</param>
     private void HandleBranching(int branchIndex)
@@ -94,7 +98,8 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            CustomLog.LogEditorWarning($"[DialogueManager] Target index {targetIndex} is out of bounds. Ending dialogue.");
+            CustomLog.LogEditorWarning(
+                $"[DialogueManager] Target index {targetIndex} is out of bounds. Ending dialogue.");
             EndDialogue();
         }
     }
@@ -102,13 +107,13 @@ public class DialogueManager : MonoBehaviour
     #region helpers
 
     /// <summary>
-    /// Starts a conversation using the provided dialogue graph.
+    ///     Starts a conversation using the provided dialogue graph.
     /// </summary>
     private void StartDialogue(DialogueGraph graph)
     {
         if (graph == null || graph.nodes == null || graph.nodes.Count == 0)
         {
-            CustomLog.LogEditorError($"[DialogueManager] Cannot start dialogue: Graph is null or empty!");
+            CustomLog.LogEditorError("[DialogueManager] Cannot start dialogue: Graph is null or empty!");
             return;
         }
 
@@ -116,8 +121,9 @@ public class DialogueManager : MonoBehaviour
         OnDialogueBegin?.Invoke();
         SetNode(0);
     }
+
     /// <summary>
-    /// Updates the current state and refreshes the UI.
+    ///     Updates the current state and refreshes the UI.
     /// </summary>
     private void SetNode(int index)
     {
@@ -125,6 +131,7 @@ public class DialogueManager : MonoBehaviour
         _currentNode = activeGraph.nodes[_currentNodeIndex];
         ui.UpdateVisuals(_currentNode);
     }
+
     private void EndDialogue()
     {
         CustomLog.LogEditor("[DialogueManager] Dialogue sequence finished.");
@@ -132,16 +139,10 @@ public class DialogueManager : MonoBehaviour
         ui.StopAnimatingText();
     }
 
-    public void SetActiveGraph(DialogueGraph g) {
+    public void SetActiveGraph(DialogueGraph g)
+    {
         activeGraph = g;
     }
+
     #endregion
-
-
-    private void OnDestroy()
-    {
-        if (ui == null) return;
-        ui.OnNextRequested -= HandleNextQuote;
-        ui.OnSpecificPathRequested -= HandleBranching;
-    }
 }

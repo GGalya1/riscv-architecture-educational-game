@@ -134,9 +134,9 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
         _infoSrcBRegister = registerSrcBVisualizer.UIRegisterPanel;
         _infoOutputRegister = registerOutputVisualizer.UIRegisterPanel;
 
-        memoryVisualizer.UIRegisterPanel.Display($"{_dataInstructionMemory.Memory[0]}",
-            $"{_dataInstructionMemory.Memory[4]}", $"{_dataInstructionMemory.Memory[8]}",
-            $"{_dataInstructionMemory.Memory[12]}");
+        memoryVisualizer.UIRegisterPanel.Display(_dataInstructionMemory.Memory[0],
+            _dataInstructionMemory.Memory[4], _dataInstructionMemory.Memory[8],
+            _dataInstructionMemory.Memory[12]);
         UpdateVisualizers();
     }
 
