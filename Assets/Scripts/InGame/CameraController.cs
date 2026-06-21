@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float scrollSensitivity = 2.0f;    // for Mouse
     [SerializeField] private float minHeight = 5f;
     [SerializeField] private float maxHeight = 20f;
-    [SerializeField] private float zoomSmoothness = 0.1f;
+    // [SerializeField] private float zoomSmoothness = 0.1f;
 
     [Header("Bounds (Horizontal)")]
     public float minX;

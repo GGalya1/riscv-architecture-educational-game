@@ -30,9 +30,7 @@ public class LevelPanelScroller : MonoBehaviour
 
     [SerializeField] private float edgeBounceDuration = 0.4f;
 
-    [Header("Inertia Tilt")] [SerializeField]
-    private bool enableInertiaTilt = true;
-
+    [Header("Inertia Tilt")]
     [SerializeField] private InertiaMode inertiaMode = InertiaMode.Wave;
     [SerializeField] private float tiltAngle = 5f;
     [SerializeField] private float waveStagger = 0.028f;
