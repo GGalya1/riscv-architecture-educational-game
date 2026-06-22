@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OneTickProcessorInitialState
   levelTarget: Bearbeite den Wert aus Instruction Memory an die Adresse 12 korrekt.
   pcRegisterInitialValue: 12
+  aufgabeTyp: 3
+  registerFieldAddressAnswer: 1
+  registerFieldValueAnswer: 16
+  memoryAddressAnswer: 0
+  memoryValueAnswer: 0
+  pcValueAnswer: 256
+  customDialogueGraph: {fileID: 11400000, guid: cd196c00a82834f4d94b2ff06f976a32, type: 2}
+  nextSceneInitial: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
   firstInstructionWord: 0
   secondInstructionWord: 0
   thirdInstructionWord: 0
@@ -22,11 +30,3 @@ MonoBehaviour:
   secondDataWord: 0
   thirdDataWord: 0
   fourthDataWord: 0
-  aufgabeTyp: 3
-  registerFieldAddressAnswer: 1
-  registerFieldValueAnswer: 16
-  memoryAddressAnswer: 0
-  memoryValueAnswer: 0
-  pcValueAnswer: 256
-  customDialogueGraph: {fileID: 11400000, guid: cd196c00a82834f4d94b2ff06f976a32, type: 2}
-  nextSceneInitial: {fileID: 0}
