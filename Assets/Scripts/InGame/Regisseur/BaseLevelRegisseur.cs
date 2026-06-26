@@ -166,6 +166,9 @@ public abstract class BaseLevelRegisseur<TState, TBus> : MonoBehaviour
     private void HandlePrevTick()
     {
         if (TickCounter <= 0 || isProcessing) { return; }
+        
+        AchievementManager.Increment(AchievementIds.RollingBackFiftyTimes);
+        
         StartCoroutine(PrevTickSequence());
     }
     private IEnumerator PrevTickSequence()

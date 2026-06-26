@@ -11,12 +11,18 @@ public class AchievementObserver : MonoBehaviour
     {
         LevelEvents.LevelCompleted += OnLevelCompleted;
         LevelEvents.SolutionFailed += OnSolutionFailed;
+        
+        LevelEvents.PrevTickUsed += OnPrevTickUsed;
+        LevelEvents.CreditsWatched += OnCreditsWatched;
     }
 
     private void OnDisable()
     {
         LevelEvents.LevelCompleted -= OnLevelCompleted;
         LevelEvents.SolutionFailed -= OnSolutionFailed;
+        
+        LevelEvents.PrevTickUsed -= OnPrevTickUsed;
+        LevelEvents.CreditsWatched -= OnCreditsWatched;
     }
 
     private void OnLevelCompleted(LevelCompletedData data)
@@ -32,11 +38,29 @@ public class AchievementObserver : MonoBehaviour
         // Player beat the last level in the game
         if (data.IsLastLevel)
             AchievementManager.Unlock(AchievementIds.AllLevelsComplete);
+        
+        // Fail 5 times, but complete the level
+        if (data.FallenTries >= 5)
+            AchievementManager.Unlock(AchievementIds.NeverGiveUp);
     }
 
     private void OnSolutionFailed(int totalFailedTries)
     {
         // Increment the global "correct solutions" counter (incremental achievement)
         AchievementManager.Increment(AchievementIds.SolutionCounter);
+    }
+    
+    
+    private void OnPrevTickUsed(int totalTicks)
+    {
+        if (totalTicks >= 50)
+        {
+            AchievementManager.Unlock(AchievementIds.RollingBackFiftyTimes);
+        }
+    }
+    
+    private void OnCreditsWatched()
+    {
+        AchievementManager.Unlock(AchievementIds.CreditsWatched);
     }
 }

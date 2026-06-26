@@ -19,4 +19,16 @@ public static class LevelEvents
 
     public static void RaiseSolutionFailed(int totalFailedTries)
         => SolutionFailed?.Invoke(totalFailedTries);
+    
+    // Every time when player roll back a tick (roll back 50 times achievement)
+    public static event Action<int> PrevTickUsed; 
+    
+    // A credits button was pressed
+    public static event Action CreditsWatched;
+    
+    public static void RaisePrevTickUsed(int totalTicks) 
+        => PrevTickUsed?.Invoke(totalTicks);
+
+    public static void RaiseCreditsWatched() 
+        => CreditsWatched?.Invoke();
 }

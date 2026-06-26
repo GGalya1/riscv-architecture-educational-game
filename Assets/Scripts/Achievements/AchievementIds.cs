@@ -10,4 +10,10 @@ public static class AchievementIds
     public const string PerfectTry = AchievementConstants.PerfectTry;
 
     public const string SolutionCounter = AchievementConstants.SolutionCounter;
+    
+    public const string NeverGiveUp = AchievementConstants.Unbreakable;
+    
+    public const string CreditsWatched = AchievementConstants.CreditsWatched;
+    
+    public const string RollingBackFiftyTimes = AchievementConstants.RollingBackFiftyTimes;
 }
