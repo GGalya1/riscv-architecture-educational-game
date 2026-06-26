@@ -3,7 +3,6 @@
 
 using System;
 using GooglePlayGames;
-using GooglePlayGames.BasicApi;
 
 /// <summary>
 /// Google Play Games Services achievement implementation.
@@ -19,12 +18,12 @@ public class GooglePlayAchievementService : IAchievementService
         // Activate the plugin (must be called once before anything else)
         PlayGamesPlatform.Activate();
 
-        PlayGamesPlatform.Instance.Authenticate(status =>
+        PlayGamesPlatform.Instance.Authenticate(success =>
         {
-            var success = status == SignInStatus.Success;
             CustomLog.LogEditor(success
                 ? "[GPGS] Sign-in successful."
-                : $"[GPGS] Sign-in failed: {status}");
+                : "[GPGS] Sign-in failed.");
+        
             onResult?.Invoke(success);
         });
     }
@@ -55,7 +54,7 @@ public class GooglePlayAchievementService : IAchievementService
     public void ShowUI()
     {
         if (!IsAuthenticated) return;
-        Social.ShowAchievementsUI();
+        PlayGamesPlatform.Instance.ShowAchievementsUI();
     }
 }
 
