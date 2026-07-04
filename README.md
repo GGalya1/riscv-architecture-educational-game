@@ -19,14 +19,15 @@ If you want to play the game without opening the project in Unity, you can find 
 **Mehrtakt-Abenteuer** is an adventure through the layers of computer architecture. Players must master various components to eventually understand and build the "Great and Terrible" Multi-cycle Processor.
 
 ### Key Features:
-* **25 Levels** across **7 Educational Chapters**:
+* **31 Levels** across **8 Educational Chapters**:
     1.  **Register** – The basics of data storage.
     2.  **Multiplexer** – The art of selection.
     3.  **ALU** – The core of calculations.
     4.  **Memory** – Where instructions and data reside.
     5.  **Extender** – Preparing data for processing.
     6.  **Register File** – Managing multiple registers.
-    7.  **Mehrtaktprozessor** – The ultimate goal!
+    7.  **Single-Cycle Processor** – Putting it all together in a single cycle. *(Work in Progress)*
+    8.  **Multi-Cycle Processor** – The ultimate goal!
 * **Companion System:** Meet **Charlie**, your digital assistant. She provides hints, explains theory, and allows players to choose between deep-dive explanations or jumping straight into the action.
 * **Interactive Learning:** Concepts are taught through gameplay mechanics rather than just passive reading.
 
