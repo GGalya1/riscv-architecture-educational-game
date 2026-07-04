@@ -25,7 +25,7 @@ public struct LevelFiveState
 }
 
 [Serializable]
-public class LevelFiveBusSegments
+public class LevelFiveBusSegments: IBusSegmentProvider
 {
     [Header("Fetch")] [Tooltip("PC -> Memory address")]
     public LineRenderer pcToMemAddr;
@@ -59,7 +59,7 @@ public class LevelFiveBusSegments
     }
 }
 
-public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
+public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState, LevelFiveBusSegments>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")] [Header("Level 5 Specific Components")] [SerializeField]
     private RegisterVisualizer registerSrcAVisualizer;
@@ -82,9 +82,6 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
     [FormerlySerializedAs("_blinkerNumber")] [SerializeField]
     private Blinker blinkerNumber;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelFiveBusSegments buses;
-
 
     private int _currentBus; // [0, 6]
     private DataInstMemory _dataInstructionMemory;
@@ -95,13 +92,6 @@ public class LevelFiveRegisseur : BaseLevelRegisseur<LevelFiveState>
     private Register _srcB;
 
     protected override int RightAnswerValue => 66;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

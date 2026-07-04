@@ -25,7 +25,7 @@ public struct LevelThreeState
 }
 
 [Serializable]
-public class LevelThirdBusSegments
+public class LevelThirdBusSegments: IBusSegmentProvider
 {
     [Header("PC fanout")] [Tooltip("PC (SrcA) -> Memory address input")]
     public LineRenderer pcToMemAddr;
@@ -60,7 +60,7 @@ public class LevelThirdBusSegments
     }
 }
 
-public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
+public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState, LevelThirdBusSegments>
 {
     [FormerlySerializedAs("_multiplexerVisualizer")] [Header("Level 3 Specific Components")] [SerializeField]
     private MultiplexerVisualizer multiplexerVisualizer;
@@ -83,11 +83,6 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
     [FormerlySerializedAs("_numberBlinker")] [SerializeField]
     private Blinker numberBlinker;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelThirdBusSegments buses;
-
-    // private override int RightAnswerValue => 66;
-
 
     private int _currentBus; // [0, 5]
     private DataInstMemory _dataInstructionMemory;
@@ -95,13 +90,6 @@ public class LevelThirdRegisseur : BaseLevelRegisseur<LevelThreeState>
     // Intern components for computations
     private Register _srcA;
     private Register _srcB;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

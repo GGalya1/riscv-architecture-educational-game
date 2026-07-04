@@ -24,7 +24,7 @@ public struct SubExtendedSevenLevelState
 }
 
 [System.Serializable]
-public class SubExtendedBusSegments
+public class SubExtendedBusSegments: IBusSegmentProvider
 {
     [Header("Decode - addresses")]
     [Tooltip("SrcA register (rs1 address) -> Register File A1")]
@@ -64,7 +64,7 @@ public class SubExtendedBusSegments
     }
 }
 
-public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelState>
+public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelState, SubExtendedBusSegments>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")] [SerializeField] protected RegisterVisualizer registerSrcAVisualizer;
     [FormerlySerializedAs("_registerImmediateVisualizer")] [SerializeField] protected RegisterVisualizer registerImmediateVisualizer;
@@ -94,16 +94,6 @@ public class SubExtendedRegisseur : BaseLevelRegisseur<SubExtendedSevenLevelStat
     private RegisterFile _registerFile;
 
     private int _currentBus;
-    
-    [Header("Bus Segments")]
-    [SerializeField] private SubExtendedBusSegments buses;
-    
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

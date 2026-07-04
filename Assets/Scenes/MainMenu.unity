@@ -318,7 +318,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &11767603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +475,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &37714862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,7 +582,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: 242469841dede3b42aa6ecf311bb17cf, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &43331074
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,7 +784,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &60190623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1215,7 +1214,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &86958003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1538,8 +1536,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: 48c85c9a3569d5f4f8726f807eb94182, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: 0a7574bb11a275c489b7b389b9abcadf, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &96975203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,7 +1562,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &96975204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1856,7 +1855,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &103896854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2014,7 +2012,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &107290375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2122,7 +2119,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &120330010
 GameObject:
   m_ObjectHideFlags: 0
@@ -2460,7 +2459,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &155306489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,7 +2566,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: 3ac1d64033501cd48aeaf693372bdfce, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &167463843
 GameObject:
   m_ObjectHideFlags: 0
@@ -3120,7 +3120,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &238356394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3277,7 +3276,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &244227496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3448,7 +3446,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &276181771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3933,8 +3930,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: 1d8ac649fca2ac04c83f37a4e536d868, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: 873f4c81d80b11b43a42804cc32b02f2, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &349742745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3957,7 +3956,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &349742746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4198,7 +4196,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &361473130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4492,7 +4489,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &380471638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4650,7 +4646,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &384370528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4758,7 +4753,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: 7bfcf92658e3d7846b0ef1c241fc31fd, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &388810062
 GameObject:
   m_ObjectHideFlags: 0
@@ -5488,7 +5485,6 @@ MonoBehaviour:
   animEase: 9
   edgeBounceStrength: 18
   edgeBounceDuration: 0.4
-  enableInertiaTilt: 1
   inertiaMode: 1
   tiltAngle: 5
   waveStagger: 0.03
@@ -5966,7 +5962,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &501632337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6426,8 +6421,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: 7615956258793484fa86942f3c36d362, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: d5fe23faf3f9c4741b73e01c8ad852b2, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &563943018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6450,7 +6447,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &563943019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7460,7 +7456,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &803272895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7618,7 +7613,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &809336953
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7726,7 +7720,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: ee37a1325eed36241836606e9916adba, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &816899531
 GameObject:
   m_ObjectHideFlags: 0
@@ -8047,7 +8043,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &867390410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9279,7 +9274,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &974701310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9436,7 +9430,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &980164673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9593,7 +9586,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &991712099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9819,8 +9811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: f6adf0ea88ca4c743937feff79f7b44d, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: 3d279397006fb3b4480f38b5f65b7747, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &998979506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9843,7 +9837,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &998979507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10324,7 +10317,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1076859142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11114,7 +11106,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1147036161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11499,7 +11490,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1229725801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11784,8 +11774,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: df608996192c70e4db3521a21ff4737b, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: d7acad6f472918e4a8c9a2e6b71a147b, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &1245436480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11808,7 +11800,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1245436481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12780,7 +12771,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1297429310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13672,7 +13662,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1717940097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13829,7 +13818,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1721605176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14071,7 +14059,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1753622833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14228,7 +14215,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1819042444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14491,8 +14477,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22dc2a9763dcd7042b804f39efbeed1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelData: {fileID: 11400000, guid: a7dfab76a5a45184ab00fdde546d20b6, type: 2}
+  levelData: {fileID: 11400000, guid: 429b5f9ee6baca545be31d6b4c5cc332, type: 2}
+  oneTickLevelData: {fileID: 11400000, guid: 86fe041e9a4ab3c47af782190a887dbb, type: 2}
   menuController: {fileID: 439871399}
+  processorType: 1
 --- !u!114 &1829462833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14515,7 +14503,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1829462834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14835,6 +14822,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1857073426}
   m_CullTransparentMesh: 1
+--- !u!1 &1872819626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1872819628}
+  - component: {fileID: 1872819627}
+  - component: {fileID: 1872819629}
+  m_Layer: 0
+  m_Name: AchievementManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1872819627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872819626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4c8589c39c2bf04e88cf766fe4118e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AchievementManager
+--- !u!4 &1872819628
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872819626}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.15306, y: -0, z: -3.98368}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1872819629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872819626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b7a0bed6b28474c8993c22d35bcc20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AchievementObserver
 --- !u!1 &1890264273
 GameObject:
   m_ObjectHideFlags: 0
@@ -14897,7 +14941,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1890264276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15216,7 +15259,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &1931998020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15510,7 +15552,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &2008742574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15746,7 +15787,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &2052459661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16241,7 +16281,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &2093029855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16349,7 +16388,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelData: {fileID: 11400000, guid: 3148538152ece904fa09f7f086f71a12, type: 2}
+  oneTickLevelData: {fileID: 0}
   menuController: {fileID: 439871399}
+  processorType: 0
 --- !u!1 &2101566554
 GameObject:
   m_ObjectHideFlags: 0
@@ -16412,7 +16453,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &2101566557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16833,7 +16873,6 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
-  clickPunchDur: 0.22
 --- !u!114 &2124223943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17076,3 +17115,4 @@ SceneRoots:
   - {fileID: 167463846}
   - {fileID: 439871400}
   - {fileID: 182605584}
+  - {fileID: 1872819628}

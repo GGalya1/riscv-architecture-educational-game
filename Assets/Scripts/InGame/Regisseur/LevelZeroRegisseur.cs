@@ -15,7 +15,7 @@ public struct LevelZeroState
 }
 
 [Serializable]
-public class LevelZeroBusSegments
+public class LevelZeroBusSegments: IBusSegmentProvider
 {
     [Tooltip("SrcA register -> SrcB register")]
     public LineRenderer srcAToSrcB;
@@ -30,7 +30,7 @@ public class LevelZeroBusSegments
     }
 }
 
-public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
+public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState, LevelZeroBusSegments>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")] [Header("Level 0 Specific Components")] [SerializeField]
     private RegisterVisualizer registerSrcAVisualizer;
@@ -47,24 +47,12 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
     [FormerlySerializedAs("_srcBValue")] [SerializeField]
     private int srcBValue;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelZeroBusSegments buses;
-
-    //protected override int RightAnswerValue => 4;
-
     private int _currentBus; // [0, 2]
     private Register _output;
 
     // Intern components for computations
     private Register _srcA;
     private Register _srcB;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {
@@ -144,18 +132,6 @@ public class LevelZeroRegisseur : BaseLevelRegisseur<LevelZeroState>
         _srcB.Clock();
         _output.Clock();
     }
-
-    /*protected override bool IsStateEqual(object state)
-    {
-        if (!(state is LevelZeroState s)) return false;
-
-        return (s.RegisterAValue == srcA.Output) &&
-                (s.RegisterBValue == srcB.Output) &&
-                (s.OutputRegisterValue == output.Output) &&
-                (s.RegisterAWE == srcA.WriteEnable) &&
-                (s.RegisterBWE == srcB.WriteEnable) &&
-                (s.OutputRegisterWE == output.WriteEnable);
-    }*/
 
     protected override void UpdateVisualizers()
     {

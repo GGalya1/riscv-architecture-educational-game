@@ -7,7 +7,9 @@ using DG.Tweening;
 using UnityEngine.Serialization;
 
 // A base class for all levels that manages time, history, and completion.
-public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: struct
+public abstract class BaseLevelRegisseur<TState, TBus> : MonoBehaviour 
+    where TState: struct
+    where TBus: IBusSegmentProvider
 {
     [FormerlySerializedAs("_levelTargetDescription")]
     [Header("Level Content Configuration")]
@@ -65,6 +67,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     
     // --- SIGNAL ANIMATION
     protected WaitUntil WaitNoSignals;
+    
+    [Header("Bus Segments")]
+    public TBus buses;
 
 
     #region ABSTRACT METHODS (Unique to each level)
@@ -110,6 +115,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
         // 2. Initializing history
         TickStateValues = new TState[maxTickNumber]; // Can be _maxTickNumber + 1
         SaveCurrentStateAt(0);
+        
+        buses.RegisterAll(busController);
+        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
     }
 
     protected virtual void OnLevelStart()
@@ -158,6 +166,9 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
     private void HandlePrevTick()
     {
         if (TickCounter <= 0 || isProcessing) { return; }
+        
+        AchievementManager.Increment(AchievementIds.RollingBackFiftyTimes);
+        
         StartCoroutine(PrevTickSequence());
     }
     private IEnumerator PrevTickSequence()
@@ -187,7 +198,8 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
         if (CheckWinCondition())
         {
             CustomLog.LogEditor("Level is solved!");
-            var nextLevelToUnlockIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            var currentSceneIndex      = SceneManager.GetActiveScene().buildIndex;
+            var nextLevelToUnlockIndex = currentSceneIndex + 1;
             var highestUnlockedIndex = PlayerPrefs.GetInt(GameConstants.UnlockedLevelKey, 1);
 
             if (nextLevelToUnlockIndex > highestUnlockedIndex)
@@ -196,8 +208,14 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
                 PlayerPrefs.Save();
                 CustomLog.LogEditor($"New level unlocked: Scene Index {nextLevelToUnlockIndex}");
             }
-
+            
             var earnedStars = CalculateStars(fallenTries);
+            
+            // notify achievements observer
+            LevelEvents.RaiseLevelCompleted(new LevelCompletedData(
+                currentSceneIndex, fallenTries, earnedStars, nextLevelToUnlockIndex >= SceneManager.sceneCountInBuildSettings));
+
+            
             levelManager.SetGainedStars(earnedStars);
             levelManager.OpenEndOfLevelMenu();
         }
@@ -206,6 +224,7 @@ public abstract class BaseLevelRegisseur<TState> : MonoBehaviour where TState: s
             fallenTries++;
             CustomLog.LogEditorError("Level is not solved! Failed tries: " + fallenTries);
 
+            LevelEvents.RaiseSolutionFailed(fallenTries);
             StartCoroutine(ShowIncorrectIndicator());
         }
     }

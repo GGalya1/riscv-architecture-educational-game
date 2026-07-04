@@ -15,7 +15,7 @@ public struct LevelFiveExtendedState
 }
 
 [Serializable]
-public class LevelFiveExtendedBusSegments
+public class LevelFiveExtendedBusSegments: IBusSegmentProvider
 {
     [Tooltip("SrcA register (raw instruction word) -> Extend unit")]
     public LineRenderer srcAToExtend;
@@ -30,7 +30,7 @@ public class LevelFiveExtendedBusSegments
     }
 }
 
-public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
+public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState, LevelFiveExtendedBusSegments>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")]
     [Header("Level 5 (Extended) Specific Components")]
@@ -45,22 +45,13 @@ public class LevelFiveExtended : BaseLevelRegisseur<LevelFiveExtendedState>
 
     [FormerlySerializedAs("InputRegisterValue")] [SerializeField]
     private uint inputRegisterValue;
-
-    [Header("Bus Segments")] [SerializeField]
-    private LevelFiveExtendedBusSegments buses;
+    
 
     private Register _output;
 
     private Register _srcA;
 
     protected int CurrentBus = 0;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

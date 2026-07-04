@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class OneTickBusSegments
+public class OneTickBusSegments: IBusSegmentProvider
 {
     [Header("IF - Instruction Fetch")] [Tooltip("PC -> Instruction Memory address input")]
     public LineRenderer pcToInstrMem;
@@ -160,10 +160,10 @@ public struct OneTickProcessorLevelState
     public int MuXresultPath;
 }
 
-public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
+public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, OneTickBusSegments>
 {
     [Header("Initial values for level")]
-    public static ProcessorInitialState Initial;
+    public static OneTickProcessorInitialState Initial;
 
     [Header("Processor Specific Components")] [SerializeField]
     private RegisterVisualizer registerPCVisualizer;
@@ -183,9 +183,6 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
 
     [SerializeField] private Blinker numberBlinker;
 
-    [Header("Bus Segments")] [SerializeField]
-    private OneTickBusSegments buses;
-
 
     private int _currentBus; // [0, 3]
     private DataInstMemory _dataMemory;
@@ -201,28 +198,21 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
         levelManager.SetLevelDialogue(Initial.customDialogueGraph);
     }
 
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
-
     protected override void OnLevelStart()
     {
         _pc = new Register(Initial.pcRegisterInitialValue) { WriteEnable = true };
 
         _instructionMemory = new DataInstMemory { MemoryWrite = false };
-        _instructionMemory.LoadWord(0, Initial.firstMemoWord);
-        _instructionMemory.LoadWord(4, Initial.secondMemoWord);
-        _instructionMemory.LoadWord(8, Initial.thirdMemoWord);
-        _instructionMemory.LoadWord(12, Initial.fourthMemoWord);
+        _instructionMemory.LoadWord(0, Initial.firstInstructionWord);
+        _instructionMemory.LoadWord(4, Initial.secondInstructionWord);
+        _instructionMemory.LoadWord(8, Initial.thirdInstructionWord);
+        _instructionMemory.LoadWord(12, Initial.fourthInstructionWord);
 
         _dataMemory = new DataInstMemory { MemoryWrite = false };
-        _dataMemory.LoadWord(0, 0);
-        _dataMemory.LoadWord(4, 0);
-        _dataMemory.LoadWord(8, 0);
-        _dataMemory.LoadWord(12, 0);
+        _dataMemory.LoadWord(0, Initial.firstDataWord);
+        _dataMemory.LoadWord(4, Initial.secondDataWord);
+        _dataMemory.LoadWord(8, Initial.thirdDataWord);
+        _dataMemory.LoadWord(12, Initial.fourthDataWord);
 
         _registerFile = new RegisterFile { RegisterWriteEnable = false };
         _registerFile.InitializeRegisters(new[]
@@ -232,6 +222,12 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState>
             0, 12, 53, 65, 29, 60, 61, 0,
             25, 54, 0, 28, 70, 30, 31, 0
         });
+        
+        // Caching of UI panels for visualizers
+        _infoPCRegister = registerPCVisualizer.UIRegisterPanel;
+        _infoInstructionMemory = instructionMemoryVisualizer.UIRegisterPanel;
+        _infoDataMemory = dataMemoryVisualizer.UIRegisterPanel;
+        
 
         UpdateVisualizers();
     }

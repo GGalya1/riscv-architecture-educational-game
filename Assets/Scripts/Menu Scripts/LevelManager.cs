@@ -93,13 +93,21 @@ public class LevelManager : MonoBehaviour
 
             if (nextData != null)
             {
-                FullProcessorRegisseur.Initial = (ProcessorInitialState)nextData;
-
-                StartCoroutine(LoadWithTransition(GameConstants.FullProcessorSceneIndex));
+                switch (nextData)
+                {
+                    case OneTickProcessorInitialState oneTickData:
+                        OneTickRegisseur.Initial = oneTickData;
+                        StartCoroutine(LoadWithTransition(GameConstants.OneTickProcessorSceneIndex));
+                        break;
+                    case ProcessorInitialState fullData:
+                        FullProcessorRegisseur.Initial = fullData;
+                        StartCoroutine(LoadWithTransition(GameConstants.FullProcessorSceneIndex));
+                        break;
+                }
             }
             else
             {
-                CustomLog.LogEditor("No more processor sub-levels. Loading Main Menu.");
+                CustomLog.LogEditor("No more processor sublevels. Loading Main Menu.");
                 StartCoroutine(LoadWithTransition(0));
             }
             return;

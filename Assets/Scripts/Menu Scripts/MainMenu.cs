@@ -75,8 +75,7 @@ public class MainMenu : MonoBehaviour
     }
     public void UnlockAllLevels()
     {
-        // int totalScenes = SceneManager.sceneCountInBuildSettings - 1;
-        const int totalScenes = 25;
+        var totalScenes = levelButtons.Length;
 
         PlayerPrefs.SetInt(GameConstants.UnlockedLevelKey, totalScenes);
         PlayerPrefs.Save();

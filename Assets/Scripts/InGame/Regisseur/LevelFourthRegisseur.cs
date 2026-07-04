@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [Serializable]
-public class LevelFourthBusSegments
+public class LevelFourthBusSegments: IBusSegmentProvider
 {
     [Header("PC fanout")] [Tooltip("PC (_srcA) -> Memory address input")]
     public LineRenderer pcToMemAddr;
@@ -44,7 +44,7 @@ public class LevelFourthBusSegments
     }
 }
 
-public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
+public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState, LevelFourthBusSegments>
 {
     [Header("Level 4 Specific Components")] [SerializeField]
     private MultiplexerVisualizer multiplexerVisualizer;
@@ -55,9 +55,6 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
     [SerializeField] private AluVisualiser aluVisualizer;
     [SerializeField] private Blinker numberBlinker;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelFourthBusSegments buses;
-
     private int _currentBus;
     private DataInstMemory _dataInstructionMemory;
     private InstrMemoryControlPanel _infoDataMemory;
@@ -67,13 +64,6 @@ public class LevelFourthRegisseur : BaseLevelRegisseur<LevelThreeState>
 
     private Register _srcA;
     private Register _srcB;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

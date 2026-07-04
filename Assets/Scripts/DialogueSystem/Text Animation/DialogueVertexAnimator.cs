@@ -88,7 +88,6 @@ public class DialogueVertexAnimator
                         if (visibleCharacterIndex == charCount)
                         {
                             FinishAnimating(onFinish);
-                            yield break;
                         }
                     }
                 }

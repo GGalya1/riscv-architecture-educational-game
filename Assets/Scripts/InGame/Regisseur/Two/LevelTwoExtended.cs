@@ -14,7 +14,7 @@ public struct LevelTwoExtendedState
 }
 
 [System.Serializable]
-public class LevelTwoExtendedBusSegments
+public class LevelTwoExtendedBusSegments: IBusSegmentProvider
 {
     [Tooltip("SrcA register -> ALU input A")]
     public LineRenderer srcAToAlu;
@@ -31,7 +31,7 @@ public class LevelTwoExtendedBusSegments
     }
 }
 
-public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
+public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState, LevelTwoExtendedBusSegments>
 {
     [FormerlySerializedAs("_aluVizualizer")]
     [Header("Level 2 (Extender) Specific Components")]
@@ -54,16 +54,6 @@ public class LevelTwoExtended : BaseLevelRegisseur<LevelTwoExtendedState>
     private Register _output;
 
     private int _currentBus; // [0, 1]
-    
-    [Header("Bus Segments")] [SerializeField]
-    private LevelTwoExtendedBusSegments buses;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
     
     protected override void OnLevelStart()
     {

@@ -9,20 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5745a4e36bb6c8e45841be2c75420794, type: 3}
+  m_Script: {fileID: 11500000, guid: fc593a5aeb7b454a83afc74f8663a068, type: 3}
   m_Name: Level 11-2
-  m_EditorClassIdentifier: 
-  levelTarget: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 8 korrekt.
-  firstMemoWord: 0
-  secondMemoWord: 0
-  thirdMemoWord: 26633747
-  fourthMemoWord: 0
+  m_EditorClassIdentifier: Assembly-CSharp::OneTickProcessorInitialState
+  levelTarget: Bearbeite den Wert aus Instruction Memory an die Adresse 8 korrekt.
   pcRegisterInitialValue: 0
+  firstInstructionWord: 0
+  secondInstructionWord: 0
+  thirdInstructionWord: 26633747
+  fourthInstructionWord: 0
+  firstDataWord: 0
+  secondDataWord: 0
+  thirdDataWord: 0
+  fourthDataWord: 0
   aufgabeTyp: 0
   registerFieldAddressAnswer: 12
   registerFieldValueAnswer: 63
   memoryAddressAnswer: 0
   memoryValueAnswer: 0
   pcValueAnswer: 0
-  customDialogueGraph: {fileID: 11400000, guid: fa9b25c90e157a64b99f57418944fdf1, type: 2}
-  nextSceneInitial: {fileID: 11400000, guid: 429b5f9ee6baca545be31d6b4c5cc332, type: 2}
+  customDialogueGraph: {fileID: 11400000, guid: cd196c00a82834f4d94b2ff06f976a32, type: 2}
+  nextSceneInitial: {fileID: 11400000, guid: 86fe041e9a4ab3c47af782190a887dbb, type: 2}

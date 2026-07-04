@@ -14,7 +14,7 @@ public struct ExtendedFirstLevelState
 }
 
 [Serializable]
-public class LevelOneExtendedBusSegments
+public class LevelOneExtendedBusSegments: IBusSegmentProvider
 {
     [Header("Middle MUX inputs (constants 8 and 12)")] [Tooltip("Constant 8 -> Middle MUX input [0]")]
     public LineRenderer constAToMiddleMux;
@@ -65,7 +65,7 @@ public class LevelOneExtendedBusSegments
     }
 }
 
-public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
+public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState, LevelOneExtendedBusSegments>
 {
     [FormerlySerializedAs("_registerOutputVisualizer")] [Header("MUXes specific components")] [SerializeField]
     private RegisterVisualizer registerOutputVisualizer;
@@ -85,22 +85,12 @@ public class LevelOneExtended : BaseLevelRegisseur<ExtendedFirstLevelState>
     [FormerlySerializedAs("_numberBlinkers")] [SerializeField]
     private Blinker[] numberBlinkers;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelOneExtendedBusSegments buses;
-
     private int _currentBus; // [0, 2]
     private InfoPanelUI _infoOutputRegister;
 
     private Register _output;
 
     protected override int RightAnswerValue => 12;
-    
-     protected override void Start()
-        {
-            base.Start();
-            buses.RegisterAll(busController);
-            WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-        }
 
     protected override void OnLevelStart()
     {

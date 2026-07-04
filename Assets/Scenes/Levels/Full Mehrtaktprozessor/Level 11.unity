@@ -411,6 +411,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6624943096404486473, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
+      propertyPath: m_text
+      value: PC MUX
+      objectReference: {fileID: 0}
     - target: {fileID: 6771885266133155561, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -656,6 +660,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6624943096404486473, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
+      propertyPath: m_text
+      value: SrcB MUX
+      objectReference: {fileID: 0}
     - target: {fileID: 6771885266133155561, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -872,6 +880,14 @@ PrefabInstance:
     - target: {fileID: 1049798107292652362, guid: e7c315347c794954a956d3128303dee7, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327589822604173324, guid: e7c315347c794954a956d3128303dee7, type: 3}
+      propertyPath: m_text
+      value: Register Field
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327589822604173324, guid: e7c315347c794954a956d3128303dee7, type: 3}
+      propertyPath: m_fontSize
+      value: 31.05
       objectReference: {fileID: 0}
     - target: {fileID: 1727059600018420373, guid: e7c315347c794954a956d3128303dee7, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2361,6 +2377,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7571509827047250224, guid: 7014fde6729b74a43bb99f6fe872bdfe, type: 3}
+      propertyPath: m_text
+      value: ALU
+      objectReference: {fileID: 0}
     - target: {fileID: 7756500294120972775, guid: 7014fde6729b74a43bb99f6fe872bdfe, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2470,6 +2490,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: SrcA Register
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -3606,6 +3630,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: OldPC Register
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6
@@ -4659,6 +4687,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &941342578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4930,6 +4962,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: Instruction Register
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_fontSize
+      value: 30.45
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.6
@@ -5014,6 +5054,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: Data Register
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -5423,6 +5467,10 @@ PrefabInstance:
     - target: {fileID: 2458842873595381277, guid: ae83f4466ea7bd64a91dcdad8af2d355, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3109047656764882953, guid: ae83f4466ea7bd64a91dcdad8af2d355, type: 3}
+      propertyPath: m_text
+      value: Instr/ Data Memory
       objectReference: {fileID: 0}
     - target: {fileID: 3368334328407986832, guid: ae83f4466ea7bd64a91dcdad8af2d355, type: 3}
       propertyPath: m_AnchorMax.y
@@ -5850,6 +5898,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6624943096404486473, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
+      propertyPath: m_text
+      value: Result MUX
+      objectReference: {fileID: 0}
     - target: {fileID: 6771885266133155561, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -6084,34 +6136,6 @@ MonoBehaviour:
   spherePrefab: {fileID: 6425462522399718016, guid: 1d0544c75d85507478621a5dee2e0bd8, type: 3}
   movementSpeed: 7
   poolPreWarmCount: 3
-  busSegments:
-  - {fileID: 1818292852}
-  - {fileID: 1137282957}
-  - {fileID: 901594386}
-  - {fileID: 1894523806}
-  - {fileID: 729392247}
-  - {fileID: 962099686}
-  - {fileID: 35569030}
-  - {fileID: 1065977393}
-  - {fileID: 1871626020}
-  - {fileID: 363149245}
-  - {fileID: 203119610}
-  - {fileID: 1215245610}
-  - {fileID: 934957545}
-  - {fileID: 640806157}
-  - {fileID: 1758749149}
-  - {fileID: 1594724559}
-  - {fileID: 847224417}
-  - {fileID: 267926130}
-  - {fileID: 1527614565}
-  - {fileID: 917754483}
-  - {fileID: 511993809}
-  - {fileID: 1741061376}
-  - {fileID: 2024310556}
-  - {fileID: 785921907}
-  - {fileID: 1483639190}
-  - {fileID: 706986900}
-  - {fileID: 1334515546}
 --- !u!114 &1109257076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6158,6 +6182,31 @@ MonoBehaviour:
   fallenTries: 0
   busController: {fileID: 1109257075}
   isProcessing: 0
+  buses:
+    pcToAdrMux: {fileID: 203119610}
+    pcToOldPcReg: {fileID: 917754483}
+    pcToPcAdder: {fileID: 511993809}
+    constFourToPcAdder: {fileID: 363149245}
+    adrMuxToMem: {fileID: 2024310556}
+    memToInstrReg: {fileID: 934957545}
+    srcAMuxToSrcAReg: {fileID: 847224417}
+    srcBMuxToSrcBReg: {fileID: 1594724559}
+    aluToAluOutReg: {fileID: 267926130}
+    resultMuxToPC: {fileID: 785921907}
+    instrToRegFileA1: {fileID: 1818292852}
+    instrToRegFileA2: {fileID: 1137282957}
+    instrToExtend: {fileID: 1894523806}
+    rd1ToSrcAMux: {fileID: 640806157}
+    rd2ToSrcBMux: {fileID: 1758749149}
+    extToSrcBMux: {fileID: 1871626020}
+    srcAMuxToAlu: {fileID: 847224417}
+    srcBMuxToAlu: {fileID: 1594724559}
+    aluCombToAluOutReg: {fileID: 1065977393}
+    aluOutToResultMux: {fileID: 267926130}
+    aluOutToDataMem: {fileID: 35569030}
+    resultMuxToPcWb: {fileID: 785921907}
+    resultMuxToRegFile: {fileID: 706986900}
+    resultMuxFanOut: {fileID: 1483639190}
   registerPCVisualizer: {fileID: 1846687519}
   registerOldPCVisualizer: {fileID: 767120314}
   registerInstructionVisualizer: {fileID: 970035351}
@@ -6175,31 +6224,6 @@ MonoBehaviour:
   registerFileVisualizer: {fileID: 131028546}
   numberBlinker: {fileID: 1425758661}
   sidePanelInformer: {fileID: 589382569}
-  buses:
-    pcToAdrMux: {fileID: 203119610}
-    pcToOldPcReg: {fileID: 917754483}
-    pcToPcAdder: {fileID: 511993809}
-    constFourToPcAdder: {fileID: 363149245}
-    adrMuxToMem: {fileID: 2024310556}
-    memToInstrReg: {fileID: 934957545}
-    srcAMuxToSrcAReg: {fileID: 0}
-    srcBMuxToSrcBReg: {fileID: 0}
-    aluToAluOutReg: {fileID: 267926130}
-    resultMuxToPC: {fileID: 785921907}
-    instrToRegFileA1: {fileID: 1818292852}
-    instrToRegFileA2: {fileID: 1137282957}
-    instrToExtend: {fileID: 1894523806}
-    rd1ToSrcAMux: {fileID: 640806157}
-    rd2ToSrcBMux: {fileID: 1758749149}
-    extToSrcBMux: {fileID: 1871626020}
-    srcAMuxToAlu: {fileID: 847224417}
-    srcBMuxToAlu: {fileID: 1594724559}
-    aluCombToAluOutReg: {fileID: 1065977393}
-    aluOutToResultMux: {fileID: 267926130}
-    aluOutToDataMem: {fileID: 35569030}
-    resultMuxToPcWb: {fileID: 785921907}
-    resultMuxToRegFile: {fileID: 706986900}
-    resultMuxFanOut: {fileID: 1483639190}
 --- !u!1 &1124232095
 GameObject:
   m_ObjectHideFlags: 0
@@ -6258,6 +6282,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &1124232098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6542,6 +6570,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &1150065400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6944,7 +6976,6 @@ MonoBehaviour:
   scrollSensitivity: 25
   minHeight: 0
   maxHeight: 8
-  zoomSmoothness: 0.3
   minX: -7
   maxX: 15
   minZ: -7
@@ -7194,6 +7225,10 @@ PrefabInstance:
     - target: {fileID: 3296080991002532580, guid: ea6e8fbdd6abac3498f4fe5889a3b771, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3394373501319324465, guid: ea6e8fbdd6abac3498f4fe5889a3b771, type: 3}
+      propertyPath: m_text
+      value: Extender
       objectReference: {fileID: 0}
     - target: {fileID: 4012689578828598390, guid: ea6e8fbdd6abac3498f4fe5889a3b771, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -8542,6 +8577,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: SrcB Register
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -8972,6 +9011,10 @@ MonoBehaviour:
   hoverScale: 1.1
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &1742388455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9568,6 +9611,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: Result Register
+      objectReference: {fileID: 0}
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_fontSize
+      value: 31.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -9657,6 +9708,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 685645097}
     m_Modifications:
+    - target: {fileID: 1327182693303492107, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
+      propertyPath: m_text
+      value: PC Register
+      objectReference: {fileID: 0}
     - target: {fileID: 1707636865834472578, guid: cd10e0fd6078590449f01df71af57b29, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -10187,6 +10242,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6624943096404486473, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
+      propertyPath: m_text
+      value: SrcA MUX
+      objectReference: {fileID: 0}
     - target: {fileID: 6771885266133155561, guid: b9633260595c8e2408c42014fe634c4a, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
@@ -10431,6 +10490,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &1998353027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10795,6 +10858,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!114 &2129902272
 MonoBehaviour:
   m_ObjectHideFlags: 0

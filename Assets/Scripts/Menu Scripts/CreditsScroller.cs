@@ -59,5 +59,7 @@ public class CreditsScroller : MonoBehaviour
             .WaitForCompletion();
 
         loadingOverlay.blocksRaycasts = false;
+        
+        LevelEvents.RaiseCreditsWatched();
     }
 }

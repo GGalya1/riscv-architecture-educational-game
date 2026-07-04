@@ -17,7 +17,7 @@ public struct LevelOneState
 }
 
 [Serializable]
-public class LevelOneBusSegments
+public class LevelOneBusSegments: IBusSegmentProvider
 {
     [Tooltip("SrcA register -> MUX input [0]")]
     public LineRenderer srcAToMux;
@@ -36,7 +36,7 @@ public class LevelOneBusSegments
     }
 }
 
-public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
+public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState, LevelOneBusSegments>
 {
     [FormerlySerializedAs("_multiplexerVisualizer")] [Header("Level 1 Specific Components")] [SerializeField]
     private MultiplexerVisualizer multiplexerVisualizer;
@@ -50,9 +50,6 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
     [FormerlySerializedAs("_registerOutputVisualizer")] [SerializeField]
     private RegisterVisualizer registerOutputVisualizer;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelOneBusSegments buses;
-
     // protected override int RightAnswerValue => 4;
 
     private int _currentBus; // [0, 1]
@@ -61,13 +58,6 @@ public class LevelOneRegisseur : BaseLevelRegisseur<LevelOneState>
     // Intern components for computations
     private Register _srcA;
     private Register _srcB;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {

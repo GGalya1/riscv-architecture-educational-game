@@ -1619,7 +1619,7 @@ LineRenderer:
   m_MaskInteraction: 0
   m_Positions:
   - {x: -1.64, y: 0, z: -1}
-  - {x: 0.66, y: 0, z: -1}
+  - {x: -0.36, y: 0, z: -1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -4620,7 +4620,6 @@ MonoBehaviour:
   spherePrefab: {fileID: 6425462522399718016, guid: 1d0544c75d85507478621a5dee2e0bd8, type: 3}
   movementSpeed: 7
   poolPreWarmCount: 3
-  busSegments: []
 --- !u!114 &1109257076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4662,18 +4661,6 @@ MonoBehaviour:
   fallenTries: 0
   busController: {fileID: 1109257075}
   isProcessing: 0
-  registerPCVisualizer: {fileID: 1846687519}
-  adrMuxVisualizer: {fileID: 50915094}
-  srcBmuxVisualizer: {fileID: 416403905}
-  resultMuxVisualizer: {fileID: 700962796}
-  aluVisualizer: {fileID: 367546635}
-  pcAluVisualizer: {fileID: 1760257770}
-  btaAluVisualizer: {fileID: 203865495}
-  extenderVisualizer: {fileID: 1292942286}
-  instructionMemoryVisualizer: {fileID: 988624920}
-  dataMemoryVisualizer: {fileID: 679542667}
-  registerFileVisualizer: {fileID: 131028546}
-  numberBlinker: {fileID: 1425758661}
   buses:
     pcToInstrMem: {fileID: 403317946}
     pcToPCPlus4: {fileID: 1266456204}
@@ -4695,6 +4682,18 @@ MonoBehaviour:
     readDataToResultMux: {fileID: 1527614565}
     resultToRegFileWd3: {fileID: 706986900}
     pcNextToPc: {fileID: 203119610}
+  registerPCVisualizer: {fileID: 1846687519}
+  adrMuxVisualizer: {fileID: 50915094}
+  srcBmuxVisualizer: {fileID: 416403905}
+  resultMuxVisualizer: {fileID: 700962796}
+  aluVisualizer: {fileID: 367546635}
+  pcAluVisualizer: {fileID: 1760257770}
+  btaAluVisualizer: {fileID: 203865495}
+  extenderVisualizer: {fileID: 1292942286}
+  instructionMemoryVisualizer: {fileID: 988624920}
+  dataMemoryVisualizer: {fileID: 679542667}
+  registerFileVisualizer: {fileID: 131028546}
+  numberBlinker: {fileID: 1425758661}
 --- !u!1 &1137282955
 GameObject:
   m_ObjectHideFlags: 0
@@ -5487,7 +5486,6 @@ MonoBehaviour:
   scrollSensitivity: 25
   minHeight: 0
   maxHeight: 8
-  zoomSmoothness: 0.3
   minX: -7
   maxX: 15
   minZ: -7
@@ -7948,7 +7946,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2136800545}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
@@ -8000,7 +7998,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -8242,6 +8240,10 @@ PrefabInstance:
     - target: {fileID: 2801393932919237663, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.009765625
+      objectReference: {fileID: 0}
+    - target: {fileID: 3713192412102625561, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8309176025757508300, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
       propertyPath: _hintGraph

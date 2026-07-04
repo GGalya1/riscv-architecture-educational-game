@@ -26,7 +26,7 @@ public class UIButtonEffects : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private float clickSquish   = 0.12f;
     [SerializeField] private float clickPressDur = 0.1f; // mobile
     [SerializeField] private float clickReleaseDur = 0.25f; // mobile
-    [SerializeField] private float clickPunchDur = 0.22f; // desktop
+    // [SerializeField] private float clickPunchDur = 0.22f; // desktop
     
     private Vector3 _initialScale;
     private Vector3 _initialRotation;

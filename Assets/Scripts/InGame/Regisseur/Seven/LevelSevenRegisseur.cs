@@ -18,7 +18,7 @@ public struct LevelSevenState
 }
 
 [Serializable]
-public class LevelSevenBusSegments
+public class LevelSevenBusSegments: IBusSegmentProvider
 {
     [Tooltip("SrcA register (rs1 address) -> Register File A1")]
     public LineRenderer srcAToRegFileA1;
@@ -45,7 +45,7 @@ public class LevelSevenBusSegments
     }
 }
 
-public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
+public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState, LevelSevenBusSegments>
 {
     [FormerlySerializedAs("_registerSrcAVisualizer")] [Header("Level 7 Specific Components")] [SerializeField]
     protected RegisterVisualizer registerSrcAVisualizer;
@@ -62,9 +62,6 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
     [FormerlySerializedAs("_aluVizualizer")] [SerializeField]
     protected AluVisualiser aluVisualizer;
 
-    [Header("Bus Segments")] [SerializeField]
-    private LevelSevenBusSegments buses;
-
 
     private int _currentBus; // [0, 2]
     private Register _output;
@@ -75,13 +72,6 @@ public class LevelSevenRegisseur : BaseLevelRegisseur<LevelSevenState>
     private Register _srcB;
 
     protected override int RightAnswerValue => 42;
-
-    protected override void Start()
-    {
-        base.Start();
-        buses.RegisterAll(busController);
-        WaitNoSignals = new WaitUntil(() => busController.NoActiveSignals);
-    }
 
     protected override void OnLevelStart()
     {
