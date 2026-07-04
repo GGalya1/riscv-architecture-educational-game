@@ -61,6 +61,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -392,6 +393,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &637712505605245412
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,6 +464,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -517,20 +523,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endLevelMenuUI: {fileID: 1550893875751844809}
-  _animManager: {fileID: 3557712507303518084}
-  _dialogueManager: {fileID: 8309176025757508300}
+  animManager: {fileID: 3557712507303518084}
+  dialogueManager: {fileID: 8309176025757508300}
   loadingOverlay: {fileID: 8748070795669950292}
   transitionDuration: 0.5
-  BGGroup: {fileID: 8094594883588728864}
+  bgGroup: {fileID: 8094594883588728864}
   resultsPanelGroup: {fileID: 4576750289525434103}
   resultsPanelRectTransform: {fileID: 6790485739957292896}
-  _fadeTime: 0.3
+  fadeTime: 0.3
   stars:
   - {fileID: 2488322413368011947}
   - {fileID: 6339234911615539832}
   - {fileID: 4127880317404482325}
   gainedStar: {fileID: 21300000, guid: 003fa2aad4f2a064f87d7211b38266e9, type: 3}
-  _starPopDuration: 1.8
+  starPopDuration: 1.8
 --- !u!114 &5800831207557050393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,8 +549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef6fc2a6f56c9514fb21908d146a7da4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _fadeTime: 0.3
-  _hiddenPosition: {x: 0, y: -1000}
+  fadeTime: 0.3
+  hiddenPosition: {x: 0, y: -1000}
   bgGroup: {fileID: 8094594883588728864}
   levelPanelGroup: {fileID: 8347424818691982160}
   levelPanelRectTransform: {fileID: 1624245053596072214}
@@ -552,6 +558,8 @@ MonoBehaviour:
   optionsPanelRectTransform: {fileID: 0}
   showEase: 27
   hideEase: 14
+  showStartScale: 0.92
+  panelShowDelay: 0.08
 --- !u!114 &3557712507303518084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -570,8 +578,8 @@ MonoBehaviour:
   mediumPanelRectTransform: {fileID: 9056216970744642621}
   dialoguePanelGroup: {fileID: 927039230928816348}
   dialoguePanelRectTransform: {fileID: 2801393932919237663}
-  _fadeTime: 0.3
-  _yOffset: 100
+  fadeTime: 0.3
+  yOffset: 100
   showEase: 27
   hideEase: 14
 --- !u!1 &740549999235372106
@@ -752,6 +760,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1025,6 +1034,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1399,6 +1409,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1535,6 +1546,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1732,6 +1744,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &3146848211502832707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2035,6 +2051,10 @@ MonoBehaviour:
   hoverScale: 1.1
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &3961860818378135168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2136,6 +2156,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -2190,9 +2211,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e076f3fca6a08b1458ea1e26cc342de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _ui: {fileID: 5876736251295025778}
-  _activeGraph: {fileID: 11400000, guid: 3a41cc342816f194883a67b51c2e7955, type: 2}
-  _hintGraph: {fileID: 11400000, guid: 33f8ac70f4144a14bbf89595ccbbd9c9, type: 2}
+  ui: {fileID: 5876736251295025778}
+  activeGraph: {fileID: 11400000, guid: 3a41cc342816f194883a67b51c2e7955, type: 2}
+  hintGraph: {fileID: 11400000, guid: 33f8ac70f4144a14bbf89595ccbbd9c9, type: 2}
 --- !u!114 &5876736251295025778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2205,16 +2226,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0250392a8230844d9b196557894bff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textField: {fileID: 5520731770267693847}
-  _charackterImage: {fileID: 8567820564812990201}
-  _goNextQuoteButton: {fileID: 5486004499340622508}
+  textField: {fileID: 5520731770267693847}
+  characterImage: {fileID: 8567820564812990201}
+  goNextQuoteButton: {fileID: 5486004499340622508}
   buttonContainer: {fileID: 6105313966900468281}
-  _firstAnswerButton: {fileID: 2905917624278926882}
-  _secondAnswerButton: {fileID: 6431651907571602652}
-  _thirdAnswerButton: {fileID: 396953278035107997}
-  _firstAnswerText: {fileID: 9063021448758056060}
-  _secondAnswerText: {fileID: 2901528692665116808}
-  _thirdAnswerText: {fileID: 6764061965441447701}
+  firstAnswerButton: {fileID: 2905917624278926882}
+  secondAnswerButton: {fileID: 6431651907571602652}
+  thirdAnswerButton: {fileID: 396953278035107997}
+  firstAnswerText: {fileID: 9063021448758056060}
+  secondAnswerText: {fileID: 2901528692665116808}
+  thirdAnswerText: {fileID: 6764061965441447701}
   currentEmotion: {fileID: 11400000, guid: 1ec3306f1cdd09547ba82c86a1810dd4, type: 2}
 --- !u!1 &4179094676563464207
 GameObject:
@@ -2370,7 +2391,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 810763079612163307}
   m_OnClick:
     m_PersistentCalls:
@@ -2393,6 +2414,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &4344925357014675952
 GameObject:
   m_ObjectHideFlags: 0
@@ -2545,7 +2570,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 8299578979626349406}
   m_OnClick:
     m_PersistentCalls:
@@ -2568,6 +2593,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &4483803885501657126
 GameObject:
   m_ObjectHideFlags: 0
@@ -2794,6 +2823,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &4953821162504883404
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,6 +3185,10 @@ MonoBehaviour:
   hoverScale: 1.1
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &5760312268584627110
 GameObject:
   m_ObjectHideFlags: 0
@@ -3304,6 +3341,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &5770395054905436333
 GameObject:
   m_ObjectHideFlags: 0
@@ -3410,6 +3451,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3624,6 +3666,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &6121668325379776657
 GameObject:
   m_ObjectHideFlags: 0
@@ -3763,6 +3809,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &6505624354686730096
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,6 +4054,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &6801180742549471897
 GameObject:
   m_ObjectHideFlags: 0
@@ -4276,6 +4330,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &7037283088820077692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4379,6 +4437,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -4506,6 +4565,10 @@ MonoBehaviour:
   hoverScale: 1.2
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &7279124806589120762
 GameObject:
   m_ObjectHideFlags: 0
@@ -4563,6 +4626,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -4820,6 +4884,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &7512940726309486227
 GameObject:
   m_ObjectHideFlags: 0
@@ -5049,6 +5117,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &7732024701898404926
 GameObject:
   m_ObjectHideFlags: 0
@@ -5200,6 +5272,10 @@ MonoBehaviour:
   hoverScale: 1.05
   onEnterEase: 6
   onExitEase: 6
+  hoverDuration: 0.2
+  clickSquish: 0.12
+  clickPressDur: 0.1
+  clickReleaseDur: 0.25
 --- !u!1 &7937351711715248010
 GameObject:
   m_ObjectHideFlags: 0
@@ -5303,6 +5379,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -5635,6 +5712,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -5809,6 +5887,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -5945,6 +6024,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -6036,6 +6116,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -6302,6 +6383,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
