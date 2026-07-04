@@ -58,5 +58,5 @@ To explore the source code or build the project yourself:
 ## Project Structure
 * `Assets/Scripts`: All C# logic and gameplay systems.
 * `Assets/Prefabs`: Reusable game objects and UI elements.
-* `Assets/Scenes`: The 7 chapters and 25 levels.
+* `Assets/Scenes`: The 8 chapters and 31 levels.
 * `ProjectSettings`: Necessary engine configurations (Input System, Tags, Layers).
