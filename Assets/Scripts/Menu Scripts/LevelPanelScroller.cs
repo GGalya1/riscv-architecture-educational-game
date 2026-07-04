@@ -168,6 +168,10 @@ public class LevelPanelScroller : MonoBehaviour
 
     private void PlayEdgeBounce(bool isRight)
     {
+        if (DOTween.IsTweening(contentContainer))
+        {
+            return;
+        }
         var dir = isRight ? Vector2.left : Vector2.right;
         contentContainer.DOPunchAnchorPos(dir * edgeBounceStrength, edgeBounceDuration, 8, 0f);
     }
