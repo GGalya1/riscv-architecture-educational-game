@@ -10,6 +10,8 @@ public class OneTickBusSegments: IBusSegmentProvider
     public LineRenderer pcToInstrMem;
 
     [Tooltip("PC -> PC+4 adder")] public LineRenderer pcToPCPlus4;
+    
+    [Tooltip("PC+4 -> ResultMUX")] public LineRenderer pcPlus4ToResultMux;
 
     [Tooltip("PC -> BTA adder")] public LineRenderer pcToBta;
 
@@ -66,6 +68,7 @@ public class OneTickBusSegments: IBusSegmentProvider
     {
         ctrl.RegisterSegment(pcToInstrMem);
         ctrl.RegisterSegment(pcToPCPlus4);
+        ctrl.RegisterSegment(pcPlus4ToResultMux);
         ctrl.RegisterSegment(pcToBta);
         ctrl.RegisterSegment(instrToA1);
         ctrl.RegisterSegment(instrToA2);
@@ -148,6 +151,9 @@ public struct OneTickProcessorLevelState
     public int[] RegisterFieldValue;
 
     public bool RegisterPCwe;
+    
+    public bool DataMemoryWrite;
+    public bool RegisterFileWriteEnable;
 
     public int AluOperation;
     public int PCAluOperation;
@@ -236,7 +242,8 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
     {
         // synchronize visualizers and concrete objects
         _pc.WriteEnable = registerPCVisualizer.isWriteEnabled;
-        _instructionMemory.MemoryWrite = instructionMemoryVisualizer.isWriteEnabled;
+        // instruction memory is not tickted
+        // _instructionMemory.MemoryWrite = instructionMemoryVisualizer.isWriteEnabled;
         _dataMemory.MemoryWrite = dataMemoryVisualizer.isWriteEnabled;
         _registerFile.RegisterWriteEnable = registerFileVisualizer.isWriteEnabled;
 
@@ -269,7 +276,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         // apply data
         _pc.PreClockUpdate();
         _dataMemory.PreClockUpdate();
-        // should registerFile also be applied ?
+        _registerFile.PreClockUpdate();
 
         _pc.Clock();
         _dataMemory.Clock();
@@ -295,6 +302,11 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
             FourthDataMemory = _dataMemory.Memory[12],
 
             RegisterPCwe = _pc.WriteEnable,
+            DataMemoryWrite           = _dataMemory.MemoryWrite,
+            RegisterFileWriteEnable   = _registerFile.RegisterWriteEnable,
+
+            PCAluOperation = pcAluVisualizer.CurrentAluOperation,
+            BtaOperation   = btaAluVisualizer.CurrentAluOperation,
 
             AluOperation = aluVisualizer.CurrentAluOperation,
 
@@ -326,6 +338,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         };
         _dataMemory = new DataInstMemory
         {
+            MemoryWrite = s.DataMemoryWrite,
             Memory =
             {
                 [0] = s.FirstDataMemory,
@@ -339,6 +352,8 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         _registerFile.InitializeRegisters(s.RegisterFieldValue);
 
         _pc.WriteEnable = s.RegisterPCwe;
+        _registerFile.RegisterWriteEnable  = s.RegisterFileWriteEnable;
+
 
         aluVisualizer.ChooseAluOperation(s.AluOperation);
         pcAluVisualizer.ChooseAluOperation(s.PCAluOperation);
@@ -350,7 +365,8 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
     {
         registerPCVisualizer.TriggerBlink();
 
-        instructionMemoryVisualizer.TriggerBlink();
+        // no tick for this component
+        // instructionMemoryVisualizer.TriggerBlink();
         dataMemoryVisualizer.TriggerBlink();
 
         registerFileVisualizer.TriggerBlink();
@@ -396,6 +412,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         busController.StartBusSignal(buses.srcBMuxToAlu, sig.SrcB);
         busController.StartBusSignal(buses.pcPlus4ToPcMux, sig.PcPlus4);
         busController.StartBusSignal(buses.btaToPcMux, sig.Bta);
+        busController.StartBusSignal(buses.pcPlus4ToResultMux, sig.PcPlus4);
         yield return WaitNoSignals;
 
         // MEM: ALU result drives data memory
@@ -450,6 +467,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         busController.StartBusSignal(buses.srcBMuxToAlu, sig.SrcB, true);
         busController.StartBusSignal(buses.pcPlus4ToPcMux, sig.PcPlus4, true);
         busController.StartBusSignal(buses.btaToPcMux, sig.Bta, true);
+        busController.StartBusSignal(buses.pcPlus4ToResultMux, sig.PcPlus4,  true);
         yield return WaitNoSignals;
 
         // EX part 1 reversed
@@ -480,7 +498,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         {
             ExerciseTyp.REGISTER_FIELD => _registerFile.Registers[Initial.registerFieldAddressAnswer] ==
                                           Initial.registerFieldValueAnswer,
-            ExerciseTyp.MEMORY => _dataMemory.Memory[Initial.memoryAddressAnswer] ==
+            ExerciseTyp.MEMORY => _dataMemory.Memory.GetValueOrDefault(Initial.memoryAddressAnswer, 0) ==
                                   Initial.memoryValueAnswer,
             ExerciseTyp.BEQ => _pc.Output == Initial.pcValueAnswer,
             ExerciseTyp.JAL => _pc.Output == Initial.pcValueAnswer &&
@@ -545,7 +563,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
         var readData = dataMem.GetValueOrDefault(aluResult, 0);
 
         // WB: result and next PC selection
-        var result = EvaluateMux(resultPath, aluResult, readData, 0);
+        var result = EvaluateMux(resultPath, aluResult, readData, pcPlus4);
         var pcNext = EvaluateMux(adrPath, pcPlus4, bta, 0);
 
         return new CycleSignals(
