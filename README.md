@@ -10,7 +10,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ## Play the Game
 If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android and EXE for Windows) here:
 
-**[Download Latest Release (v0.7.6)](https://github.com/GGalya1/Bachelor-project-at-TU-Darmstadt/releases/tag/v0.7.6)**
+**[Download Latest Release (v0.8.2)](https://github.com/GGalya1/Bachelor-project-at-TU-Darmstadt/releases/tag/v0.8.2)**
 
 ---
 
