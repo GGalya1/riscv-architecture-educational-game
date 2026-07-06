@@ -55,6 +55,24 @@ To explore the source code or build the project yourself:
 
 ---
 
+## Building the Android APK Yourself
+
+Android builds require a signing keystore, which is **not included** in this repository for security reasons (it is tied to the published Google Play identity). To build the project yourself, you have two options:
+
+**Option A: Quick test build (recommended for just trying it out):**
+1. Open `Edit -> Project Settings -> Player -> Publishing Settings`.
+2. Make sure **Custom Keystore** is unchecked.
+3. Build the project as usual, Unity will use a default debug keystore automatically.
+
+**Option B: Build with your own signing key:**
+1. Open `Edit -> Project Settings -> Player -> Publishing Settings`.
+2. Check **Custom Keystore**, then open **Keystore Manager > Create New** and set your own keystore/alias passwords.
+3. Build the project, the resulting APK will be signed with your own key.
+
+*Note:* Builds you create yourself will not be signed with the same key as the official release, so they cannot be used to update an installation of the Play Store version -- but they will install and run normally as a standalone APK.
+
+---
+
 ## Project Structure
 * `Assets/Scripts`: All C# logic and gameplay systems.
 * `Assets/Prefabs`: Reusable game objects and UI elements.
