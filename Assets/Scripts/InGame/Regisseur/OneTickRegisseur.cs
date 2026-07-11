@@ -203,9 +203,17 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
     {
         levelManager.SetLevelDialogue(Initial.customDialogueGraph);
     }
+    
+    protected override void Start()
+    {
+        base.Start();
+        buses.RegisterAll(busController);
+    }
 
     protected override void OnLevelStart()
     {
+        if (Initial != null) levelTargetDescription = Initial.levelTarget;
+        
         _pc = new Register(Initial.pcRegisterInitialValue) { WriteEnable = true };
 
         _instructionMemory = new DataInstMemory { MemoryWrite = false };

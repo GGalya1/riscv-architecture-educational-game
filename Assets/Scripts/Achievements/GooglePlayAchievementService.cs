@@ -18,13 +18,15 @@ public class GooglePlayAchievementService : IAchievementService
         // Activate the plugin (must be called once before anything else)
         PlayGamesPlatform.Activate();
 
-        PlayGamesPlatform.Instance.Authenticate(success =>
+        PlayGamesPlatform.Instance.Authenticate(status =>
         {
-            CustomLog.LogEditor(success
+            bool isSuccess = (status == GooglePlayGames.BasicApi.SignInStatus.Success);
+            
+            CustomLog.LogEditor(isSuccess
                 ? "[GPGS] Sign-in successful."
-                : "[GPGS] Sign-in failed.");
-        
-            onResult?.Invoke(success);
+                : $"[GPGS] Sign-in failed. Status: {status}");
+            
+            onResult?.Invoke(isSuccess);
         });
     }
 

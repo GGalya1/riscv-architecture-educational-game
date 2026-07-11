@@ -4664,6 +4664,7 @@ MonoBehaviour:
   buses:
     pcToInstrMem: {fileID: 403317946}
     pcToPCPlus4: {fileID: 1266456204}
+    pcPlus4ToResultMux: {fileID: 785921907}
     pcToBta: {fileID: 640866919}
     instrToA1: {fileID: 1818292852}
     instrToA2: {fileID: 1137282957}
@@ -8243,6 +8244,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3713192412102625561, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8180377413740040968, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8309176025757508300, guid: 1ff7c5e8807f07a4e92dcd3147bed2dd, type: 3}
