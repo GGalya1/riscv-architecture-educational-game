@@ -27,8 +27,8 @@ The project is an educational mobile game designed to teach the fundamentals of 
  
 | Processor Chapter | Extender Chapter | Charlie |
 |:---:|:---:|:---:|
-| ![Processor chapter screenshot](docs/images/processor_chapter.png) | ![Extender chapter screenshot](docs/images/extender_chapter.png) | ![Charlie](docs/images/charlie.png) |
- 
+| ![Processor chapter screenshot](https://github.com/user-attachments/assets/fe24561c-b469-4691-9f0c-48a4a6403029) | ![Extender chapter screenshot](https://github.com/user-attachments/assets/e6497f01-985e-44f8-a6db-ccaf50ccaf32) | ![Charlie](https://github.com/user-attachments/assets/941eee70-3a21-4b7c-af36-3d44b8f96078) |
+
 ---
 
 ## Play the Game
