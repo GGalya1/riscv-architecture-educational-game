@@ -37,7 +37,6 @@ MonoBehaviour:
         m_Entries:
         - m_KeyId: 58404311040
           m_TableCodes:
-          - ru
           - de
           - en
         m_TypeString: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
