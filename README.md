@@ -1,6 +1,10 @@
 # Von Gamification zu Game-Based Learning
 ### Konzeption und Implementierung eines mobilen Lernspiels für den Mehrtaktsprozessor
 
+[![Unity Version](https://img.shields.io/badge/Unity-6-rtl.svg?logo=unity)](https://unity.com/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Windows%20%7C%20Linux-blueviolet)
+
 This repository contains the source code and Unity project for my Bachelor's Thesis at **TU Darmstadt**. 
 
 The project is an educational mobile game designed to teach the fundamentals of computer organization, specifically focusing on the multi-cycle processor (Mehrtaktprozessor).
