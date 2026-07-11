@@ -51,15 +51,15 @@ MonoBehaviour:
     m_Localized: '<align=center><size=140%><b><color=#FFD700>TECHNICAL STACK</color></b></size>
 
       <b>Engine:</b>
-      Unity 6 (6000.1.1f1)
+      Unity 6 (6000.4.10f1)
 
-      <b>Code:</b> Visual Studio Code
+      <b>Code:</b> JetBrains Rider
 
       <b>Version
-      Control:</b> Unity Version Control
+      Control:</b> Unity Version Control, Git
 
-      <b>Input Handling:</b> Unity Input
-      System
+      <b>Input Handling:</b> Unity
+      Input System
 
       <b>Render Pipeline:</b> Universal Render Pipeline (URP)
 
@@ -148,6 +148,11 @@ MonoBehaviour:
       based
       on code by markv12 (Mark Villanueva)
 
+      <b>Sarah</b> - Tester
+
+      <b>Alexei</b>
+      - Tester
+
 
 
       <line-height=50%> </line-height>
@@ -157,8 +162,8 @@ MonoBehaviour:
 
       <size=150%><b>Galyautdinov Artur</b></size>
 
-      as
-      part of a Bachelor''s thesis at TU Darmstadt
+      im
+      Rahmen der Bachelorarbeit an der TU Darmstadt
 
       </align>'
     m_Metadata:

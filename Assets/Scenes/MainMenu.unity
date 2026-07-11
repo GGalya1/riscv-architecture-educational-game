@@ -3485,7 +3485,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 276181772}
   m_OnClick:
     m_PersistentCalls:
@@ -4909,59 +4909,65 @@ MonoBehaviour:
   m_text: '<align=center><size=140%><b><color=#FFD700>TECHNICAL STACK</color></b></size>
 
     <b>Engine:</b>
-    Unity 6 (6000.1.1f1)
+    Unity 6 (6000.4.10f1)
 
-    <b>Code:</b> Visual Studio Code
+    <b>Code:</b> JetBrains Rider
 
     <b>Version Control:</b>
-    Unity Version Control
+    Unity Version Control, Git
 
     <b>Input Handling:</b> Unity Input System
 
     <b>Render
     Pipeline:</b> Universal Render Pipeline (URP)
 
+    
 
+    
 
-    <line-height=50%> </line-height>
+    <line-height=50%>
+    </line-height>
 
-    <size=140%><b><color=#FFD700>GRAPHICS
-    & ART</color></b></size>
+    <size=140%><b><color=#FFD700>GRAPHICS & ART</color></b></size>
 
-    <b>GIMP GNU Image Manipulation Program</b> (GPL
-    License)
+    <b>GIMP
+    GNU Image Manipulation Program</b> (GPL License)
 
-    <b>PhotoGIMP by DioLinux</b> (Patch/Plugin for GIMP)
+    <b>PhotoGIMP by DioLinux</b>
+    (Patch/Plugin for GIMP)
 
-    <b>MagicaVoxel</b>
-    by ephtracy
+    <b>MagicaVoxel</b> by ephtracy
 
+    
 
+    
 
-    <line-height=50%> </line-height>
+    <line-height=50%>
+    </line-height>
 
-    <size=140%><b><color=#FFD700>TOOLS
-    & PLUGINS</color></b></size>
+    <size=140%><b><color=#FFD700>TOOLS & PLUGINS</color></b></size>
 
-    <b>Low-Poly Simple Nature Pack</b> by JustCreate
+    <b>Low-Poly
+    Simple Nature Pack</b> by JustCreate
 
-    <b>DOTween
-    (HOTween v2)</b> by Demigiant
+    <b>DOTween (HOTween v2)</b> by Demigiant
 
-    <b>TextMeshPro</b> by Unity Technologies
+    <b>TextMeshPro</b>
+    by Unity Technologies
 
-    <b>Unity
-    Post-Processing Stack</b> by Unity Technologies
+    <b>Unity Post-Processing Stack</b> by Unity Technologies
 
     <size=80%><color=#AAAAAA><i>All
     Unity Asset Store assets are used under the
 
-    Standard Unity Asset Store EULA.</i></color></size>
+    Standard Unity Asset Store
+    EULA.</i></color></size>
 
+    
 
+    
 
-    <line-height=50%>
-    </line-height>
+    <line-height=50%> </line-height>
 
     <size=140%><b><color=#FFD700>FONTS</color></b></size>
 
@@ -4971,15 +4977,18 @@ MonoBehaviour:
     <b>JetBrains Mono</b> - by JetBrains, Philipp
     Nurullin, Konstantin Bulenkov
 
-    <b>Nunito</b> - by Vernon Adams, Cyreal, Jacques
-    Le Bailly
+    <b>Nunito</b> - by Vernon Adams, Cyreal,
+    Jacques Le Bailly
 
-    <size=80%><color=#AAAAAA><i>All fonts are used under the SIL Open
-    Font License.</i></color></size>
+    <size=80%><color=#AAAAAA><i>All fonts are used under
+    the SIL Open Font License.</i></color></size>
 
+    
 
+    
 
-    <line-height=50%> </line-height>
+    <line-height=50%>
+    </line-height>
 
     <size=140%><b><color=#FFD700>SPRITES</color></b></size>
 
@@ -4992,7 +5001,9 @@ MonoBehaviour:
     <b>Horizontal Game Backgrounds</b> - by Free
     Game Assets / CraftPix.net
 
+    
 
+    
 
     <line-height=50%> </line-height>
 
@@ -5004,7 +5015,14 @@ MonoBehaviour:
     based
     on code by markv12 (Mark Villanueva)
 
+    <b>Sarah</b> - Tester
 
+    <b>Alexei</b>
+    - Tester
+
+    
+
+    
 
     <line-height=50%> </line-height>
 
