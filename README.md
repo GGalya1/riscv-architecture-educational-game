@@ -11,10 +11,25 @@ The project is an educational mobile game designed to teach the fundamentals of 
 
 ---
 
+## Table of Contents
+- [Play the Game](#play-the-game)
+- [Project Overview](#project-overview)
+- [Technical Specifications](#technical-specifications)
+- [How to Open the Project](#how-to-open-the-project)
+- [Building the Android APK Yourself](#building-the-android-apk-yourself)
+- [Project Structure](#project-structure)
+- [Roadmap](#roadmap)
+
+---
+
 ## Play the Game
 If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android and EXE for Windows) here:
 
 **[Download Latest Release (v0.8.2)](https://github.com/GGalya1/Bachelor-project-at-TU-Darmstadt/releases/tag/v0.8.2)**
+
+<a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share">
+  <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="60"/>
+</a>
 
 ---
 
@@ -82,3 +97,12 @@ Android builds require a signing keystore, which is **not included** in this rep
 * `Assets/Prefabs`: Reusable game objects and UI elements.
 * `Assets/Scenes`: The 8 chapters and 31 levels.
 * `ProjectSettings`: Necessary engine configurations (Input System, Tags, Layers).
+
+---
+
+## Roadmap
+ 
+* [ ] Finish **Chapter 7 - Single-Cycle Processor**
+* [ ] Additional polish and bugfixes based on user feedback from v0.8.2
+* [ ] English translation
+* [ ] Sound effects and music
