@@ -1,5 +1,5 @@
 # Von Gamification zu Game-Based Learning
-### Konzeption und Implementierung eines mobilen Lernspiels für den Mehrtaktsprozessor
+### Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor
 
 [![Unity Version](https://img.shields.io/badge/Unity-6-rtl.svg?logo=unity)](https://unity.com/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -12,6 +12,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ---
 
 ## Table of Contents
+- [Screenshots](#screenshots)
 - [Play the Game](#play-the-game)
 - [Project Overview](#project-overview)
 - [Technical Specifications](#technical-specifications)
@@ -20,6 +21,14 @@ The project is an educational mobile game designed to teach the fundamentals of 
 - [Project Structure](#project-structure)
 - [Roadmap](#roadmap)
 
+---
+
+## Screenshots
+ 
+| Processor Chapter | Extender Chapter | Charlie |
+|:---:|:---:|:---:|
+| ![Processor chapter screenshot](docs/images/processor_chapter.png) | ![Extender chapter screenshot](docs/images/extender_chapter.png) | ![Charlie](docs/images/charlie.png) |
+ 
 ---
 
 ## Play the Game
