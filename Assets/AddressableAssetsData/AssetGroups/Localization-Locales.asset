@@ -15,12 +15,6 @@ MonoBehaviour:
   m_GroupName: Localization-Locales
   m_GUID: 27c8d2e2bfc6f284e815ba6bba006d1c
   m_SerializeEntries:
-  - m_GUID: 8442192468ef87147bb3b4284b0e0568
-    m_Address: Russian (ru)
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c95320d42e9cded4eb155d7f76d6b6bc
     m_Address: German (de)
     m_ReadOnly: 1
