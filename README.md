@@ -1,4 +1,4 @@
-# Von Gamification zu Game-Based Learning
+# From Gamification to Game-Based Learning
 ### Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor
 
 [![Unity Version](https://img.shields.io/badge/Unity-6-rtl.svg?logo=unity)](https://unity.com/)
