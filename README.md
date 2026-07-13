@@ -1,9 +1,11 @@
 # From Gamification to Game-Based Learning
 ### Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor
 
+[![Unity Tests](https://github.com/GGalya1/riscv-architecture-educational-game/actions/workflows/unity-tests.yml/badge.svg)](https://github.com/GGalya1/riscv-architecture-educational-game/actions/workflows/unity-tests.yml)
+[![Latest Tag](https://img.shields.io/github/v/tag/GGalya1/riscv-architecture-educational-game?label=Latest%20Build&color=green)](https://github.com/GGalya1/riscv-architecture-educational-game/tags)
 [![Unity Version](https://img.shields.io/badge/Unity-6-rtl.svg?logo=unity)](https://unity.com/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Windows%20%7C%20Linux-blueviolet)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This repository contains the source code and Unity project for my Bachelor's Thesis at **TU Darmstadt**. 
 
