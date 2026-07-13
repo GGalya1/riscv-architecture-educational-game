@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -212,10 +213,19 @@ public abstract class BaseLevelRegisseur<TState, TBus> : MonoBehaviour
             var earnedStars = CalculateStars(fallenTries);
             
             // notify achievements observer
-            LevelEvents.RaiseLevelCompleted(new LevelCompletedData(
-                currentSceneIndex, fallenTries, earnedStars, nextLevelToUnlockIndex >= SceneManager.sceneCountInBuildSettings));
+            try
+            {
+                LevelEvents.RaiseLevelCompleted(new LevelCompletedData(
+                    currentSceneIndex, fallenTries, earnedStars,
+                    nextLevelToUnlockIndex >= SceneManager.sceneCountInBuildSettings));
 
-            
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Achievement observer cannot be notified");
+            }
+
+
             levelManager.SetGainedStars(earnedStars);
             levelManager.OpenEndOfLevelMenu();
         }
@@ -224,7 +234,15 @@ public abstract class BaseLevelRegisseur<TState, TBus> : MonoBehaviour
             fallenTries++;
             CustomLog.LogEditorError("Level is not solved! Failed tries: " + fallenTries);
 
-            LevelEvents.RaiseSolutionFailed(fallenTries);
+            try
+            {
+                LevelEvents.RaiseSolutionFailed(fallenTries);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Achievement observer cannot be notified");
+            }
+            
             StartCoroutine(ShowIncorrectIndicator());
         }
     }

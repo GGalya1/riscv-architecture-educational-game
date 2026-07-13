@@ -15,19 +15,20 @@ public class GooglePlayAchievementService : IAchievementService
 
     public void Initialize(Action<bool> onResult = null)
     {
-        // Activate the plugin (must be called once before anything else)
         PlayGamesPlatform.Activate();
 
-        PlayGamesPlatform.Instance.Authenticate(status =>
+        PlayGamesPlatform.Instance.Authenticate(OnAuthenticated);
+
+        void OnAuthenticated(GooglePlayGames.BasicApi.SignInStatus status)
         {
-            bool isSuccess = (status == GooglePlayGames.BasicApi.SignInStatus.Success);
-            
+            bool isSuccess = status == GooglePlayGames.BasicApi.SignInStatus.Success;
+
             CustomLog.LogEditor(isSuccess
                 ? "[GPGS] Sign-in successful."
                 : $"[GPGS] Sign-in failed. Status: {status}");
-            
+
             onResult?.Invoke(isSuccess);
-        });
+        }
     }
 
     public void Unlock(string achievementId)
