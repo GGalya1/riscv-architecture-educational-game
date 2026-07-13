@@ -106,3 +106,9 @@ InitTestScene*.unity*
 Thumbs.db
 ehthumbs.db
 Desktop.ini
+
+# Unity auto-generated recovery folders
+/[Aa]ssets/_[Rr]ecovery/
+
+# PlasticSCM workspace metadata
+plastic.wktree

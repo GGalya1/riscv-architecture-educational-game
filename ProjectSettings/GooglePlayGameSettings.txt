@@ -1,0 +1,9 @@
+lastUpgrade=20100
+proj.pluginVersion=2.1.0
+proj.AppId=840347217677
+and.BundleId=com.edu.mehrtaktproz.sim
+proj.classDir=Assets
+proj.ConstantsClassName=GPGSIds
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--Google+Play+game+services+IDs.+Save+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--app_id--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e840347217677%3c%2fstring%3e%0d%0a++%3c%21--package_name--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.edu.mehrtaktproz.sim%3c%2fstring%3e%0d%0a++%3c%21--achievement+First+Steps--%3e%0d%0a++%3cstring+name%3d%22achievement_first_steps%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQAQ%3c%2fstring%3e%0d%0a++%3c%21--achievement+I+won%27t+give+up%21--%3e%0d%0a++%3cstring+name%3d%22achievement_i_wont_give_up%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQBQ%3c%2fstring%3e%0d%0a++%3c%21--achievement+Practice+makes+perfect--%3e%0d%0a++%3cstring+name%3d%22achievement_practice_makes_perfect%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQBA%3c%2fstring%3e%0d%0a++%3c%21--achievement+Perfect+Try--%3e%0d%0a++%3cstring+name%3d%22achievement_perfect_try%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQAw%3c%2fstring%3e%0d%0a++%3c%21--achievement+Rollin%27+Rollin%27+Rollin%27--%3e%0d%0a++%3cstring+name%3d%22achievement_rollin_rollin_rollin%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQBw%3c%2fstring%3e%0d%0a++%3c%21--achievement+True+Hero--%3e%0d%0a++%3cstring+name%3d%22achievement_true_hero%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQAg%3c%2fstring%3e%0d%0a++%3c%21--achievement+How+is+it+done%3f--%3e%0d%0a++%3cstring+name%3d%22achievement_how_is_it_done%22+translatable%3d%22false%22%3eCgkIjd7jxLoYEAIQBg%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=840347217677-7n79o0ceqdj7laksrfraovpkum7aktn7.apps.googleusercontent.com
+android.SetupDone=true
