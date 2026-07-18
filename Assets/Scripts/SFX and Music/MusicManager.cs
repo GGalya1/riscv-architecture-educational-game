@@ -22,6 +22,10 @@ public class MusicManager : MonoBehaviour
     
     // for every clip saves his time on stop
     private readonly Dictionary<AudioClip, float> _savedPositions = new Dictionary<AudioClip, float>();
+    
+    private bool _isMusicEnabled = true;
+    public bool IsMusicEnabled => _isMusicEnabled;
+    private Coroutine _toggleRoutine;
 
     private void Awake()
     {
@@ -71,18 +75,26 @@ public class MusicManager : MonoBehaviour
     /// </summary>
     public void PlayLoop(AudioClip clip, float fadeDuration = 1.5f)
     {
-        /*if (_active.clip == clip && _active.isPlaying && _active.volume > 0.001f) return;
-
-        _standby.clip = clip;
-        _standby.loop = true;
-        _standby.volume = 0f;
-        _standby.Play();
-
-        if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
-        _fadeRoutine = StartCoroutine(CrossfadeRoutine(fadeDuration));
+        if (clip == null) return;
         
-        if (clip == null) return; */
+        if (!_isMusicEnabled)
+        {
+            if (_active.clip != clip)
+            {
+                if (_active.clip != null) _savedPositions[_active.clip] = _active.time;
 
+                _active.clip = clip;
+                _active.volume = 0f;
+            
+                if (_savedPositions.TryGetValue(clip, out float savedT))
+                {
+                    _active.time = savedT % clip.length;
+                }
+                _active.Stop();
+            }
+            return; 
+        }
+        
         // Case 1: clip is still playing
         if (_active.clip == clip)
         {
@@ -113,42 +125,6 @@ public class MusicManager : MonoBehaviour
 
         if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(CrossfadeRoutine(fadeDuration));
-    }
-
-    /// <summary>
-    /// Plays a non-looping intro once, then hands off to a seamlessly looping section with
-    /// sample-accurate timing. Use this to start a track fresh (level start, main menu) rather
-    /// than to crossfade away from something already playing.
-    /// </summary>
-    public void PlayWithIntro(AudioClip intro, AudioClip loop, float fadeInDuration = 1f)
-    {
-        StopAllCoroutines();
-        _active.Stop();
-        _standby.Stop();
-
-        var introSource = _active;
-        var loopSource = _standby;
-
-        double startTime = AudioSettings.dspTime + 0.1; // small safety buffer for scheduling
-        double introLength = (double)intro.samples / intro.frequency;
-
-        introSource.clip = intro;
-        introSource.loop = false;
-        introSource.volume = 0f;
-        introSource.PlayScheduled(startTime);
-
-        loopSource.clip = loop;
-        loopSource.loop = true;
-        loopSource.volume = 0f;
-        loopSource.PlayScheduled(startTime + introLength);
-
-        StartCoroutine(FadeVolume(introSource, 1f, fadeInDuration));
-        StartCoroutine(FadeVolume(loopSource, 1f, fadeInDuration));
-
-        // From now on the loop source is the one future PlayLoop()/crossfades should treat
-        // as "active" - the intro source will simply stop on its own once it finishes.
-        _active = loopSource;
-        _standby = introSource;
     }
 
     /// <summary>
@@ -200,4 +176,37 @@ public class MusicManager : MonoBehaviour
 
         src.volume = target;
     }
+
+    #region  UI toggle
+    
+    public void SetMusicStatus(bool isEnabled, float fadeDuration = 0.5f)
+    {
+        if (_isMusicEnabled == isEnabled) return;
+
+        _isMusicEnabled = isEnabled;
+
+        if (_toggleRoutine != null) StopCoroutine(_toggleRoutine);
+        _toggleRoutine = StartCoroutine(ToggleMusicRoutine(isEnabled, fadeDuration));
+    }
+
+    private IEnumerator ToggleMusicRoutine(bool isEnabled, float duration)
+    {
+        if (isEnabled)
+        {
+            if (!_active.isPlaying)
+            {
+                _active.UnPause();
+                if (!_active.isPlaying) _active.Play();
+            }
+            
+            yield return StartCoroutine(FadeVolume(_active, 1f, duration));
+        }
+        else
+        {
+            yield return StartCoroutine(FadeVolume(_active, 0f, duration));
+            
+            _active.Pause();
+        }
+    }
+    #endregion
 }

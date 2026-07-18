@@ -16,6 +16,9 @@ public class MenuAnimationManager : MonoBehaviour
     [FormerlySerializedAs("_hiddenPosition")]
     [Tooltip("The vertical offset for the panel's hidden state.")]
     [SerializeField] private Vector2 hiddenPosition = new (0f, -1000f);
+    
+    [Tooltip("Target position for the Options panel when shown.")]
+    [SerializeField] private Vector2 optionsPanelTargetPosition = new Vector2(0f, 200f);
 
     [Header("References")]
     [SerializeField] private CanvasGroup bgGroup;
@@ -76,9 +79,24 @@ public class MenuAnimationManager : MonoBehaviour
             .Append(panelTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(showEase))
             .Join(panelTransform.DOScale(1f, fadeTime).SetEase(showEase))
             .Join(group.DOFade(1f, fadeTime));
+    }
+    private void ShowPanel(RectTransform panelTransform, CanvasGroup group, Vector2 targetPosition) 
+    {
+        // Cancel any ongoing animations to prevent flickering
+        panelTransform.DOKill();
+        group.DOKill();
+
+        // Enable interactions immediately when showing starts
+        group.interactable = true;
+        group.blocksRaycasts = true;
         
-        // panelTransform.DOAnchorPos(Vector2.zero, fadeTime).SetEase(showEase);
-        // group.DOFade(1, fadeTime);
+        panelTransform.localScale = Vector3.one * showStartScale;
+
+        DOTween.Sequence()
+            .SetDelay(panelShowDelay)
+            .Append(panelTransform.DOAnchorPos(targetPosition, fadeTime).SetEase(showEase))
+            .Join(panelTransform.DOScale(1f, fadeTime).SetEase(showEase))
+            .Join(group.DOFade(1f, fadeTime));
     }
 
     public void ShowLevelPanel()
@@ -88,7 +106,7 @@ public class MenuAnimationManager : MonoBehaviour
     }
     public void ShowOptionsPanel() {
         ShowBg();
-        ShowPanel(optionsPanelRectTransform, optionsPanelGroup);
+        ShowPanel(optionsPanelRectTransform, optionsPanelGroup, optionsPanelTargetPosition);
     }
 
     private void ShowBg() {
