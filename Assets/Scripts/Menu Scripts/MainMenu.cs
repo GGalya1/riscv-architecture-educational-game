@@ -31,6 +31,8 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        MusicManager.Instance?.PlayForCurrentScene(transitionDuration);
+        
         _isLoadingOverlayNotNull = loadingOverlay != null;
         if (loadingOverlay != null)
         {
@@ -41,6 +43,8 @@ public class MainMenu : MonoBehaviour
     }
     private IEnumerator LoadLevelWithFade(int levelID)
     {
+        MusicManager.Instance?.FadeToSilence(transitionDuration);
+        
         if (_isLoadingOverlayNotNull)
         {
             loadingOverlay.blocksRaycasts = true;

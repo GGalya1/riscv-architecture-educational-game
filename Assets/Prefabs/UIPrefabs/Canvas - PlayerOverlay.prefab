@@ -2467,6 +2467,7 @@ GameObject:
   - component: {fileID: 8299578979626349406}
   - component: {fileID: 6280286422806257282}
   - component: {fileID: 2595924570745299961}
+  - component: {fileID: 2811143993522647393}
   m_Layer: 5
   m_Name: VolumeButton
   m_TagString: Untagged
@@ -2570,7 +2571,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 8299578979626349406}
   m_OnClick:
     m_PersistentCalls:
@@ -2597,6 +2598,21 @@ MonoBehaviour:
   clickSquish: 0.12
   clickPressDur: 0.1
   clickReleaseDur: 0.25
+--- !u!114 &2811143993522647393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4427916763601783689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be103b2687a938a49b545214979230b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RISCadventure::AudioButtonController
+  targetImage: {fileID: 8299578979626349406}
+  musicOnSprite: {fileID: 21300000, guid: e4b9c9a03abd3404f812596ff3cfc43c, type: 3}
+  musicOffSprite: {fileID: 21300000, guid: 5686424761ae74249b726e9027cf1e0d, type: 3}
 --- !u!1 &4483803885501657126
 GameObject:
   m_ObjectHideFlags: 0
