@@ -52,9 +52,9 @@ public class MusicManager : MonoBehaviour
         var index = SceneManager.GetActiveScene().buildIndex;
 
         AudioClip clip;
-        if (index == GameConstants.FullProcessorSceneIndex || index == GameConstants.OneTickProcessorSceneIndex)
+        if (index is GameConstants.FullProcessorSceneIndex or GameConstants.OneTickProcessorSceneIndex)
             clip = playlist.processorMusic;
-        else if (index == 0)
+        else if (index == GameConstants.MainMenuSceneIndex)
             clip = playlist.menuMusic;
         else
             clip = playlist.levelsMusic;

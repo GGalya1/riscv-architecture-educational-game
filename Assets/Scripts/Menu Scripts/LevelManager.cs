@@ -53,6 +53,9 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         if (loadingOverlay == null) return;
+        
+        MusicManager.Instance?.PlayForCurrentScene(transitionDuration);
+        
         var fadeInSequence = DOTween.Sequence();
         fadeInSequence.AppendInterval(0.2f);
         fadeInSequence.Append(loadingOverlay.DOFade(0f, transitionDuration).SetUpdate(true));
@@ -141,6 +144,8 @@ public class LevelManager : MonoBehaviour
         // FadeIn
         loadingOverlay.blocksRaycasts = true;
         loadingOverlay.interactable = false;
+        
+        MusicManager.Instance?.FadeToSilence(transitionDuration);
 
         yield return loadingOverlay.DOFade(1f, transitionDuration).SetUpdate(true).WaitForCompletion();
 
