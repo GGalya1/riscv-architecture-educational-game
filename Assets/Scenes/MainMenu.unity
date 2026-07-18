@@ -2738,7 +2738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &182605582
 GameObject:
   m_ObjectHideFlags: 0
@@ -3214,6 +3213,250 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238356391}
   m_CullTransparentMesh: 1
+--- !u!1 &238511108
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 238511109}
+  - component: {fileID: 238511110}
+  - component: {fileID: 238511112}
+  - component: {fileID: 238511111}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &238511109
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238511108}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 263.78647, y: -0.00001, z: 787.24963}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &238511110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238511108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d34a97da08bbf3b48bf4eaea4708fc94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RISCadventure::MusicManager
+  musicMixerGroup: {fileID: -7188452135295203170, guid: fcac871a3702ae643a5f8c6c16433d8a, type: 2}
+  sourceA: {fileID: 238511112}
+  sourceB: {fileID: 238511111}
+  playlist: {fileID: 11400000, guid: 79ab33bedce1b9f4db3f9c637f12ace8, type: 2}
+--- !u!82 &238511111
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238511108}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 30
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &238511112
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238511108}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 25
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &244227493
 GameObject:
   m_ObjectHideFlags: 0
@@ -4846,7 +5089,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &397335367
 GameObject:
   m_ObjectHideFlags: 0
@@ -4921,53 +5163,53 @@ MonoBehaviour:
     <b>Render
     Pipeline:</b> Universal Render Pipeline (URP)
 
-    
 
-    
 
-    <line-height=50%>
-    </line-height>
 
-    <size=140%><b><color=#FFD700>GRAPHICS & ART</color></b></size>
 
-    <b>GIMP
-    GNU Image Manipulation Program</b> (GPL License)
+    <line-height=50%> </line-height>
 
-    <b>PhotoGIMP by DioLinux</b>
-    (Patch/Plugin for GIMP)
+    <size=140%><b><color=#FFD700>GRAPHICS
+    & ART</color></b></size>
 
-    <b>MagicaVoxel</b> by ephtracy
+    <b>GIMP GNU Image Manipulation Program</b> (GPL
+    License)
 
-    
+    <b>PhotoGIMP by DioLinux</b> (Patch/Plugin for GIMP)
 
-    
+    <b>MagicaVoxel</b>
+    by ephtracy
 
-    <line-height=50%>
-    </line-height>
 
-    <size=140%><b><color=#FFD700>TOOLS & PLUGINS</color></b></size>
 
-    <b>Low-Poly
-    Simple Nature Pack</b> by JustCreate
 
-    <b>DOTween (HOTween v2)</b> by Demigiant
 
-    <b>TextMeshPro</b>
-    by Unity Technologies
+    <line-height=50%> </line-height>
 
-    <b>Unity Post-Processing Stack</b> by Unity Technologies
+    <size=140%><b><color=#FFD700>TOOLS
+    & PLUGINS</color></b></size>
+
+    <b>Low-Poly Simple Nature Pack</b> by JustCreate
+
+    <b>DOTween
+    (HOTween v2)</b> by Demigiant
+
+    <b>TextMeshPro</b> by Unity Technologies
+
+    <b>Unity
+    Post-Processing Stack</b> by Unity Technologies
 
     <size=80%><color=#AAAAAA><i>All
     Unity Asset Store assets are used under the
 
-    Standard Unity Asset Store
-    EULA.</i></color></size>
+    Standard Unity Asset Store EULA.</i></color></size>
 
-    
 
-    
 
-    <line-height=50%> </line-height>
+
+
+    <line-height=50%>
+    </line-height>
 
     <size=140%><b><color=#FFD700>FONTS</color></b></size>
 
@@ -4977,18 +5219,17 @@ MonoBehaviour:
     <b>JetBrains Mono</b> - by JetBrains, Philipp
     Nurullin, Konstantin Bulenkov
 
-    <b>Nunito</b> - by Vernon Adams, Cyreal,
-    Jacques Le Bailly
+    <b>Nunito</b> - by Vernon Adams, Cyreal, Jacques
+    Le Bailly
 
-    <size=80%><color=#AAAAAA><i>All fonts are used under
-    the SIL Open Font License.</i></color></size>
+    <size=80%><color=#AAAAAA><i>All fonts are used under the SIL Open
+    Font License.</i></color></size>
 
-    
 
-    
 
-    <line-height=50%>
-    </line-height>
+
+
+    <line-height=50%> </line-height>
 
     <size=140%><b><color=#FFD700>SPRITES</color></b></size>
 
@@ -5001,9 +5242,9 @@ MonoBehaviour:
     <b>Horizontal Game Backgrounds</b> - by Free
     Game Assets / CraftPix.net
 
-    
 
-    
+
+
 
     <line-height=50%> </line-height>
 
@@ -5020,9 +5261,9 @@ MonoBehaviour:
     <b>Alexei</b>
     - Tester
 
-    
 
-    
+
+
 
     <line-height=50%> </line-height>
 
@@ -5917,7 +6158,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &501632334
 GameObject:
   m_ObjectHideFlags: 0
@@ -6385,7 +6625,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &563943015
 GameObject:
   m_ObjectHideFlags: 0
@@ -7112,7 +7351,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &674019264
 GameObject:
   m_ObjectHideFlags: 0
@@ -11445,7 +11683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &1229725798
 GameObject:
   m_ObjectHideFlags: 0
@@ -12465,7 +12702,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &1277021700
 GameObject:
   m_ObjectHideFlags: 0
@@ -15989,7 +16225,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amount: 20
   smoothTime: 0.3
-  _gyroSensitivity: 2.5
 --- !u!1 &2071746323
 GameObject:
   m_ObjectHideFlags: 0
@@ -17134,3 +17369,4 @@ SceneRoots:
   - {fileID: 439871400}
   - {fileID: 182605584}
   - {fileID: 1872819628}
+  - {fileID: 238511109}
