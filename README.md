@@ -36,7 +36,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ## Play the Game
 If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android and EXE for Windows) here:
 
-**[Download Latest Release (v0.8.2)](https://github.com/GGalya1/Bachelor-project-at-TU-Darmstadt/releases/tag/v0.8.2)**
+**[Download Latest Release (v0.8.2)](https://github.com/GGalya1/riscv-architecture-educational-game/releases/tag/v0.8.2)**
 
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share">
@@ -84,7 +84,7 @@ To explore the source code or build the project yourself:
 1.  Install **Unity Hub**.
 2.  Install **Unity 6 (6000.5.4f1)**.
 3.  Clone this repository:  
-    `git clone https://github.com/GGalya1/Bachelor-project-at-TU-Darmstadt.git`
+    `https://github.com/GGalya1/riscv-architecture-educational-game.git`
 4.  Add the project to Unity Hub and open it.
 5.  *Note:* The initial import may take several minutes as Unity generates the `Library` folder.
 
