@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,9 @@ public class MusicManager : MonoBehaviour
     private AudioSource _active;
     private AudioSource _standby;
     private Coroutine _fadeRoutine;
+    
+    // for every clip saves his time on stop
+    private readonly Dictionary<AudioClip, float> _savedPositions = new Dictionary<AudioClip, float>();
 
     private void Awake()
     {
@@ -67,12 +71,45 @@ public class MusicManager : MonoBehaviour
     /// </summary>
     public void PlayLoop(AudioClip clip, float fadeDuration = 1.5f)
     {
-        if (_active.clip == clip && _active.isPlaying && _active.volume > 0.001f) return;
+        /*if (_active.clip == clip && _active.isPlaying && _active.volume > 0.001f) return;
 
         _standby.clip = clip;
         _standby.loop = true;
         _standby.volume = 0f;
         _standby.Play();
+
+        if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
+        _fadeRoutine = StartCoroutine(CrossfadeRoutine(fadeDuration));
+        
+        if (clip == null) return; */
+
+        // Case 1: clip is still playing
+        if (_active.clip == clip)
+        {
+            // turn back volume
+            if (_active.isPlaying)
+            {
+                if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
+                _fadeRoutine = StartCoroutine(FadeVolume(_active, 1f, fadeDuration));
+                return;
+            }
+        }
+
+        // Case 2: changing to another track (need to save time for current track)
+        if (_active.clip != null && _active.isPlaying)
+        {
+            _savedPositions[_active.clip] = _active.time;
+        }
+
+        _standby.clip = clip;
+        _standby.loop = true;
+        _standby.volume = 0f;
+        _standby.Play();
+        
+        if (_savedPositions.TryGetValue(clip, out float savedTime))
+        {
+            _standby.time = savedTime % clip.length; 
+        }
 
         if (_fadeRoutine != null) StopCoroutine(_fadeRoutine);
         _fadeRoutine = StartCoroutine(CrossfadeRoutine(fadeDuration));
