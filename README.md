@@ -22,6 +22,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 - [Building the Android APK Yourself](#building-the-android-apk-yourself)
 - [Project Structure](#project-structure)
 - [Roadmap](#roadmap)
+- [Citation](#citation)
 
 ---
 
@@ -117,10 +118,35 @@ Android builds require a signing keystore, which is **not included** in this rep
 ---
 
 ## Roadmap
- 
+
+**By Version 0.8.8 (End of August 2026)**
 * [ ] Finish **Chapter 7 - Single-Cycle Processor**
 * [ ] Additional polish and bugfixes based on user feedback from v0.8.2
 * [ ] English translation
 * [ ] Sound effects and music
 * [X] Add tests to the repository
 * [ ] Add custom hand-drawn sprites
+
+**By Version 1.0.0 (End of November 2026)**
+* [ ] Introduce Chapter 9 - Pipelined Processor
+* [ ] Introduce Story Mode and separate it from the level list (adaptive learning path based on player actions)
+* [ ] Rework the in-game UI to better adapt it to mobile devices
+* [ ] Add shaders to in-game processor objects
+
+---
+
+## Citation
+
+If you use this project or want to cite the associated Bachelor's Thesis, please use the following metadata:
+
+### BibTeX
+```bibtex
+@bachelorthesis{ggalya2026riscv,
+  author       = {Galyautdinov Artur},
+  title        = {From Gamification to Game-Based Learning: Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor},
+  school       = {Technical University of Darmstadt},
+  year         = {2026},
+  type         = {Bachelor's Thesis},
+  url          = {https://github.com/GGalya1/riscv-architecture-educational-game}
+}
+```
