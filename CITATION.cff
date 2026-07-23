@@ -2,12 +2,18 @@ cff-version: 1.2.0
 message: "If you use this project or want to cite the associated Bachelor's Thesis, please use the following metadata."
 title: "From Gamification to Game-Based Learning: Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor"
 authors:
-  - family-names: "Galyautdinov"
-    given-names: "Artur"
-type: thesis
-thesis-type: "Bachelor's Thesis"
-institution:
-  name: "Technical University of Darmstadt"
-year: 2026
+  - family-names: "Galyautdinov"
+    given-names: "Artur"
+date-released: 2026-04-13
 url: "https://github.com/GGalya1/riscv-architecture-educational-game"
-repository-code: "https://github.com/GGalya1/riscv-architecture-educational-game"
+preferred-citation:
+  type: thesis
+  thesis-type: "Bachelor's Thesis"
+  authors:
+    - family-names: "Galyautdinov"
+      given-names: "Artur"
+  title: "From Gamification to Game-Based Learning: Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor"
+  institution:
+    name: "Technical University of Darmstadt"
+  year: 2026
+  url: "https://github.com/GGalya1/riscv-architecture-educational-game"
