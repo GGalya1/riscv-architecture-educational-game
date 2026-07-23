@@ -7,10 +7,11 @@ title: "riscv-architecture-educational-game"
 date-released: 2026-04-13
 url: "https://github.com/GGalya1/riscv-architecture-educational-game"
 preferred-citation:
-  type: report
+  type: thesis
   authors:
     - family-names: Galyautdinov
       given-names: Artur
   title: "From Gamification to Game-Based Learning: Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor"
-  publisher: "Technical University of Darmstadt"
+  publisher:
+    name: "Technical University of Darmstadt"
   date-released: 2026-04-13
