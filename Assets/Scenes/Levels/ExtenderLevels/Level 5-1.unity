@@ -1144,9 +1144,6 @@ MonoBehaviour:
   spherePrefab: {fileID: 6425462522399718016, guid: 1d0544c75d85507478621a5dee2e0bd8, type: 3}
   movementSpeed: 7
   poolPreWarmCount: 2
-  busSegments:
-  - {fileID: 934957545}
-  - {fileID: 1226422104}
 --- !u!114 &1109257076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1181,13 +1178,13 @@ MonoBehaviour:
   fallenTries: 0
   busController: {fileID: 1109257075}
   isProcessing: 0
+  buses:
+    srcAToExtend: {fileID: 934957545}
+    extendToOutput: {fileID: 1226422104}
   registerSrcAVisualizer: {fileID: 970035351}
   registerOutputVisualizer: {fileID: 659021389}
   extenderVisualizer: {fileID: 608457877}
   inputRegisterValue: 2097185043
-  buses:
-    srcAToExtend: {fileID: 934957545}
-    extendToOutput: {fileID: 1226422104}
 --- !u!1001 &1120415451
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1500,8 +1497,8 @@ Camera:
   m_GameObject: {fileID: 1264554663}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.40784314, g: 0.5294118, b: 0.34901962, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
