@@ -1,0 +1,19 @@
+site_name: RISC-V Adventure Documentation
+
+theme:
+  name: material
+  palette:
+    primary: teal        # possible also green, emerald
+    accent: teal         # color of active elements (and accent)
+  features:
+    - navigation.tabs    # enable tabs in header
+
+repo_url: https://github.com/GGalya1/riscv-architecture-educational-game.git
+repo_name: riscv-game
+
+nav:
+  - Welcome: index.md
+  - General:
+    - Overview: general/overview.md
+    - Quickstart: general/quickstart.md
+  - About project: about.md
