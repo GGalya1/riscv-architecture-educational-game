@@ -8,12 +8,19 @@ theme:
   features:
     - navigation.tabs    # enable tabs in header
 
-repo_url: https://github.com/GGalya1/riscv-architecture-educational-game.git
-repo_name: riscv-game
+repo_url: https://github.com/GGalya1/riscv-architecture-educational-game
+repo_name: RISC-V Adventure
 
 nav:
   - Welcome: index.md
   - General:
     - Overview: general/overview.md
-    - Quickstart: general/quickstart.md
   - About project: about.md
+  - Quickstart: quickstart.md
+  - Concept: concept.md
+  - Technology: tech-stack.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
