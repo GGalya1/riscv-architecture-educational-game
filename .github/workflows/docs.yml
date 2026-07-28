@@ -1,15 +1,24 @@
 name: docs
+
 on:
   push:
     branches: [main]
     paths: ["docs/**", "mkdocs.yml"]
+  workflow_dispatch:   # lets you trigger this manually from the Actions tab, any time
+
+# GITHUB_TOKEN defaults to read-only and `mkdocs gh-deploy` fails silently
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
       - run: pip install mkdocs-material
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
       - run: mkdocs gh-deploy --force
