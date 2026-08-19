@@ -1,0 +1,81 @@
+name: Deploy to itch.io
+on:
+  push:
+    tags: [ "v*" ]
+
+env:
+  GAME_NAME: "RISC-V Adventure"
+
+jobs:
+  build:
+    name: Build ${{ matrix.targetPlatform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform: [ StandaloneLinux64, StandaloneWindows64, Android ]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Cache Unity Library
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-${{ matrix.targetPlatform }}-
+            Library-
+
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: auto
+          targetPlatform: ${{ matrix.targetPlatform }}
+          androidExportType: ${{ matrix.targetPlatform == 'Android' && 'androidPackage' || '' }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+
+  deploy:
+    name: Publish to itch.io
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - targetPlatform: StandaloneLinux64
+            channel: linux
+            label: Linux
+          - targetPlatform: StandaloneWindows64
+            channel: windows
+            label: Windows
+          - targetPlatform: Android
+            channel: android
+            label: Android
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
+
+      - name: Setup butler
+        uses: remarkablegames/setup-butler@v3
+
+      - name: Push build to itch.io
+        run: |
+          butler push build/${{ matrix.targetPlatform }} \
+            ggalya/riscv-adventure:${{ matrix.channel }} \
+            --userversion "${{ env.GAME_NAME }} ${{ github.ref_name }}"
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
