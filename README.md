@@ -43,7 +43,7 @@ If you want to play the game without opening the project in Unity, you can find 
   <a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share">
     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="60" align="middle"/>
   </a>
-  <a href="https://ggalya.itch.io/mehrtakt-abenteuer?secret=ESutD7JerurFW9SCPGtlfIL0FQ8">
+  <a href="https://ggalya.itch.io/riscv-adventure">
     <img alt="Available on itch.io" src="https://github.com/user-attachments/assets/63cfd5ae-5ea4-4ca3-9aec-97d7d0fa605a" height="40" align="middle"/>
   </a>
 </p>
@@ -120,10 +120,10 @@ Android builds require a signing keystore, which is **not included** in this rep
 ## Roadmap
 
 **By Version 0.8.8 (End of August 2026)**
-* [ ] Finish **Chapter 7 - Single-Cycle Processor**
-* [ ] Additional polish and bugfixes based on user feedback from v0.8.2
+* [X] Finish **Chapter 7 - Single-Cycle Processor**
+* [X] Additional polish and bugfixes based on user feedback from v0.8.2
 * [ ] English translation
-* [ ] Sound effects and music
+* [X] Sound effects and music
 * [X] Add tests to the repository
 * [ ] Add custom hand-drawn sprites
 
