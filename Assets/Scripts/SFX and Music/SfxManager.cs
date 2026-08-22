@@ -13,6 +13,10 @@ public class SfxManager : MonoBehaviour
     [Header("Pool")]
     [SerializeField] private int poolSize = 8;
     [SerializeField] [Range(0f, 0.2f)] private float pitchVariance = 0.05f;
+    
+    [Header("UI Volumes")]
+    [SerializeField] [Range(0f, 1f)] private float buttonClickVolume = 1f;
+    [SerializeField] [Range(0f, 1f)] private float buttonHoverVolume = 0.4f;
 
     private readonly List<AudioSource> _pool = new();
     private int _nextIndex;
@@ -67,8 +71,8 @@ public class SfxManager : MonoBehaviour
     }
 
     #region UI shortcuts
-    public void PlayButtonClick() => Play(library ? library.buttonClick : null);
-    public void PlayButtonHover() => Play(library ? library.buttonHover : null);
+    public void PlayButtonClick() => Play(library ? library.buttonClick : null, buttonClickVolume);
+    public void PlayButtonHover() => Play(library ? library.buttonHover : null, buttonHoverVolume);
     public void PlayToggleOn() => Play(library ? library.toggleOn : null);
     public void PlayToggleOff() => Play(library ? library.toggleOff : null);
     public void PlayCancel() => Play(library ? library.cancel : null);

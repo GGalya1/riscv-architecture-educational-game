@@ -8518,6 +8518,8 @@ MonoBehaviour:
   library: {fileID: 11400000, guid: e5055e58d8910df41a620aacc131e803, type: 2}
   poolSize: 8
   pitchVariance: 0.05
+  buttonClickVolume: 1
+  buttonHoverVolume: 0.1
 --- !u!4 &850233393
 Transform:
   m_ObjectHideFlags: 0
