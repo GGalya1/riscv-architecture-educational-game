@@ -120,10 +120,10 @@ Android builds require a signing keystore, which is **not included** in this rep
 ## Roadmap
 
 **By Version 0.8.8 (End of August 2026)**
-* [ ] Finish **Chapter 7 - Single-Cycle Processor**
-* [ ] Additional polish and bugfixes based on user feedback from v0.8.2
+* [X] Finish **Chapter 7 - Single-Cycle Processor**
+* [X] Additional polish and bugfixes based on user feedback from v0.8.2
 * [ ] English translation
-* [ ] Sound effects and music
+* [X] Sound effects and music
 * [X] Add tests to the repository
 * [ ] Add custom hand-drawn sprites
 
