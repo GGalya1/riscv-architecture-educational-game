@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c12ef496cc6d347a5fe1a55ff39f60, type: 3}
   m_Name: SFX Library
   m_EditorClassIdentifier: RISCadventure::SfxLibrary
-  buttonClick: {fileID: 0}
-  buttonHover: {fileID: 0}
+  buttonClick: {fileID: 8300000, guid: 4aeeaf8771d14544bac063261e469552, type: 3}
+  buttonHover: {fileID: 8300000, guid: 957d0c4b0186f20459518faaa0f694ac, type: 3}
   toggleOn: {fileID: 0}
   toggleOff: {fileID: 0}
   cancel: {fileID: 0}
