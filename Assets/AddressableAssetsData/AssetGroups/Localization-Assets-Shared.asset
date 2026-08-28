@@ -27,6 +27,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a77b2ce73e571644dbdd82737fee509a
+    m_Address: Assets/Locales/IngameMenu/Ingame menu labels Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a90139d818c196e4fb10b27bb674fa6a
     m_Address: Assets/Locales/Main menu lables Shared Data.asset
     m_ReadOnly: 1
