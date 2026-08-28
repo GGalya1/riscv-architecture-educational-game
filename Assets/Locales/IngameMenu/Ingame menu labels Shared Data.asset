@@ -35,6 +35,16 @@ MonoBehaviour:
     m_Key: ingame.next_level
     m_Metadata:
       m_Items: []
+  - m_Id: 13034721136640
+    m_Key: Canvas - PlayerOverlay/Canvas - PlayerOverlay/Canvas - DialogueSystem/SkipDialogueButton/Text
+      (TMP)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14471383502848
+    m_Key: Canvas - PlayerOverlay/Canvas - PlayerOverlay/Canvas - DialogueSystem/SkipDialogueButton/Text
+      (TMP) 1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
