@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3f342bd27848644c82550c73839a7b4
+    m_Address: Chapter 8 text_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d695ce63a5b000e418143874aeabb628
     m_Address: Chapter 1 text_en
     m_ReadOnly: 1
