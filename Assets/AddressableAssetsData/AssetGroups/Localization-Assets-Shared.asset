@@ -22,6 +22,12 @@ MonoBehaviour:
     - Locale-de
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0d03143d230fc7b43acb3bfd84232be1
+    m_Address: Assets/Locales/ChaptersLocalization/Chapter 1/Chapter 1 text Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a75a6118b34c944489053591a6a5ecc9
     m_Address: Assets/Locales/Font Table Shared Data.asset
     m_ReadOnly: 1
