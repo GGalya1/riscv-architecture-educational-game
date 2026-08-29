@@ -45,6 +45,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-de
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d96519df44997b249a31b9002fb074d2
+    m_Address: Chapter 5 text_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e524e4378d9ea034d8c2bf943b98e7e2
     m_Address: Ingame menu labels_de
     m_ReadOnly: 1
