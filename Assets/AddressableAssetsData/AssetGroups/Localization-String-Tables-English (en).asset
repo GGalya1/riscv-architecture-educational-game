@@ -15,6 +15,12 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-English (en)
   m_GUID: cd8bfe7eefad8564bb9d05fbff43026a
   m_SerializeEntries:
+  - m_GUID: 1831bb556c1e8cc41b4e67910e33908d
+    m_Address: Chapter 3 text_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1f0fb26247cf95e43a7e954297b9b1d0
     m_Address: Ingame menu labels_en
     m_ReadOnly: 1
