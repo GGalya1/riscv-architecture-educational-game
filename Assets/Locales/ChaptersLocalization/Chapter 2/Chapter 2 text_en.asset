@@ -88,6 +88,33 @@ MonoBehaviour:
       the <color=orange>Registers</color>!
     m_Metadata:
       m_Items: []
+  - m_Id: 105413864083456
+    m_Localized: Well, let's see. A <color=orange>Multiplexer</color> has several
+      <color=yellow>input values</color>, and its job is to decide which of these
+      values it <color=yellow>passes on</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105448173490176
+    m_Localized: 'If we set <color=#48DBFB>00</color>, it lets the value of the <color=yellow>first
+      bus</color> through and <anim:shake><color=red>ignores</color></anim> the rest.
+
+      
+
+      In
+      the game the active <color=yellow>bus (path)</color> will light up <color=#48DBFB>light
+      blue</color>, so you don''t have to memorize the <color=yellow>current path</color>!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105827695087616
+    m_Localized: <color=yellow>Multiplexers</color> themselves don't store <anim:shake><color=red>any
+      values</color></anim>, they just pass them on!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105868249812992
+    m_Localized: So your task is simply to route the needed value from <color=yellow>left</color>
+      through to the <color=yellow>register</color> on the right side!
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

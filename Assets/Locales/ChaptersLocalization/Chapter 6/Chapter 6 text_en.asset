@@ -150,6 +150,34 @@ MonoBehaviour:
     m_Localized: Who's going to bother counting those?
     m_Metadata:
       m_Items: []
+  - m_Id: 80043882336256
+    m_Localized: 'Think carefully about which <color=yellow>inputs</color> are responsible
+      for what:
+
+      
+
+      The <color=#48DBFB>top two</color> accept the <color=yellow>register
+      number</color>.
+
+      The <color=#48DBFB>third</color> accepts the <color=yellow>register
+      address</color> that is to be <color=green>overwritten</color> with the value
+      from the fourth input.
+
+      The <color=#48DBFB>fourth</color> accepts the
+      <color=yellow>value</color> that gets stored at the address of the third input.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80086148337664
+    m_Localized: 'What exactly is the instruction from <color=yellow>Register A2</color>
+      supposed to do?
+
+      How many <color=yellow>operands</color> does it have,
+      and which ones?
+
+      How many <color=yellow>clock cycles</color> are needed
+      to fully process this instruction?'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

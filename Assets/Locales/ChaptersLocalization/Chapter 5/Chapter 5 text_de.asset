@@ -139,6 +139,33 @@ MonoBehaviour:
       guten alten <color=#48DBFB>statischen Kamera</color>."
     m_Metadata:
       m_Items: []
+  - m_Id: 1167403126640640
+    m_Localized: "Bisher siehst du nur den einzigen <color=yellow>Eingang</color>
+      des <color=orange>Speichers</color>. Dieser Eingang nimmt eine <color=#48DBFB>Zahl</color>
+      an, die einer <color=yellow>Adresse</color> in diesem Speicher entsprechen
+      muss.\r\n\r\nWenn sie \xFCbereinstimmt, gibt der <color=orange>Speicher</color>
+      den <color=yellow>Wert</color> aus, der an dieser Adresse gespeichert wurde!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168013255266304
+    m_Localized: 'Der <color=yellow>erste Eingang</color> nimmt die <color=#48DBFB>Adresse</color>
+      an.
+
+      Der <color=yellow>zweite Eingang</color> nimmt den <color=#48DBFB>Wert</color>
+      an, der an der Adresse aus dem ersten Eingang gespeichert wird - sofern kein
+      <anim:shake><color=red>STOP-Signal</color></anim> vorliegt (mit anderen Worten:
+      <color=#48DBFB>WriteEnable = 1</color>).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167989028966400
+    m_Localized: "Jetzt haben wir Zugriff auf beide <color=yellow>Speichereing\xE4nge</color>!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168039146704896
+    m_Localized: "\xDCberleg dir genau, in welchen Situationen und an welchen <color=orange>Bestandteile</color>
+      du <color=yellow>WriteEnable</color> aktivieren oder deaktivieren musst."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

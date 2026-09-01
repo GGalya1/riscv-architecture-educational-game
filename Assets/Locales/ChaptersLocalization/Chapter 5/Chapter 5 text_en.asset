@@ -147,6 +147,37 @@ MonoBehaviour:
       camera</color>."
     m_Metadata:
       m_Items: []
+  - m_Id: 1167403126640640
+    m_Localized: 'So far you only see the single <color=yellow>input</color> of the
+      <color=orange>memory</color>. This input accepts a <color=#48DBFB>number</color>
+      that has to correspond to an <color=yellow>address</color> in this memory.
+
+      
+
+      If
+      it matches, the <color=orange>memory</color> outputs the <color=yellow>value</color>
+      that was stored at that address!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167989028966400
+    m_Localized: Now we have access to both <color=yellow>memory inputs</color>!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168013255266304
+    m_Localized: 'The <color=yellow>first input</color> accepts the <color=#48DBFB>address</color>.
+
+      The
+      <color=yellow>second input</color> accepts the <color=#48DBFB>value</color>
+      that gets stored at the address from the first input - provided there''s no
+      <anim:shake><color=red>STOP signal</color></anim> (in other words: <color=#48DBFB>WriteEnable
+      = 1</color>).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168039146704896
+    m_Localized: Think carefully about in which situations and on which <color=orange>components</color>
+      you need to activate or deactivate <color=yellow>WriteEnable</color>.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

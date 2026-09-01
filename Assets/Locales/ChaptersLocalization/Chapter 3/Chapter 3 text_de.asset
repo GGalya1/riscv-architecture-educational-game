@@ -229,6 +229,33 @@ MonoBehaviour:
     m_Localized: Cool... ?
     m_Metadata:
       m_Items: []
+  - m_Id: 1171453830254592
+    m_Localized: "Falls du in der <color=#48DBFB>Bin\xE4rdarstellung</color> nichts
+      Gemeinsames findest, gibt es immer die Option, einfach nacheinander alle <color=yellow>ALU-Operationen</color>
+      auszuprobieren und das Ergebnis zu pr\xFCfen <anim:wave><color=yellow>:D</color></anim> 
+      Du kannst ja jederzeit die <color=orange>Takte</color> zur\xFCcksetzen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1170347028926464
+    m_Localized: "\xDCberleg mal: Was haben diese beiden <color=yellow>Zahlen</color>
+      gemeinsam?\r\n\r\nFalls dir nichts einf\xE4llt, schreib sie dir mal in der
+      <color=#48DBFB>Bin\xE4rdarstellung</color> auf!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171761117548544
+    m_Localized: "Falls du in der <color=#48DBFB>Bin\xE4rdarstellung</color> nichts
+      Gemeinsames findest, gibt es immer die Option, einfach nacheinander alle <color=yellow>ALU-Operationen</color>
+      auszuprobieren und das Ergebnis zu pr\xFCfen <anim:wave><color=yellow>:D</color></anim>\r\n\r\nDu
+      kannst ja jederzeit die <color=orange>Takte</color> zur\xFCcksetzen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171790016303104
+    m_Localized: "Es gibt viele Wege, dieses Level zu l\xF6sen, aber hier ist der
+      <color=yellow>einfachste Tipp</color>: Zuerst musst du eine <color=#48DBFB>0</color>
+      im <color=yellow>Register</color> erhalten und danach <color=#48DBFB>zweimal</color>
+      die <color=#48DBFB>4</color> addieren!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -89,6 +89,30 @@ MonoBehaviour:
       den <color=orange>Registern</color> gespeichert!
     m_Metadata:
       m_Items: []
+  - m_Id: 105413864083456
+    m_Localized: Na, schauen wir mal. Ein <color=orange>Multiplexer</color> hat mehrere
+      <color=yellow>Eingangswerte</color> und seine Aufgabe ist es, zu entscheiden,
+      welchen dieser Werte er <color=yellow>weiterleitet</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105448173490176
+    m_Localized: "Wenn wir <color=#48DBFB>00</color> setzen, l\xE4sst er den Wert
+      des <color=yellow>ersten Busses</color> durch und <anim:shake><color=red>ignoriert</color></anim>
+      den Rest.\r\n\r\nIm Spiel wird der aktive <color=yellow>Bus (Weg)</color> <color=#48DBFB>hellblau</color>
+      leuchten, damit du dir den <color=yellow>aktuellen Pfad</color> nicht merken
+      musst!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105827695087616
+    m_Localized: <color=yellow>Multiplexer</color> selbst speichern <anim:shake><color=red>keine
+      Werte</color></anim>, sie leiten sie nur weiter!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 105868249812992
+    m_Localized: "Deine Aufgabe ist es also, den ben\xF6tigten Wert einfach von <color=yellow>links</color>
+      bis zum <color=yellow>Register</color> auf der rechten Seite durchzuschleusen!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

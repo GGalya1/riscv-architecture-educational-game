@@ -159,6 +159,22 @@ MonoBehaviour:
     m_Key: level3-3.node-3.answer2
     m_Metadata:
       m_Items: []
+  - m_Id: 1170347028926464
+    m_Key: hint_chapter3-1.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171453830254592
+    m_Key: hint_chapter3-1.node1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171761117548544
+    m_Key: hint_chapter3-2.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171790016303104
+    m_Key: hint_chapter3-3.node0
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

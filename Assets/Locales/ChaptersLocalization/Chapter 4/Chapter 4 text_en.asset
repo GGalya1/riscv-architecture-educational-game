@@ -156,6 +156,35 @@ MonoBehaviour:
       logic stays the same. Mull over <color=yellow>WE</color> a little.
     m_Metadata:
       m_Items: []
+  - m_Id: 1167525805838336
+    m_Localized: 'If you''ve forgotten which <color=yellow>type</color> is responsible
+      for what, just try out all the <color=yellow>Extender operations</color> one
+      after another and look at the <color=red>result</color> <anim:wave><color=yellow>:D</color></anim>
+
+      
+
+      You
+      can still reset the <color=#48DBFB>clock cycles</color> after all!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167562757656576
+    m_Localized: First you need to set everything up so that the <color=yellow>register</color>
+      runs through all the <color=yellow>memory addresses</color> from <color=#48DBFB>0</color>
+      to <color=#48DBFB>12</color>. (Think about which <color=yellow>ALU operation</color>
+      you need to choose for that!)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167603182358528
+    m_Localized: 'And if you''ve forgotten which <color=orange>type</color> is responsible
+      for what, just try out all the <color=yellow>Extender operations</color> one
+      after another and look at the <color=red>result</color> <anim:wave><color=yellow>:D</color></anim>
+
+      
+
+      Don''t
+      forget: you can reset the <color=#48DBFB>clock cycles</color> at any time!'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -225,6 +225,40 @@ MonoBehaviour:
     m_Localized: Cool... ?
     m_Metadata:
       m_Items: []
+  - m_Id: 1171453830254592
+    m_Localized: If you can't find anything in common in the <color=#48DBFB>binary
+      notation</color>, there's always the option of simply trying out all the <color=yellow>ALU
+      operations</color> one after another and checking the result <anim:wave><color=yellow>:D</color></anim> 
+      You can reset the <color=orange>clock cycles</color> at any time, after all!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1170347028926464
+    m_Localized: 'Think about it: what do these two <color=yellow>numbers</color>
+      have in common?
+
+      
+
+      If nothing comes to mind, try writing them
+      out in <color=#48DBFB>binary notation</color>!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171761117548544
+    m_Localized: 'If you can''t find anything in common in the <color=#48DBFB>binary
+      notation</color>, there''s always the option of simply trying out all the <color=yellow>ALU
+      operations</color> one after another and checking the result <anim:wave><color=yellow>:D</color></anim>
+
+      
+
+      You
+      can reset the <color=orange>clock cycles</color> at any time, after all!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1171790016303104
+    m_Localized: 'There are many ways to solve this level, but here''s the <color=yellow>simplest
+      tip</color>: first you need to get a <color=#48DBFB>0</color> in the <color=yellow>register</color>,
+      and then add <color=#48DBFB>4</color> <color=#48DBFB>twice</color>!'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

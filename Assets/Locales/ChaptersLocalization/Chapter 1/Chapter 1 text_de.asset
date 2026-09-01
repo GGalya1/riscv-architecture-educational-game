@@ -126,6 +126,20 @@ MonoBehaviour:
       funktioniert."
     m_Metadata:
       m_Items: []
+  - m_Id: 139461751754752
+    m_Localized: "Denk mal dar\xFCber nach, wie ein <color=yellow>Register</color>
+      funktioniert: Er speichert den Wert f\xFCr <color=#48DBFB>einen Takt</color>
+      zwischen. Falls <color=yellow>WE (Write Enable)</color> gleich <color=#48DBFB>1</color>
+      ist (also wenn kein <anim:shake><color=red>STOP</color></anim> sichtbar ist),
+      dann wird er im n\xE4chsten Takt den Wert vom <color=yellow>Eingang</color>
+      \xFCbernehmen."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139559101550592
+    m_Localized: "Es ist \xFCberhaupt nicht schlimm, wenn du <anim:shake>Schwierigkeiten</color>
+      hast! Nur durch Probleme lernt man <anim:wave><color=yellow>etwas Neues! :D</color></anim>"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

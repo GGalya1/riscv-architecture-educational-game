@@ -124,6 +124,20 @@ MonoBehaviour:
     m_Localized: I'd like to go over what it is and how it works again.
     m_Metadata:
       m_Items: []
+  - m_Id: 139461751754752
+    m_Localized: 'Think about how a <color=yellow>register</color> works: it temporarily
+      stores the value for <color=#48DBFB>one clock cycle</color>. If <color=yellow>WE
+      (Write Enable)</color> equals <color=#48DBFB>1</color> (i.e. if no <anim:shake><color=red>STOP</color></anim>
+      is visible), then on the next clock cycle it will take over the value from
+      the <color=yellow>input</color>.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139559101550592
+    m_Localized: It's not a problem at all if you're <anim:shake>having trouble</color>!
+      You only learn <anim:wave><color=yellow>something new! :D</color></anim> through
+      problems.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

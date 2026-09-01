@@ -95,6 +95,14 @@ MonoBehaviour:
     m_Key: level1-3.node-0.answer2
     m_Metadata:
       m_Items: []
+  - m_Id: 139461751754752
+    m_Key: hint_chapter1.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 139559101550592
+    m_Key: hint_chapter1.node1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

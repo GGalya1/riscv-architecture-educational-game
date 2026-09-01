@@ -115,6 +115,18 @@ MonoBehaviour:
     m_Key: level4-4.node-2
     m_Metadata:
       m_Items: []
+  - m_Id: 1167525805838336
+    m_Key: hint_chapter4-1.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167562757656576
+    m_Key: hint_chapter4-3.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167603182358528
+    m_Key: hint_chapter4-3.node1
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

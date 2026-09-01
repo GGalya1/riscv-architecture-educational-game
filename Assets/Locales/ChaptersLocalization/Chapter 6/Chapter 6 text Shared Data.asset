@@ -103,6 +103,14 @@ MonoBehaviour:
     m_Key: level6-1.node-4.answer2
     m_Metadata:
       m_Items: []
+  - m_Id: 80043882336256
+    m_Key: hint_chapter6.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80086148337664
+    m_Key: hint_chapter6-3.node0
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

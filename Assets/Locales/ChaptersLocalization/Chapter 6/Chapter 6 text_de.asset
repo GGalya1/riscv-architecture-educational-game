@@ -150,6 +150,23 @@ MonoBehaviour:
     m_Localized: "Wer z\xE4hlt die bittesch\xF6n nach?"
     m_Metadata:
       m_Items: []
+  - m_Id: 80043882336256
+    m_Localized: "\xDCberleg dir gut, welche <color=yellow>Eing\xE4nge</color> wof\xFCr
+      zust\xE4ndig sind:\r\n\r\nDie <color=#48DBFB>zwei oberen</color> nehmen die
+      <color=yellow>Registernummer</color> an.\r\nDer <color=#48DBFB>dritte</color>
+      nimmt die <color=yellow>Registeradresse</color> an, die mit dem Wert aus dem
+      vierten Eingang <color=green>\xFCberschrieben</color> werden soll.\r\nDer <color=#48DBFB>vierte</color>
+      nimmt den <color=yellow>Wert</color> an, der an der Adresse des dritten Eingangs
+      gespeichert wird."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80086148337664
+    m_Localized: "Was genau soll der Befehl aus dem <color=yellow>Register A2</color>
+      bewirken?\r\n\r\nWie viele und welche <color=yellow>Operanden</color> hat er?\r\nWie
+      viele <color=yellow>Takte</color> werden f\xFCr die vollst\xE4ndige Verarbeitung
+      dieses Befehls ben\xF6tigt?"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

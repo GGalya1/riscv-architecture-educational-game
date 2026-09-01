@@ -167,6 +167,27 @@ MonoBehaviour:
       nach."
     m_Metadata:
       m_Items: []
+  - m_Id: 1167525805838336
+    m_Localized: "Falls du vergessen hast, welcher <color=yellow>Typ</color> wof\xFCr
+      zust\xE4ndig ist, probiere einfach nacheinander alle <color=yellow>Extender-Operationen</color>
+      aus und schau dir das <color=red>Ergebnis</color> an <anim:wave><color=yellow>:D</color></anim>\r\n\r\nDu
+      kannst ja immer noch die <color=#48DBFB>Takte</color> zur\xFCcksetzen!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167562757656576
+    m_Localized: "Zuerst musst du alles so einstellen, dass das <color=yellow>Register</color>
+      alle <color=yellow>Speicheradressen</color> von <color=#48DBFB>0</color> bis
+      <color=#48DBFB>12</color> durchl\xE4uft. (\xDCberleg mal, welche <color=yellow>ALU-Operation</color>
+      du daf\xFCr w\xE4hlen musst!)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167603182358528
+    m_Localized: "Und falls du vergessen hast, welcher <color=orange>Typ</color>
+      wof\xFCr zust\xE4ndig ist, probiere einfach nacheinander alle <color=yellow>Extender-Operationen</color>
+      aus und schau dir das <color=red>Ergebnis</color> an <anim:wave><color=yellow>:D</color></anim>\r\n\r\nVergiss
+      nicht: Du kannst jederzeit die <color=#48DBFB>Takte</color> zur\xFCcksetzen!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

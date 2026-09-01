@@ -95,6 +95,22 @@ MonoBehaviour:
     m_Key: level5-3.node-3
     m_Metadata:
       m_Items: []
+  - m_Id: 1167403126640640
+    m_Key: hint_chapter5-1.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1167989028966400
+    m_Key: hint_chapter5-3.node0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168013255266304
+    m_Key: hint_chapter5-3.node1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1168039146704896
+    m_Key: hint_chapter5-3.node2
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
