@@ -191,12 +191,8 @@ MonoBehaviour:
       - <color=orange>beq</color>:
       If <color=#48DBFB>x1 - x3 == 0</color>, the jump happens.
 
-
-
       - <color=orange>blt</color>:
       If <color=#48DBFB>x1 - x3 < 0</color>, the jump happens.
-
-
 
       - <color=orange>bne</color>:
       If the result is <color=red>not zero</color>, the jump happens.'
@@ -243,6 +239,30 @@ MonoBehaviour:
   - m_Id: 11465208385536
     m_Localized: But if you keep all that in mind, I'm sure you'll <anim:wave><color=yellow>manage
       it :D</color></anim>!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112043287859200
+    m_Localized: Process the value from Data/Instruction Memory at address 4 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112083737726976
+    m_Localized: Process the value from Data/Instruction Memory at address 0 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112092491239424
+    m_Localized: Process the value from Data/Instruction Memory at address 8 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112102146527232
+    m_Localized: Process the value from Data/Instruction Memory at address 0 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112110765821952
+    m_Localized: Process the value from Data/Instruction Memory at address 12 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112124065959936
+    m_Localized: Process the value from Data/Instruction Memory at address 12 correctly.
     m_Metadata:
       m_Items: []
   references:

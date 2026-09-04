@@ -155,6 +155,30 @@ MonoBehaviour:
     m_Key: hint_chapter7.node4
     m_Metadata:
       m_Items: []
+  - m_Id: 2112043287859200
+    m_Key: quest_text_10-0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112083737726976
+    m_Key: quest_text_10-1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112092491239424
+    m_Key: quest_text_10-2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112102146527232
+    m_Key: quest_text_10-3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112110765821952
+    m_Key: quest_text_10-4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112124065959936
+    m_Key: quest_text_10-5
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

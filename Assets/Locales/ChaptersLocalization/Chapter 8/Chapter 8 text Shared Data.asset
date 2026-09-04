@@ -31,6 +31,30 @@ MonoBehaviour:
     m_Key: level8-1.node-3
     m_Metadata:
       m_Items: []
+  - m_Id: 2183191941894144
+    m_Key: quest_text_11-0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183264188780544
+    m_Key: quest_text_11-1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183290549981184
+    m_Key: quest_text_11-2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183300763111424
+    m_Key: quest_text_11-3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183309646647296
+    m_Key: quest_text_11-4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183319201271808
+    m_Key: quest_text_11-5
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

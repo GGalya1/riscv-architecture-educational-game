@@ -39,6 +39,30 @@ MonoBehaviour:
       is already completely finished!
     m_Metadata:
       m_Items: []
+  - m_Id: 2183191941894144
+    m_Localized: Process the value from Instruction Memory at address 0 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183264188780544
+    m_Localized: Process the value from Instruction Memory at address 0 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183290549981184
+    m_Localized: Process the value from Instruction Memory at address 8 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183300763111424
+    m_Localized: Process the value from Instruction Memory at address 0 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183309646647296
+    m_Localized: Process the value from Instruction Memory at address 12 correctly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2183319201271808
+    m_Localized: Process the value from Instruction Memory at address 12 correctly.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -165,8 +165,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 3383929622528
     m_Localized: "Das l\xE4sst sich so interpretieren:\r\n- <color=orange>beq</color>:
-      Wenn <color=#48DBFB>x1 - x3 == 0</color>, erfolgt der Sprung.\r\n\r\n- <color=orange>blt</color>:
-      Wenn <color=#48DBFB>x1 - x3 < 0</color>, erfolgt der Sprung.\r\n\r\n- <color=orange>bne</color>:
+      Wenn <color=#48DBFB>x1 - x3 == 0</color>, erfolgt der Sprung.\r\n- <color=orange>blt</color>:
+      Wenn <color=#48DBFB>x1 - x3 < 0</color>, erfolgt der Sprung.\r\n- <color=orange>bne</color>:
       Wenn das Ergebnis <color=red>nicht null</color> ist, erfolgt der Sprung."
     m_Metadata:
       m_Items: []
@@ -233,6 +233,36 @@ MonoBehaviour:
   - m_Id: 11465208385536
     m_Localized: Aber wenn du das alles beachtest, bin ich mir sicher, dass du es
       <anim:wave><color=yellow>schaffen wirst :D</color></anim>!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112043287859200
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 4
+      korrekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112083737726976
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 0
+      korrekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112092491239424
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 8
+      korrekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112102146527232
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 0
+      korrekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112110765821952
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 12
+      korrekt.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2112124065959936
+    m_Localized: Bearbeite den Wert aus Data/Instruction Memory an die Adresse 12
+      korrekt.
     m_Metadata:
       m_Items: []
   references:
