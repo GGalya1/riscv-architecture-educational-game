@@ -62,14 +62,14 @@ public class DialogueUI : MonoBehaviour
         if (_textRoutine != null) StopCoroutine(_textRoutine);
         textField.DOKill();
 
-        var commands = DialogueUtility.ProcessInputString(node.dialogueText, out var cleanText);
+        var commands = DialogueUtility.ProcessInputString(node.GetDialogueText(), out var cleanText);
 
         _textRoutine = StartCoroutine(_vertexAnimator.AnimateTextIn(commands, cleanText, null, () => {
             CustomLog.LogEditor("Printing complete!");
         }));
 
 
-        if (!string.IsNullOrEmpty(node.firstAnswer)) {
+        if (!string.IsNullOrEmpty(node.GetFirstAnswer())) {
             DecorateSelection(node);
         }
         else if (buttonContainer.gameObject.activeSelf) {
@@ -104,24 +104,24 @@ public class DialogueUI : MonoBehaviour
     /// </summary>
     private void DecorateSelection(DialogueNode node) 
     {
-        if (!string.IsNullOrEmpty(node.firstAnswer)) {
+        if (!string.IsNullOrEmpty(node.GetFirstAnswer())) {
             buttonContainer.gameObject.SetActive(true);
             goNextQuoteButton.gameObject.SetActive(false);
-            firstAnswerText.text = node.firstAnswer;
+            firstAnswerText.text = node.GetFirstAnswer();
         }
-        if (!string.IsNullOrEmpty(node.secondAnswer))
+        if (!string.IsNullOrEmpty(node.GetSecondAnswer()))
         {
             secondAnswerButton.gameObject.SetActive(true);
-            secondAnswerText.text = node.secondAnswer;
+            secondAnswerText.text = node.GetSecondAnswer();
         }
         else { 
             secondAnswerButton.gameObject.SetActive(false);
         }
 
-        if (!string.IsNullOrEmpty(node.thirdAnswer))
+        if (!string.IsNullOrEmpty(node.GetThirdAnswer()))
         {
             thirdAnswerButton.gameObject.SetActive(true);
-            thirdAnswerText.text = node.thirdAnswer;
+            thirdAnswerText.text = node.GetThirdAnswer();
         }
         else
         {
