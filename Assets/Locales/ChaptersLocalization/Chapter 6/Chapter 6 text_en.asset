@@ -154,7 +154,7 @@ MonoBehaviour:
     m_Localized: 'Think carefully about which <color=yellow>inputs</color> are responsible
       for what:
 
-      
+
 
       The <color=#48DBFB>top two</color> accept the <color=yellow>register
       number</color>.
@@ -176,6 +176,20 @@ MonoBehaviour:
 
       How many <color=yellow>clock cycles</color> are needed
       to fully process this instruction?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188748664885248
+    m_Localized: Write the sum of r7 and r6 into Register 3.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188793124507648
+    m_Localized: Use the register values to calculate the sum. Write this sum to
+      the address of A3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188803023065088
+    m_Localized: Process the instruction from Register 3 correctly and write the
+      result into RegisterFile
     m_Metadata:
       m_Items: []
   references:

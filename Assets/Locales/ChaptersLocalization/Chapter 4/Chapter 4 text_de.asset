@@ -196,6 +196,16 @@ MonoBehaviour:
     m_Localized: 'Ziel: \r\nSchreibe in Register 2 den Wert 128'
     m_Metadata:
       m_Items: []
+  - m_Id: 2209544812646400
+    m_Localized: 'Ziel: \r\nSchreibe in Speicher zwei Werte an Adressen 0 und 8.\nWobei
+      Wert an Adresse 0 muss kleiner sein als an Adresse 8.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2209561954766848
+    m_Localized: 'Ziel: \r\nSchreibe in Speicher zwei Werte an Adressen 0 und 12.\nWobei
+      Wert an Adresse 0 muss kleiner sein als an Adresse 12.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

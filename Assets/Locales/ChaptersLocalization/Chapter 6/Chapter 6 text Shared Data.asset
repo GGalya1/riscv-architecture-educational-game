@@ -111,6 +111,18 @@ MonoBehaviour:
     m_Key: hint_chapter6-3.node0
     m_Metadata:
       m_Items: []
+  - m_Id: 2188748664885248
+    m_Key: quest_text_7
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188793124507648
+    m_Key: quest_text_7-1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188803023065088
+    m_Key: quest_text_7-2
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

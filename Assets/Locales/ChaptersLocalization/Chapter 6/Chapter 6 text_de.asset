@@ -167,6 +167,20 @@ MonoBehaviour:
       dieses Befehls ben\xF6tigt?"
     m_Metadata:
       m_Items: []
+  - m_Id: 2188748664885248
+    m_Localized: Schreibe in Register 3 die Summe von r7 und r6.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188793124507648
+    m_Localized: Benutze die Registerwerte um die Summe zu berechnen. Schreibe diese
+      Summe an die Adresse von A3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2188803023065088
+    m_Localized: Bearbeite den Befehl aus Register 3 korrekt und schreibe den Ergebnis
+      in RegisterFile
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

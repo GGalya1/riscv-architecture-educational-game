@@ -113,6 +113,18 @@ MonoBehaviour:
       bis zum <color=yellow>Register</color> auf der rechten Seite durchzuschleusen!"
     m_Metadata:
       m_Items: []
+  - m_Id: 2216188128808960
+    m_Localized: 'Ziel: \r\nSchreibe in Register 3 den Wert 4'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2216214666170368
+    m_Localized: 'Ziel: \r\nSchreibe in Register 3 den Wert 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2216223272882176
+    m_Localized: Schreib 12 in "Register 1"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

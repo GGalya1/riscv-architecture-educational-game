@@ -193,6 +193,16 @@ MonoBehaviour:
     m_Localized: 'Goal: \r\nWrite value 128 to Register 2'
     m_Metadata:
       m_Items: []
+  - m_Id: 2209544812646400
+    m_Localized: 'Goal: \r\nWrite two values into memory at addresses 0 and 8.\r\nWhere
+      value at address 0 must be smaller than at address 8.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2209561954766848
+    m_Localized: 'Goal: \r\nWrite two values into memory at addresses 0 and 12.\r\nWhere
+      value at address 0 must be smaller than at address 12.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

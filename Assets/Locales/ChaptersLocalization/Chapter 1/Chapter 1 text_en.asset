@@ -138,6 +138,18 @@ MonoBehaviour:
       problems.
     m_Metadata:
       m_Items: []
+  - m_Id: 2249321758871552
+    m_Localized: 'Goal: \r\nWrite value 4 to Register 3'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2249355342663680
+    m_Localized: 'Goal: \r\nWrite value 42 to Register 3'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2249364972785664
+    m_Localized: 'Goal: \r\nWrite value -12 to Register 3'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

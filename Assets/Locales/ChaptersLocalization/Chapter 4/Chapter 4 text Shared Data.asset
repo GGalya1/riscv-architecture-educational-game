@@ -135,6 +135,14 @@ MonoBehaviour:
     m_Key: quest_text_3-0
     m_Metadata:
       m_Items: []
+  - m_Id: 2209544812646400
+    m_Key: quest_text_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2209561954766848
+    m_Key: quest_text_4-0
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

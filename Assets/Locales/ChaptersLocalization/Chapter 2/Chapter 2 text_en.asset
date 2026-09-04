@@ -98,7 +98,7 @@ MonoBehaviour:
     m_Localized: 'If we set <color=#48DBFB>00</color>, it lets the value of the <color=yellow>first
       bus</color> through and <anim:shake><color=red>ignores</color></anim> the rest.
 
-      
+
 
       In
       the game the active <color=yellow>bus (path)</color> will light up <color=#48DBFB>light
@@ -113,6 +113,18 @@ MonoBehaviour:
   - m_Id: 105868249812992
     m_Localized: So your task is simply to route the needed value from <color=yellow>left</color>
       through to the <color=yellow>register</color> on the right side!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2216188128808960
+    m_Localized: 'Goal: \r\nWrite value 4 to Register 3'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2216214666170368
+    m_Localized: 'Goal: \r\nWrite value 2 to Register 3'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2216223272882176
+    m_Localized: Write 12 to "Register 1"
     m_Metadata:
       m_Items: []
   references:
