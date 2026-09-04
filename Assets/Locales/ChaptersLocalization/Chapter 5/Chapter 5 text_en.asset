@@ -152,7 +152,7 @@ MonoBehaviour:
       <color=orange>memory</color>. This input accepts a <color=#48DBFB>number</color>
       that has to correspond to an <color=yellow>address</color> in this memory.
 
-      
+
 
       If
       it matches, the <color=orange>memory</color> outputs the <color=yellow>value</color>
@@ -176,6 +176,21 @@ MonoBehaviour:
   - m_Id: 1168039146704896
     m_Localized: Think carefully about in which situations and on which <color=orange>components</color>
       you need to activate or deactivate <color=yellow>WriteEnable</color>.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201459222138880
+    m_Localized: 'Goal: \r\nExtend all values from memory correctly and place in
+      Register 3.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201507238531072
+    m_Localized: Extend the instruction from Register 1 correctly and write the result
+      to Register 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201515325149184
+    m_Localized: Extend the instruction from Register 1 correctly and write the result
+      to Register 2
     m_Metadata:
       m_Items: []
   references:

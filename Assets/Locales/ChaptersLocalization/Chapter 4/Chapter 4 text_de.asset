@@ -188,6 +188,14 @@ MonoBehaviour:
       nicht: Du kannst jederzeit die <color=#48DBFB>Takte</color> zur\xFCcksetzen!"
     m_Metadata:
       m_Items: []
+  - m_Id: 2206330176425984
+    m_Localized: 'Ziel: \r\nSchreibe in Register 2 den Wert 66'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2206377911799808
+    m_Localized: 'Ziel: \r\nSchreibe in Register 2 den Wert 128'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

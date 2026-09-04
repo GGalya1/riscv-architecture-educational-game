@@ -166,6 +166,21 @@ MonoBehaviour:
       du <color=yellow>WriteEnable</color> aktivieren oder deaktivieren musst."
     m_Metadata:
       m_Items: []
+  - m_Id: 2201459222138880
+    m_Localized: 'Ziel: \r\nExtende alle Werte aus dem Speicher korrekt und lege
+      in Register 3.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201507238531072
+    m_Localized: Erweitere den Befehl aus Register 1 korrekt und schreib Ergebnis
+      in Register 2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2201515325149184
+    m_Localized: Erweitere den Befehl aus Register 1 korrekt und schreib Ergebnis
+      in Register 2
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

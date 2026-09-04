@@ -256,6 +256,18 @@ MonoBehaviour:
       die <color=#48DBFB>4</color> addieren!"
     m_Metadata:
       m_Items: []
+  - m_Id: 2208935208308736
+    m_Localized: 'Ziel: \r\nSchreibe in Register 1 den Wert 8'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2209008386330624
+    m_Localized: 'Ziel: \r\nSchreibe in Register 3 den Wert 1'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2209018133893120
+    m_Localized: 'Ziel: \r\nSchreibe in Register 3 den Wert 7'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -212,7 +212,7 @@ public class OneTickRegisseur : BaseLevelRegisseur<OneTickProcessorLevelState, O
 
     protected override void OnLevelStart()
     {
-        if (Initial != null) levelTargetDescription = Initial.levelTarget.GetLocalizedString();
+        if (Initial != null) levelTargetDescription = Initial.levelTarget;
         
         _pc = new Register(Initial.pcRegisterInitialValue) { WriteEnable = true };
 

@@ -161,7 +161,7 @@ MonoBehaviour:
       for what, just try out all the <color=yellow>Extender operations</color> one
       after another and look at the <color=red>result</color> <anim:wave><color=yellow>:D</color></anim>
 
-      
+
 
       You
       can still reset the <color=#48DBFB>clock cycles</color> after all!'
@@ -179,10 +179,18 @@ MonoBehaviour:
       for what, just try out all the <color=yellow>Extender operations</color> one
       after another and look at the <color=red>result</color> <anim:wave><color=yellow>:D</color></anim>
 
-      
+
 
       Don''t
       forget: you can reset the <color=#48DBFB>clock cycles</color> at any time!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2206330176425984
+    m_Localized: 'Goal: \r\nWrite value 66 to Register 2'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2206377911799808
+    m_Localized: 'Goal: \r\nWrite value 128 to Register 2'
     m_Metadata:
       m_Items: []
   references:
