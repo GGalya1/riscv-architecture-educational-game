@@ -51,6 +51,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b974336a83465534ba49b87765c1b38d
+    m_Address: Processor States text_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c5ab9d68a93d4ed4abe777dcb119c1e2
     m_Address: Chapter 6 text_en
     m_ReadOnly: 1

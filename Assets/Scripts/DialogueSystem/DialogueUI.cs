@@ -69,7 +69,7 @@ public class DialogueUI : MonoBehaviour
         }));
 
 
-        if (!string.IsNullOrEmpty(node.GetFirstAnswer())) {
+        if (node.firstAnswer is { IsEmpty: false }) {
             DecorateSelection(node);
         }
         else if (buttonContainer.gameObject.activeSelf) {
@@ -104,12 +104,12 @@ public class DialogueUI : MonoBehaviour
     /// </summary>
     private void DecorateSelection(DialogueNode node) 
     {
-        if (!string.IsNullOrEmpty(node.GetFirstAnswer())) {
+        if (node.firstAnswer is { IsEmpty: false }) {
             buttonContainer.gameObject.SetActive(true);
             goNextQuoteButton.gameObject.SetActive(false);
             firstAnswerText.text = node.GetFirstAnswer();
         }
-        if (!string.IsNullOrEmpty(node.GetSecondAnswer()))
+        if (node.secondAnswer is { IsEmpty: false })
         {
             secondAnswerButton.gameObject.SetActive(true);
             secondAnswerText.text = node.GetSecondAnswer();
@@ -118,7 +118,7 @@ public class DialogueUI : MonoBehaviour
             secondAnswerButton.gameObject.SetActive(false);
         }
 
-        if (!string.IsNullOrEmpty(node.GetThirdAnswer()))
+        if (node.thirdAnswer is { IsEmpty: false })
         {
             thirdAnswerButton.gameObject.SetActive(true);
             thirdAnswerText.text = node.GetThirdAnswer();
