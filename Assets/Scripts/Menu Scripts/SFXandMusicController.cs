@@ -9,9 +9,12 @@ public class SFXandMusicController : MonoBehaviour
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
-
+    
     private void Start()
     {
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.OnMusicStatusChanged += SetSlidersVisibility;
+        
         var playerPrefMusic = PlayerPrefs.GetFloat(GameConstants.MucicParam, 1f);
         var playerPrefSFX = PlayerPrefs.GetFloat(GameConstants.SfxParam, 1f);
 
@@ -30,14 +33,20 @@ public class SFXandMusicController : MonoBehaviour
         SetMusicVolume(playerPrefMusic);
         SetSFXVolume(playerPrefSFX);
     }
+    
+    private void OnDestroy()
+    {
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.OnMusicStatusChanged -= SetSlidersVisibility;
+    }
 
-    public void SetMusicVolume(float linearValue)
+    private void SetMusicVolume(float linearValue)
     {
         audioMixer.SetFloat(GameConstants.MucicParam, LinearToDecibel(linearValue));
         PlayerPrefs.SetFloat(GameConstants.MucicParam, linearValue);
     }
 
-    public void SetSFXVolume(float linearValue)
+    private void SetSFXVolume(float linearValue)
     {
         audioMixer.SetFloat(GameConstants.SfxParam, LinearToDecibel(linearValue));
         PlayerPrefs.SetFloat(GameConstants.SfxParam, linearValue);
@@ -46,5 +55,11 @@ public class SFXandMusicController : MonoBehaviour
     private static float LinearToDecibel(float linear)
     {
         return linear <= 0.0001f ? MIN_DB : Mathf.Log10(linear) * 20f;
+    }
+    
+    private void SetSlidersVisibility(bool isEnabled)
+    {
+        if(musicSlider != null) musicSlider.interactable = isEnabled;
+        if(sfxSlider != null) sfxSlider.interactable = isEnabled;
     }
 }
