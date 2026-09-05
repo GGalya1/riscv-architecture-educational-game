@@ -8,4 +8,7 @@ public static class GameConstants
     
     public const string PrevTicksKey = "TotalPrevTicks";
     public const int TargetAchievementTicks = 50;
+    
+    public const string MucicParam = "MusicVolume";
+    public const string SfxParam = "SFXVolume";
 }
