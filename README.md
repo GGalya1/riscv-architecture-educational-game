@@ -71,7 +71,7 @@ If you want to play the game without opening the project in Unity, you can find 
 
 ## Technical Specifications
 
-* **Engine:** Unity 6 (Version: 6000.5.4f1)
+* **Engine:** Unity 6 (Version: 6000.5.10f1)
 * **Target Platforms:** Android (Primary), Windows (Evaluation Build)
 * **Render Pipeline:** Universal Render Pipeline (URP)
 * **Version Control:** Transitioned from Unity Version Control to Git.
@@ -83,7 +83,7 @@ If you want to play the game without opening the project in Unity, you can find 
 To explore the source code or build the project yourself:
 
 1.  Install **Unity Hub**.
-2.  Install **Unity 6 (6000.5.4f1)**.
+2.  Install **Unity 6 (6000.5.10f1)**.
 3.  Clone this repository:  
     `https://github.com/GGalya1/riscv-architecture-educational-game.git`
 4.  Add the project to Unity Hub and open it.
@@ -122,7 +122,7 @@ Android builds require a signing keystore, which is **not included** in this rep
 **By Version 0.8.8 (End of August 2026)**
 * [X] Finish **Chapter 7 - Single-Cycle Processor**
 * [X] Additional polish and bugfixes based on user feedback from v0.8.2
-* [ ] English translation
+* [X] English translation
 * [X] Sound effects and music
 * [X] Add tests to the repository
 * [ ] Add custom hand-drawn sprites
