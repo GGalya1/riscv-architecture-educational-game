@@ -168,6 +168,14 @@ MonoBehaviour:
       </align>'
     m_Metadata:
       m_Items: []
+  - m_Id: 50074862725386240
+    m_Localized: Abenteuermodus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50079322881150976
+    m_Localized: "Demn\xE4chst"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

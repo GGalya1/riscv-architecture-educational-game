@@ -168,6 +168,14 @@ MonoBehaviour:
       </align>'
     m_Metadata:
       m_Items: []
+  - m_Id: 50074862725386240
+    m_Localized: Adventure mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50079322881150976
+    m_Localized: Soon
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
