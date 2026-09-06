@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: mainMenu.comingSoon
     m_Metadata:
       m_Items: []
+  - m_Id: 50099892779765760
+    m_Key: mainMenu.musicVolume
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

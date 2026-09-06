@@ -63,9 +63,9 @@ MonoBehaviour:
 
       <b>Render Pipeline:</b> Universal Render Pipeline (URP)
 
-      
 
-      
+
+
 
       <line-height=50%>
       </line-height>
@@ -80,9 +80,9 @@ MonoBehaviour:
 
       <b>MagicaVoxel</b> by ephtracy
 
-      
 
-      
+
+
 
       <line-height=50%>
       </line-height>
@@ -97,20 +97,20 @@ MonoBehaviour:
 
       <b>TextMeshPro</b> by Unity Technologies
 
-      <b>Unity
-      Post-Processing Stack</b> by Unity Technologies
+      <b>Unity Post-Processing
+      Stack</b> by Unity Technologies
 
-      <size=80%><color=#AAAAAA><i>All
-      Unity Asset Store assets are used under the
+      <size=80%><color=#AAAAAA><i>All Unity
+      Asset Store assets are used under the
 
-      Standard Unity Asset Store
-      EULA.</i></color></size>
+      Standard Unity Asset Store EULA.</i></color></size>
 
-      
 
-      
 
-      <line-height=50%> </line-height>
+
+
+      <line-height=50%>
+      </line-height>
 
       <size=140%><b><color=#FFD700>SCHRIFTARTEN</color></b></size>
 
@@ -126,9 +126,9 @@ MonoBehaviour:
       <size=80%><color=#AAAAAA><i>All fonts are
       used under the SIL Open Font License.</i></color></size>
 
-      
 
-      
+
+
 
       <line-height=50%>
       </line-height>
@@ -141,15 +141,15 @@ MonoBehaviour:
       <b>UI Elements (Wood & Gold)</b>
       - by upklyak / Freepik.com
 
-      <b>Horizontal Game Backgrounds</b> - by
-      Free Game Assets / CraftPix.net
+      <b>Horizontal Game Backgrounds</b> - by Free
+      Game Assets / CraftPix.net
 
-      <b>Paper UI Pack</b> - by Lynda Mc
-      Donald / Itch.io
+      <b>Paper UI Pack</b> - by Lynda Mc Donald
+      / Itch.io
 
-      
 
-      
+
+
 
       <line-height=50%> </line-height>
 
@@ -166,9 +166,9 @@ MonoBehaviour:
       <b>Alexei</b>
       - Tester
 
-      
 
-      
+
+
 
       <line-height=50%> </line-height>
 
@@ -189,6 +189,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 50079322881150976
     m_Localized: "Demn\xE4chst"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50099892779765760
+    m_Localized: 'Musik:'
     m_Metadata:
       m_Items: []
   references:
