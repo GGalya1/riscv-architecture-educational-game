@@ -65,6 +65,8 @@ MonoBehaviour:
 
 
 
+
+
       <line-height=50%>
       </line-height>
 
@@ -77,6 +79,8 @@ MonoBehaviour:
       (Patch/Plugin for GIMP)
 
       <b>MagicaVoxel</b> by ephtracy
+
+
 
 
 
@@ -103,6 +107,8 @@ MonoBehaviour:
 
 
 
+
+
       <line-height=50%>
       </line-height>
 
@@ -122,6 +128,8 @@ MonoBehaviour:
 
 
 
+
+
       <line-height=50%>
       </line-height>
 
@@ -135,6 +143,11 @@ MonoBehaviour:
 
       <b>Horizontal Game Backgrounds</b> - by Free
       Game Assets / CraftPix.net
+
+      <b>Paper UI Pack</b> - by Lynda Mc Donald
+      / Itch.io
+
+
 
 
 
@@ -155,6 +168,8 @@ MonoBehaviour:
 
 
 
+
+
       <line-height=50%> </line-height>
 
       <size=160%><b><color=#FFD700>DEVELOPED
@@ -162,10 +177,22 @@ MonoBehaviour:
 
       <size=150%><b>Galyautdinov Artur</b></size>
 
-      im
-      Rahmen der Bachelorarbeit an der TU Darmstadt
+      as
+      part of a Bachelor''s thesis at TU Darmstadt
 
       </align>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50074862725386240
+    m_Localized: Adventure mode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50079322881150976
+    m_Localized: Soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 50099892779765760
+    m_Localized: 'Music:'
     m_Metadata:
       m_Items: []
   references:

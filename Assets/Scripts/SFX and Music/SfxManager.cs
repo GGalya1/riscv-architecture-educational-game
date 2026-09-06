@@ -65,9 +65,9 @@ public class SfxManager : MonoBehaviour
         return src;
     }
 
-    public void SetSfxStatus(bool isEnabled)
+    public void ToggleSfx(bool nextState)
     {
-        _isSfxEnabled = isEnabled;
+        _isSfxEnabled = nextState;
     }
 
     #region UI shortcuts
