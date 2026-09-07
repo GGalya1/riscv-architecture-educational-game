@@ -43,6 +43,8 @@ nav:
   - Quickstart: quickstart.md
   - Concept: concept.md
   - Technology: tech-stack.md
+  - Text animation:
+    - Dialogue tags and vertex animation: text_animation/dialogue-text-animation.md
 
 markdown_extensions:
   - admonition
