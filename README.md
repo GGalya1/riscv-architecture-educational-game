@@ -37,7 +37,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ## Play the Game
 If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android and EXE for Windows) here:
 
-**[Download Latest Release (v0.8.2)](https://github.com/GGalya1/riscv-architecture-educational-game/releases/tag/v0.8.2)**
+**[Download Latest Release (v0.8.6)](https://github.com/GGalya1/riscv-architecture-educational-game/releases/tag/v0.8.6)**
 
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share">
