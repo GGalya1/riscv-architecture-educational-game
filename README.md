@@ -35,7 +35,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ---
 
 ## Play the Game
-If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android and EXE for Windows) here:
+If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android, EXE for Windows etc.) here:
 
 **[Download Latest Release (v0.8.2)](https://github.com/GGalya1/riscv-architecture-educational-game/releases/tag/v0.8.2)**
 
@@ -52,7 +52,7 @@ If you want to play the game without opening the project in Unity, you can find 
 
 ## Project Overview
 
-**Mehrtakt-Abenteuer** is an adventure through the layers of computer architecture. Players must master various components to eventually understand and build the "Great and Terrible" Multi-cycle Processor.
+**RISC-V Adventure** is a quest through the layers of computer architecture. Players must master various components to eventually understand and build the "Great and Terrible" Multi-cycle Processor.
 
 ### Key Features:
 * **31 Levels** across **8 Educational Chapters**:
@@ -72,7 +72,7 @@ If you want to play the game without opening the project in Unity, you can find 
 ## Technical Specifications
 
 * **Engine:** Unity 6 (Version: 6000.5.10f1)
-* **Target Platforms:** Android (Primary), Windows (Evaluation Build)
+* **Target Platforms:** Android (Primary), Windows (Evaluation Build), Linux (Evaluation Build)
 * **Render Pipeline:** Universal Render Pipeline (URP)
 * **Version Control:** Transitioned from Unity Version Control to Git.
 
@@ -129,6 +129,7 @@ Android builds require a signing keystore, which is **not included** in this rep
 
 **By Version 1.0.0 (End of November 2026)**
 * [ ] Introduce Chapter 9 - Pipelined Processor
+* [ ] Introduce Tutorial
 * [ ] Introduce Story Mode and separate it from the level list (adaptive learning path based on player actions)
 * [ ] Rework the in-game UI to better adapt it to mobile devices
 * [ ] Add shaders to in-game processor objects
