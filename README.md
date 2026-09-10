@@ -1,4 +1,7 @@
 # From Gamification to Game-Based Learning
+
+<img align="left" width="250" alt="RISCV_Logo" src="https://github.com/user-attachments/assets/54d17f5c-a5c5-4c4b-a9ea-0d35dbe84d2e" />
+
 ### Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor
 
 [![Unity Tests](https://github.com/GGalya1/riscv-architecture-educational-game/actions/workflows/unity-tests.yml/badge.svg)](https://github.com/GGalya1/riscv-architecture-educational-game/actions/workflows/unity-tests.yml)
@@ -11,7 +14,7 @@ This repository contains the source code and Unity project for my Bachelor's The
 
 The project is an educational mobile game designed to teach the fundamentals of computer organization, specifically focusing on the multi-cycle processor (Mehrtaktprozessor).
 
----
+<br clear="all" />
 
 ## Table of Contents
 - [Screenshots](#screenshots)
@@ -37,15 +40,10 @@ The project is an educational mobile game designed to teach the fundamentals of 
 ## Play the Game
 If you want to play the game without opening the project in Unity, you can find the pre-built versions (APK for Android, EXE for Windows etc.) here:
 
-**[Download Latest Release (v0.8.2)](https://github.com/GGalya1/riscv-architecture-educational-game/releases/tag/v0.8.2)**
-
 <p>
-  <a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share">
-    <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="60" align="middle"/>
-  </a>
-  <a href="https://ggalya.itch.io/riscv-adventure">
-    <img alt="Available on itch.io" src="https://github.com/user-attachments/assets/63cfd5ae-5ea4-4ca3-9aec-97d7d0fa605a" height="40" align="middle"/>
-  </a>
+ <a href="https://github.com/GGalya1/riscv-architecture-educational-game/tags"><img alt="Get it on GitHub" src="https://img.shields.io/github/v/tag/GGalya1/riscv-architecture-educational-game?label=Get%20it%20on%20GitHub&color=purple" height="60" align="middle"/></a>
+ <a href="https://play.google.com/store/apps/details?id=com.edu.mehrtaktproz.sim&pcampaignid=web_share"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="60" align="middle"/></a>
+ <a href="https://ggalya.itch.io/riscv-adventure"><img alt="Available on itch.io" src="https://github.com/user-attachments/assets/63cfd5ae-5ea4-4ca3-9aec-97d7d0fa605a" height="40" align="middle"/></a>
 </p>
 
 ---
