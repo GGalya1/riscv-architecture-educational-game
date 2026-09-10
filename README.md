@@ -1,6 +1,6 @@
 # From Gamification to Game-Based Learning
 
-<img align="left" width="250" alt="RISCV_Logo" src="https://github.com/user-attachments/assets/54d17f5c-a5c5-4c4b-a9ea-0d35dbe84d2e" />
+<img align="left" width="250" alt="RISCV_Logo" src="https://github.com/user-attachments/assets/ae0ea8a8-4043-43a4-a5e0-80a89aa7f2b0" />
 
 ### Design and Implementation of a Mobile Educational Game for the Multi-Cycle Processor
 
@@ -23,7 +23,7 @@ The project is an educational mobile game designed to teach the fundamentals of 
 - [Technical Specifications](#technical-specifications)
 - [How to Open the Project](#how-to-open-the-project)
 - [Building the Android APK Yourself](#building-the-android-apk-yourself)
-- [Project Structure](#project-structure)
+- [Project Documentation](#project-documentation)
 - [Roadmap](#roadmap)
 - [Citation](#citation)
 
@@ -107,11 +107,8 @@ Android builds require a signing keystore, which is **not included** in this rep
 
 ---
 
-## Project Structure
-* `Assets/Scripts`: All C# logic and gameplay systems.
-* `Assets/Prefabs`: Reusable game objects and UI elements.
-* `Assets/Scenes`: The 8 chapters and 31 levels.
-* `ProjectSettings`: Necessary engine configurations (Input System, Tags, Layers).
+## Project Documentation
+You can find full information about used assets, project structure, code style, pull request guidelines, and more on our [GitHub Pages](https://ggalya1.github.io/riscv-architecture-educational-game/).
 
 ---
 
