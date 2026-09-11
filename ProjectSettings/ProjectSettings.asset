@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: com.FachbereichDidaktik.Bachelorarbeit
-  productName: Mehrtakt-Abenteuer
+  productName: RiscvAdventure
   defaultCursor: {fileID: 2800000, guid: 165e702f3933f75419c7a163a4a4dea8, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
@@ -150,7 +150,7 @@ PlayerSettings:
   loadStoreDebugModeEnabled: 0
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
-  bundleVersion: 0.8.4.1
+  bundleVersion: 0.8.6
   preloadedAssets:
   - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   - {fileID: 11400000, guid: e78799fa0f6c85a48be10143bf62cf94, type: 2}
@@ -309,7 +309,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 8ab8bb92254591b489b7e00246e5d618, type: 3}
+      m_Icon: {fileID: 2800000, guid: 149a7817d1fc99c488b930d98b7b3262, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
